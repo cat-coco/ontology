@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>财报异常分析 · Knowledge Driven Agent v2.1</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root{
+      --bg:#f5f8fc;--card:#fff;--text:#172033;--muted:#667085;--line:#e5eaf2;
+      --blue:#2563eb;--blue2:#0b63ce;--blue-bg:#eef5ff;--teal:#0f9f8f;--teal-bg:#ecfbf8;
+      --green:#1d8f5a;--green-bg:#effaf4;--amber:#c77a0a;--amber-bg:#fff7e8;--red:#c94848;--red-bg:#fff1f1;
+      --purple:#7257d5;--purple-bg:#f3f0ff;--shadow:0 8px 26px rgba(20,45,90,.07);
+    }
+    *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#f8fbff 0,#f4f7fb 42%,#f6f8fb 100%);color:var(--text);font-family:Inter,"PingFang SC","Microsoft YaHei",Arial,sans-serif}
+    .page{max-width:1500px;margin:0 auto;padding:26px 28px 54px}
+    .hero{display:flex;gap:20px;align-items:flex-start;justify-content:space-between;margin-bottom:18px}.hero h1{font-size:27px;margin:0 0 8px;font-weight:760;letter-spacing:-.4px}.hero p{margin:0;color:var(--muted);line-height:1.6;font-size:14px}.hero-tags{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.tag,.pill{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px solid #d9e4f5;background:#fff;color:#3d5d86;font-size:12px;white-space:nowrap}.tag strong{color:var(--blue)}
+    .control{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:16px;padding:16px;display:grid;grid-template-columns:1fr 290px 150px;gap:12px;align-items:end;margin-bottom:16px}.field label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px}.field input,.field select{width:100%;border:1px solid #d7deea;border-radius:10px;padding:11px 12px;font-size:14px;outline:none;background:#fff;color:var(--text)}.field input:focus,.field select:focus{border-color:#8cb5f4;box-shadow:0 0 0 3px #eaf2ff}.run{height:42px;border:0;border-radius:10px;background:linear-gradient(135deg,#1464da,#317cf3);color:white;font-weight:700;cursor:pointer;font-size:14px}.run:disabled{opacity:.55;cursor:not-allowed}
+    .statusbar{display:flex;align-items:center;gap:10px;padding:10px 13px;border:1px solid #dce6f3;background:#f9fbfe;border-radius:11px;margin-bottom:18px;font-size:13px;color:#4d607c}.dot{width:8px;height:8px;border-radius:50%;background:#a6b1c1}.dot.live{background:#22a56c;box-shadow:0 0 0 5px rgba(34,165,108,.11);animation:pulse 1.2s infinite}@keyframes pulse{50%{box-shadow:0 0 0 9px rgba(34,165,108,0)}}
+    .section{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);margin-top:16px;overflow:hidden}.section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:16px 18px;border-bottom:1px solid var(--line)}.section-head h2,.section-head h3{margin:0;font-size:16px}.section-head p{margin:5px 0 0;color:var(--muted);font-size:12px;line-height:1.5}.section-body{padding:17px 18px}
+    .planner-shell{border:1px solid #cfe0f6;background:linear-gradient(180deg,#fbfdff,#f7fbff);border-radius:15px;overflow:hidden}.planner-top{display:grid;grid-template-columns:1.05fr 1fr 1.1fr;gap:0;border-bottom:1px solid #dce8f6}.planner-panel{padding:16px;min-width:0}.planner-panel+.planner-panel{border-left:1px solid #dce8f6}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.8px;font-weight:800;color:#7890ae;margin-bottom:8px}.big{font-size:20px;font-weight:760}.sub{font-size:12px;color:var(--muted);line-height:1.5;margin-top:4px}.signal-list{display:grid;gap:7px;margin-top:10px}.signal{display:flex;justify-content:space-between;gap:10px;padding:8px 9px;border:1px solid #e1e9f4;background:#fff;border-radius:9px;font-size:12px}.signal span:first-child{color:var(--muted)}.signal strong{max-width:65%;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .round-status{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}.round-badge{padding:5px 9px;border-radius:7px;background:#eaf3ff;color:#195ebd;font-weight:800;font-size:12px}.thinking{display:inline-flex;align-items:center;gap:6px;color:var(--purple);font-size:12px;font-weight:700}.thinking i{width:6px;height:6px;border-radius:50%;background:var(--purple);animation:blink 1s infinite}.thinking i:nth-child(2){animation-delay:.15s}.thinking i:nth-child(3){animation-delay:.3s}@keyframes blink{0%,80%,100%{opacity:.22}40%{opacity:1}}
+    .candidate-wrap{padding:15px 16px;border-bottom:1px solid #dce8f6}.candidate-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.candidate-title b{font-size:13px}.candidate-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:10px}.candidate{border:1px solid #dfe6ef;border-radius:11px;background:#fff;padding:12px;position:relative;transition:.2s}.candidate.allowed{border-color:#91c9af;background:#f9fffb}.candidate.blocked{opacity:.63;background:#fafbfc}.candidate.selected{border:2px solid #5c8fea;box-shadow:0 0 0 3px #eaf2ff;opacity:1;background:#fff}.candidate .state{position:absolute;right:9px;top:9px;border-radius:999px;padding:3px 7px;font-size:10px;font-weight:800}.candidate.allowed .state{background:var(--green-bg);color:var(--green)}.candidate.blocked .state{background:#f0f2f5;color:#7a8391}.candidate.selected .state{background:#e9f1ff;color:#205fb9}.candidate h4{margin:1px 70px 4px 0;font-size:13px}.candidate .source{font-size:10px;color:#59718f;background:#f0f5fb;border-radius:6px;padding:3px 6px;display:inline-block;margin:5px 0}.candidate p{font-size:11px;color:var(--muted);line-height:1.5;margin:5px 0 0}.candidate .condition{font-size:11px;color:#334968;border-top:1px dashed #e1e8f1;margin-top:8px;padding-top:8px}
+    .decision-row{display:grid;grid-template-columns:1.25fr .75fr;gap:12px;padding:15px 16px}.decision-card,.guard-card{border:1px solid #e1e7f0;border-radius:11px;background:#fff;padding:13px}.decision-card .selected-skill{font-size:16px;font-weight:800;color:#194e98;margin:5px 0}.basis{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.basis span{font-size:11px;padding:4px 7px;background:#f1f6fc;border-radius:6px;color:#526a88}.guard-card.ok{background:var(--green-bg);border-color:#b7dfca}.guard-card.warn{background:var(--amber-bg);border-color:#ecd19e}.guard-line{display:flex;align-items:center;gap:8px;font-weight:800;font-size:13px}.guard-icon{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:#dff5e8;color:var(--green)}
+    .planner-log{display:flex;gap:7px;flex-wrap:wrap;padding:12px 16px;background:#f5f9fe;border-top:1px solid #dce8f6}.planner-event{font-size:10px;border:1px solid #dbe5f2;background:white;border-radius:999px;padding:4px 7px;color:#61728a}.planner-event.active{background:#edf4ff;color:#1f64bf;border-color:#bad2f3}
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.timeline{display:flex;flex-direction:column;gap:10px}.step{display:grid;grid-template-columns:40px 1fr auto;gap:11px;align-items:start;border:1px solid #e0e7f0;background:#fff;border-radius:11px;padding:11px}.step-num{width:34px;height:34px;border-radius:10px;background:#eef4fc;display:grid;place-items:center;font-size:12px;font-weight:800;color:#416b9c}.step.running{border-color:#a7c5ef;background:#fbfdff}.step.done{border-color:#b8dec9}.step.warning{border-color:#e8c98f;background:#fffdf8}.step h4{margin:1px 0 4px;font-size:13px}.step p{margin:0;font-size:11px;color:var(--muted);line-height:1.45}.step-state{font-size:10px;font-weight:800;border-radius:999px;padding:4px 7px;background:#f0f3f6;color:#687484}.step.running .step-state{background:#eaf3ff;color:#2364b6}.step.done .step-state{background:#eaf8f0;color:#25825a}.step.warning .step-state{background:#fff4db;color:#ae710d}
+    .reasoning{display:flex;flex-direction:column;gap:9px}.reason-card{border-left:3px solid #7ca7df;background:#f8fbff;border-radius:8px;padding:10px 11px}.reason-stage{font-size:11px;font-weight:800;color:#4772aa;margin-bottom:4px}.reason-text{font-size:12px;line-height:1.55;color:#30435f}
+    .facts-inline{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:10px}.fact-mini{border:1px solid #e2e8f0;background:#fff;border-radius:9px;padding:9px}.fact-mini span{display:block;color:var(--muted);font-size:10px}.fact-mini b{display:block;margin-top:4px;font-size:14px}.fact-mini b.warn{color:#d06a16}
+    .audit-conclusion{border-radius:13px;padding:16px;background:linear-gradient(135deg,#0e4f9d,#1473cb);color:white;margin-bottom:13px}.audit-label{font-size:11px;opacity:.78;letter-spacing:.7px}.audit-conclusion-text{font-size:18px;font-weight:760;line-height:1.55;margin:7px 0 10px}.audit-conclusion .pill{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:white;margin-right:6px}.audit-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.audit-card{border:1px solid #e0e7ef;border-radius:12px;padding:13px;background:#fff}.audit-card h4{margin:0 0 9px;font-size:13px}.fact-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.fact-item{background:#f6f8fb;border-radius:8px;padding:8px;font-size:10px;color:var(--muted)}.fact-item strong{display:block;color:var(--text);font-size:13px;margin-top:4px}.evidence-item,.action-item,.timeline-item{border:1px solid #e4e9f0;border-radius:8px;padding:9px;margin-bottom:7px;font-size:11px;line-height:1.5}.evidence-item.ok{border-left:3px solid #3c9c6c}.evidence-item.miss{border-left:3px solid #d18822}.evidence-item b,.action-item b,.timeline-item b{display:block;margin-bottom:3px;font-size:12px}.ev-ref{margin-top:5px;padding:5px;background:#f6f7f9;border-radius:5px;color:#596579;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10px;overflow-wrap:anywhere}
+    .raw-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.raw{border:1px solid #e1e7ee;border-radius:10px;overflow:hidden}.raw h4{margin:0;padding:9px 11px;background:#f7f9fc;border-bottom:1px solid #e1e7ee;font-size:11px}.raw pre,details pre{margin:0;padding:10px;max-height:300px;overflow:auto;background:#fbfcfe;font-size:10px;line-height:1.45;white-space:pre-wrap;word-break:break-word;color:#33445c}.empty{font-size:11px;color:#8993a1;padding:9px 0}.detail{font-size:11px;color:var(--muted);line-height:1.5}.hidden{display:none!important}details{margin-top:12px;border:1px solid #e1e7ef;border-radius:10px;overflow:hidden}details summary{padding:10px 12px;background:#f8fafc;font-size:11px;cursor:pointer;color:#526277}
+    @media(max-width:1000px){.control{grid-template-columns:1fr}.planner-top{grid-template-columns:1fr}.planner-panel+.planner-panel{border-left:0;border-top:1px solid #dce8f6}.decision-row,.two,.audit-grid,.raw-grid{grid-template-columns:1fr}.hero{flex-direction:column}.hero-tags{justify-content:flex-start}}
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="hero">
+    <div>
+      <h1>财报异常分析 · Knowledge + Data Driven Agent</h1>
+      <p>v2.1：不是固定 Step 流程，而是 <b>KG定义可行路径 → 数据触发规则 → LLM Planner选择下一Skill → Guardrail校验 → Skill执行 → 新事实回写 → 再规划</b>。</p>
+    </div>
+    <div class="hero-tags">
+      <span class="tag"><strong>Ontology</strong> 业务语义</span>
+      <span class="tag"><strong>KG</strong> 路径/规则/Skill</span>
+      <span class="tag"><strong>Fact</strong> 实时数据</span>
+      <span class="tag"><strong>LLM Planner</strong> 动态规划</span>
+    </div>
+  </div>
+
+  <div class="control">
+    <div class="field"><label>分析问题</label><input id="q" value="请帮我分析0021G公司2026P06期间DCF0103的异常波动是否合理" /></div>
+    <div class="field"><label>Mock数据场景</label><select id="scenario">
+      <option value="government_subsidy_with_evidence">高波动 + 证据完整</option>
+      <option value="low_fluctuation">低波动：提前结束</option>
+      <option value="high_overall_low_detail">整体高波动 + 明细不显著</option>
+      <option value="high_fluctuation_no_evidence">高波动 + 证据不足：人工补证</option>
+    </select></div>
+    <button id="runBtn" class="run">运行动态分析</button>
+  </div>
+
+  <div class="statusbar"><span id="statusDot" class="dot"></span><span id="status">等待运行</span><span style="margin-left:auto" id="trace">trace: -</span></div>
+
+  <section class="section">
+    <div class="section-head">
+      <div><h2>Agent Planner 控制台 · 动态决策主线</h2><p>每轮展示“知识输入 + 数据输入 + 候选路径门控 + LLM选择 + Guardrail”，用来证明下一步不是写死的。</p></div>
+      <span class="pill" id="plannerProvider">Planner: -</span>
+    </div>
+    <div class="section-body">
+      <div class="planner-shell">
+        <div class="planner-top">
+          <div class="planner-panel">
+            <div class="eyebrow">Domain Knowledge · 领域知识</div>
+            <div class="big" id="methodName">等待加载分析方法</div>
+            <div class="sub" id="plannerSkillName">Planner Skill 将从KG获取</div>
+            <div id="knowledgeSignals" class="signal-list"><div class="signal"><span>Ontology</span><strong>等待</strong></div><div class="signal"><span>Rules</span><strong>等待</strong></div><div class="signal"><span>Workflow</span><strong>等待</strong></div></div>
+          </div>
+          <div class="planner-panel">
+            <div class="eyebrow">Runtime Data · 当前事实</div>
+            <div class="big" id="factHeadline">暂无事实数据</div>
+            <div class="sub">只有当前路径真正需要的数据才会通过 Mock 接口获取。</div>
+            <div id="dataSignals" class="facts-inline"><div class="fact-mini"><span>Facts</span><b>0</b></div></div>
+          </div>
+          <div class="planner-panel">
+            <div class="eyebrow">LLM Planner · 本轮状态</div>
+            <div class="big" id="roundTitle">Round -</div>
+            <div class="sub" id="roundMessage">等待动态规划</div>
+            <div class="round-status"><span class="round-badge" id="roundNode">Current: ENTRY</span><span id="thinking" class="thinking hidden"><i></i><i></i><i></i> LLM规划中</span></div>
+          </div>
+        </div>
+
+        <div class="candidate-wrap">
+          <div class="candidate-title"><b>KG候选路径 & 数据门控</b><span class="detail" id="candidateSummary">等待 Planner Round</span></div>
+          <div id="candidateGrid" class="candidate-grid"><div class="empty">运行后将看到：哪些路径被当前规则/证据允许，哪些路径被阻断。</div></div>
+        </div>
+
+        <div class="decision-row">
+          <div id="decisionCard" class="decision-card">
+            <div class="eyebrow">Planner Decision</div>
+            <div class="selected-skill">尚未选择下一Skill</div>
+            <div class="detail">LLM Planner会在KG允许的候选路径中选择。</div>
+          </div>
+          <div id="guardCard" class="guard-card">
+            <div class="eyebrow">Runtime Guardrail</div>
+            <div class="guard-line"><span class="guard-icon">✓</span><span>等待校验</span></div>
+            <div class="detail" style="margin-top:6px">Planner有规划权，Runtime保留最终合法性校验权。</div>
+          </div>
+        </div>
+        <div id="plannerLog" class="planner-log"><span class="planner-event">等待事件</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="two">
+    <section class="section">
+      <div class="section-head"><div><h3>实际 Skill 执行轨迹</h3><p>RUNTIME STEP只是“本次真实执行序号”，不是固定SOP编号。</p></div><span class="pill" id="stepCount">0 Skill</span></div>
+      <div class="section-body"><div id="steps" class="timeline"><div class="empty">等待Planner选择Skill</div></div></div>
+    </section>
+    <section class="section">
+      <div class="section-head"><div><h3>事实 → 事理 → 行动</h3><p>规则结果与证据会实时写回，并成为下一轮Planner的数据输入。</p></div><span class="pill" id="reasonCount">0 条</span></div>
+      <div class="section-body"><div id="reasoning" class="reasoning"><div class="empty">等待事实与推理事件</div></div></div>
+    </section>
+  </div>
+
+  <section id="finalSection" class="section hidden">
+    <div class="section-head"><div><h3>最终可追溯 / 可审计结论</h3><p>把Fact、Reasoning、Evidence Chain、Action和实际动态路径组合展示。</p></div></div>
+    <div class="section-body"><div id="final"></div></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div><h3>接口原始报文</h3><p>便于后续替换真实图数据库、关系库、ERP/RAG接口。</p></div></div>
+    <div class="section-body raw-grid">
+      <div class="raw"><h4>KG Response</h4><pre id="kg">等待...</pre></div>
+      <div class="raw"><h4>Latest Fact / Evidence Response</h4><pre id="fact">等待...</pre></div>
+    </div>
+  </section>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const esc=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+let uiDelay=180, eventQueue=[], processingQueue=false, streamEnded=false;
+let stepMap=new Map(), plannerEvents=[], reasonN=0, lastCandidateData=null;
+
+function setStatus(text,live=false){$('status').textContent=text;$('statusDot').className='dot'+(live?' live':'')}
+function reset(){
+  eventQueue=[];processingQueue=false;streamEnded=false;stepMap=new Map();plannerEvents=[];reasonN=0;lastCandidateData=null;
+  $('trace').textContent='trace: -';$('kg').textContent='等待...';$('fact').textContent='等待...';$('steps').innerHTML='<div class="empty">等待Planner选择Skill</div>';$('reasoning').innerHTML='<div class="empty">等待事实与推理事件</div>';$('finalSection').classList.add('hidden');$('final').innerHTML='';
+  $('methodName').textContent='等待加载分析方法';$('plannerSkillName').textContent='Planner Skill 将从KG获取';$('knowledgeSignals').innerHTML='<div class="signal"><span>Ontology</span><strong>等待</strong></div><div class="signal"><span>Rules</span><strong>等待</strong></div><div class="signal"><span>Workflow</span><strong>等待</strong></div>';
+  $('factHeadline').textContent='暂无事实数据';$('dataSignals').innerHTML='<div class="fact-mini"><span>Facts</span><b>0</b></div>';$('roundTitle').textContent='Round -';$('roundMessage').textContent='等待动态规划';$('roundNode').textContent='Current: ENTRY';$('thinking').classList.add('hidden');
+  $('candidateGrid').innerHTML='<div class="empty">运行后将看到：哪些路径被当前规则/证据允许，哪些路径被阻断。</div>';$('candidateSummary').textContent='等待 Planner Round';
+  $('decisionCard').innerHTML='<div class="eyebrow">Planner Decision</div><div class="selected-skill">尚未选择下一Skill</div><div class="detail">LLM Planner会在KG允许的候选路径中选择。</div>';
+  $('guardCard').className='guard-card';$('guardCard').innerHTML='<div class="eyebrow">Runtime Guardrail</div><div class="guard-line"><span class="guard-icon">✓</span><span>等待校验</span></div><div class="detail" style="margin-top:6px">Planner有规划权，Runtime保留最终合法性校验权。</div>';
+  $('plannerLog').innerHTML='<span class="planner-event">等待事件</span>';$('stepCount').textContent='0 Skill';$('reasonCount').textContent='0 条';$('plannerProvider').textContent='Planner: -';
+}
+function nextPaint(){return new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))}
+function eventGap(name){if(name==='planner_call'||name==='planner'||name==='guardrail'||name==='step'||name==='rule_results')return uiDelay;return Math.max(60,Math.round(uiDelay*.55))}
+function enqueueMessage(msg){eventQueue.push(msg);if(!processingQueue)processQueue()}
+async function processQueue(){processingQueue=true;while(eventQueue.length){const msg=eventQueue.shift();handle(msg.event,msg.data);await nextPaint();await sleep(eventGap(msg.event))}processingQueue=false}
+async function waitQueueIdle(){while(processingQueue||eventQueue.length)await sleep(30)}
+
+function logPlanner(label,active=true){if(plannerEvents.length===0)$('plannerLog').innerHTML='';plannerEvents.push(label);if(plannerEvents.length>18)plannerEvents.shift();$('plannerLog').innerHTML=plannerEvents.map((x,i)=>`<span class="planner-event ${i===plannerEvents.length-1&&active?'active':''}">${esc(x)}</span>`).join('')}
+function renderKnowledge(d){const kg=d.kg?.data||{};const method=d.analysis_method||kg.analysisMethod||{};const ps=d.planner_skill||kg.plannerSkill||{};const wf=d.workflow||kg.workflowDefinition||{};$('methodName').textContent=method.name||'已加载分析方法';$('plannerSkillName').textContent=(ps.name||'Planner Skill')+' · '+(ps.id||'');$('knowledgeSignals').innerHTML=`<div class="signal"><span>Ontology</span><strong>${esc(d.ontology?.report_item?.name||d.ontology?.report_item?.code||'DCF0103')}</strong></div><div class="signal"><span>Rules</span><strong>${kg.rules?.length||0} 条规则</strong></div><div class="signal"><span>Workflow</span><strong>${wf.nodes?.length||0}节点 / ${wf.transitions?.length||0}路径</strong></div>`;logPlanner('领域知识加载')}
+function renderDataSignals(ds){if(!ds)return;const item=ds.report_item||{};const top=ds.top_contributor;const ev=ds.evidence_summary;let cells=[];if(item.code){$('factHeadline').textContent=`${item.code} · ${(Number(item.changeRate||0)*100).toFixed(1)}% 波动`;cells.push(['本期',Number(item.currentAmount||0).toLocaleString('zh-CN')],['上期',Number(item.previousAmount||0).toLocaleString('zh-CN')],['波动率',(Number(item.changeRate||0)*100).toFixed(1)+'%'])}if(top)cells.push(['主要贡献实体',top.entityCode||'-'],['贡献波动率',(Number(top.changeRate||0)*100).toFixed(2)+'%']);if(ev)cells.push(['证据匹配',`${ev.matched}/${ev.total}`]);if(!cells.length)cells=[['Facts','尚未取数']];$('dataSignals').innerHTML=cells.map(([k,v])=>`<div class="fact-mini"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('')}
+function renderPlannerRound(d){$('roundTitle').textContent='Round '+d.iteration;$('roundNode').textContent='Current: '+(d.current_node_id||'ENTRY');$('roundMessage').textContent=d.message||'读取知识与数据';renderDataSignals(d.data_signals);logPlanner(`R${d.iteration} 读取知识+数据`);setStatus(`Planner Round ${d.iteration}：计算候选路径…`,true)}
+function renderCandidates(d){lastCandidateData=d;$('candidateSummary').textContent=`${d.valid_count}/${d.candidates?.length||0} 条路径当前可行`;$('candidateGrid').innerHTML=(d.candidates||[]).map(c=>{const ok=!!c.conditionSatisfied;return `<div class="candidate ${ok?'allowed':'blocked'}" data-node="${esc(c.to)}"><span class="state">${ok?'可走':'被阻断'}</span><h4>${esc(c.targetSkill?.name||c.to)}</h4><span class="source">${esc(c.signalSource||'KG')}</span><p>${esc(c.businessMeaning||'')}</p><div class="condition">${esc(c.conditionExplain||'')}</div></div>`}).join('')||'<div class="empty">没有候选路径</div>';logPlanner(`R${d.iteration} 路径门控`)}
+function renderPlannerCall(d){$('thinking').classList.remove('hidden');$('roundMessage').textContent=d.message||'LLM Planner选择中';$('plannerProvider').textContent='Planner: '+(d.model||d.provider||'-');logPlanner(`R${d.iteration} LLM规划中`);setStatus(`Round ${d.iteration} · LLM Planner正在选择下一Skill…`,true)}
+function renderPlannerDecision(d){$('thinking').classList.add('hidden');$('roundMessage').textContent=d.message||'Planner已完成选择';document.querySelectorAll('.candidate').forEach(x=>{if(x.dataset.node===d.next_node_id){x.classList.remove('blocked');x.classList.add('selected');const s=x.querySelector('.state');if(s)s.textContent='Planner选择'}});const basis=(d.decision_basis||[]).map(x=>`<span>${esc(x)}</span>`).join('');$('decisionCard').innerHTML=`<div class="eyebrow">Planner Decision · Round ${d.iteration}</div><div class="selected-skill">${esc(d.next_skill_id)}</div><div class="detail">${esc(d.rationale||'')}</div><div class="basis">${basis}</div><div class="detail" style="margin-top:7px">confidence=${esc(d.confidence)} · provider=${esc(d.provider)}</div>`;logPlanner(`R${d.iteration} 选择 ${d.next_skill_id}`);setStatus(`Planner选择：${d.next_skill_id}，等待Guardrail…`,true)}
+function renderGuardrail(d){const ok=d.accepted;$('guardCard').className='guard-card '+(ok?'ok':'warn');$('guardCard').innerHTML=`<div class="eyebrow">Runtime Guardrail</div><div class="guard-line"><span class="guard-icon">${ok?'✓':'!'}</span><span>${ok?'KG / Rule 校验通过':'已触发安全回退'}</span></div><div class="detail" style="margin-top:6px">${esc(d.message||'')}</div><div class="detail" style="margin-top:5px">${esc(d.selected_skill_id||'')}</div>`;logPlanner(`R${d.iteration} Guardrail ${ok?'PASS':'FALLBACK'}`);setStatus(`Guardrail ${ok?'通过':'回退'}，准备执行Skill`,true)}
+function upsertStep(d){const id=d.skill_id||d.node_id||('s'+d.stage);if($('steps').querySelector('.empty'))$('steps').innerHTML='';stepMap.set(id,d);const arr=[...stepMap.values()];$('steps').innerHTML=arr.map(x=>`<div class="step ${x.status==='info'?'running':x.status}"><div class="step-num">${esc(x.stage)}</div><div><h4>${esc(x.title)}</h4><p>${esc(x.detail)}</p><p style="margin-top:5px;color:#7a8da7">${esc(x.skill_id||'')} · ${esc(x.node_id||'')}</p></div><span class="step-state">${x.status==='info'?'RUNNING':x.status==='warning'?'HUMAN':'DONE'}</span></div>`).join('');$('stepCount').textContent=arr.filter(x=>x.status!=='info').length+' Skill'}
+function renderSkillCall(d){logPlanner(`R${d.iteration} Skill ${d.status==='running'?'执行':'完成'}`);setStatus(d.message||`${d.skill?.name||'Skill'} ${d.status}`,true)}
+function addReason(d){if($('reasoning').querySelector('.empty'))$('reasoning').innerHTML='';const el=document.createElement('div');el.className='reason-card';el.innerHTML=`<div class="reason-stage">${esc(d.stage||'推理')}</div><div class="reason-text">${esc(d.statement||'')}</div>`;$('reasoning').appendChild(el);reasonN++;$('reasonCount').textContent=reasonN+' 条'}
+function renderInterimFact(data){const d=data?.data||{};const item=d.reportItem;if(item){renderDataSignals({report_item:item})}}
+function actionArray(v){if(v==null)return[];if(Array.isArray(v))return v;if(typeof v==='object')return[v];return[{title:'行动建议',description:String(v)}]}
+function renderFinal(d){const report=d.final_report||{},state=d.runtime_state||{},f=report.fact||{},facts=state.facts||{},item=facts.reportItem||{},contributors=facts.contributors||[],top=contributors[0]||{};const reportEvidence=Array.isArray(report.evidence_chain)?report.evidence_chain:[];const stateEvidence=Array.isArray(state.evidence_chain)?state.evidence_chain:[];const factEvidence=Array.isArray(facts.evidence)?facts.evidence:[];const evidence=reportEvidence.length?reportEvidence:(stateEvidence.length?stateEvidence:factEvidence);const actions=actionArray(report.action);const reportReasoning=Array.isArray(report.reasoning)?report.reasoning:[];const stateReasoning=Array.isArray(state.audit_reasoning)?state.audit_reasoning:[];const reasoning=reportReasoning.length?reportReasoning:stateReasoning;
+const factItems=[['本期金额',f.currentAmount??item.currentAmount],['上期金额',f.previousAmount??item.previousAmount],['整体波动率',f.changeRate!=null?(Number(f.changeRate)*100).toFixed(1)+'%':(item.changeRate!=null?(Number(item.changeRate)*100).toFixed(1)+'%':'-')],['主要贡献实体',f.majorContributor??top.entityCode??'-'],['贡献实体波动率',f.majorContributorChangeRate!=null?(Number(f.majorContributorChangeRate)*100).toFixed(2)+'%':(top.changeRate!=null?(Number(top.changeRate)*100).toFixed(2)+'%':'-')],['动态Planner轮次',d.planner_decisions?.length||0]].map(([k,v])=>`<div class="fact-item">${esc(k)}<strong>${typeof v==='number'?v.toLocaleString('zh-CN'):esc(v??'-')}</strong></div>`).join('');
+const reasonHtml=reasoning.length?reasoning.map(x=>`<div class="timeline-item"><b>${esc(x.stage||'Reasoning')}</b>${esc(x.statement||x.description||'')}</div>`).join(''):'<div class="empty">本次运行未产生可展示的审计推理依据</div>';const evHtml=evidence.length?evidence.map(x=>`<div class="evidence-item ${x.matched===false?'miss':'ok'}"><b>${x.matched===false?'△':'✓'} ${esc(x.name||x.type||'证据')}</b><div>${esc(x.type||'')}</div>${x.reason?`<div class="detail">${esc(x.reason)}</div>`:''}${x.reference?`<div class="ev-ref">${esc(x.reference)}</div>`:''}</div>`).join(''):'<div class="empty">本次动态路径未执行证据检索，或当前没有可审计证据。</div>';const actHtml=actions.length?actions.map(x=>`<div class="action-item"><b>${esc(x.title||x.name||'行动')}</b><div>${esc(x.description||x.statement||x.detail||JSON.stringify(x))}</div></div>`).join(''):'<div class="empty">无行动建议</div>';const path=(state.execution_history||[]).map(x=>x.skill_name||x.skill_id).join(' → ');
+$('finalSection').classList.remove('hidden');$('final').innerHTML=`<div class="audit-conclusion"><div class="audit-label">FINAL CONCLUSION · KNOWLEDGE DRIVEN AUDIT</div><div class="audit-conclusion-text">${esc(report.conclusion||report.summary||'未返回结论')}</div><div><span class="pill">Trace ${esc(d.trace_id)}</span><span class="pill">LLM ${esc(d.llm_provider)}</span><span class="pill">Planner ${d.planner_decisions?.length||0}轮</span><span class="pill">Rule ${d.rule_results?.length||0}</span></div><div style="margin-top:8px;font-size:11px;opacity:.86">实际动态路径：${esc(path||'-')}</div></div><div class="audit-grid"><div class="audit-card"><h4>Fact · 事实</h4><div class="fact-grid">${factItems}</div></div><div class="audit-card"><h4>Reasoning · 推理链</h4>${reasonHtml}</div><div class="audit-card"><h4>Evidence Chain · 证据链</h4>${evHtml}</div><div class="audit-card"><h4>Action · 行动</h4>${actHtml}</div></div><details><summary>查看完整运行时状态与LLM原始JSON</summary><pre>${esc(JSON.stringify({runtime_state:state,planner_decisions:d.planner_decisions,final_report:report},null,2))}</pre></details>`}
+function parseBlock(block){let event='message',data='';for(const line of block.split('\n')){if(line.startsWith('event:'))event=line.slice(6).trim();else if(line.startsWith('data:'))data+=line.slice(5).trim()}return data?{event,data:JSON.parse(data)}:null}
+function handle(event,d){
+  if(event==='started'){uiDelay=Number(d.ui_event_delay_ms||180);$('trace').textContent='trace: '+d.trace_id;$('plannerProvider').textContent='Planner: '+d.llm_provider;setStatus('已建立SSE流，加载领域知识…',true);logPlanner('Agent启动')}
+  else if(event==='knowledge'){renderKnowledge(d);setStatus('Ontology + KG + Planner Skill 已加载',true)}
+  else if(event==='kg'){$('kg').textContent=JSON.stringify(d,null,2)}
+  else if(event==='planner_round')renderPlannerRound(d)
+  else if(event==='planner_candidates')renderCandidates(d)
+  else if(event==='planner_call')renderPlannerCall(d)
+  else if(event==='planner')renderPlannerDecision(d)
+  else if(event==='guardrail')renderGuardrail(d)
+  else if(event==='step')upsertStep(d)
+  else if(event==='skill_call')renderSkillCall(d)
+  else if(event==='reasoning')addReason(d)
+  else if(event==='fact'||event==='evidence'){$('fact').textContent=JSON.stringify(d,null,2);renderInterimFact(d)}
+  else if(event==='rule_results'){logPlanner('规则门控更新');setStatus('确定性Rule Engine完成判断，准备写回Planner状态…',true)}
+  else if(event==='state_update'){renderDataSignals(d.data_signals);logPlanner(`R${d.iteration} 状态写回`);setStatus('新事实 / 规则已写回，下一轮Planner将重新规划…',true)}
+  else if(event==='complete'){renderFinal(d);logPlanner('分析完成',false);setStatus('动态分析完成',false)}
+  else if(event==='error'){throw new Error(d.message||'分析失败')}
+}
+async function run(){const btn=$('runBtn');btn.disabled=true;btn.textContent='动态分析中…';reset();setStatus('建立SSE流式连接…',true);try{const r=await fetch('/api/analyze/stream',{method:'POST',headers:{'Content-Type':'application/json','Accept':'text/event-stream'},body:JSON.stringify({query:$('q').value,scenario:$('scenario').value})});if(!r.ok)throw new Error(await r.text());const reader=r.body.getReader(),decoder=new TextDecoder('utf-8');let buffer='';while(true){const {value,done}=await reader.read();if(done)break;buffer+=decoder.decode(value,{stream:true}).replaceAll('\r\n','\n');let idx;while((idx=buffer.indexOf('\n\n'))>=0){const block=buffer.slice(0,idx);buffer=buffer.slice(idx+2);if(!block.trim())continue;const msg=parseBlock(block);if(msg)enqueueMessage(msg)}}streamEnded=true;await waitQueueIdle()}catch(e){console.error(e);setStatus('分析失败：'+e.message,false);$('finalSection').classList.remove('hidden');$('final').innerHTML=`<pre>${esc(String(e.stack||e))}</pre>`}finally{btn.disabled=false;btn.textContent='运行动态分析'}}
+$('runBtn').addEventListener('click',run);reset();
+</script>
+</body>
+</html>

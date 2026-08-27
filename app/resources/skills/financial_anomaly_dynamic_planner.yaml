@@ -1,0 +1,72 @@
+name: financial_anomaly_dynamic_planner
+version: 2.0.0
+kind: scenario_planner_skill
+description: >
+  财报数据异常分析场景级Skill。它承载专家“如何分析”的SOP与分支原则，但不内置具体阈值和事实。
+  具体规则、适用对象、可用原子Skill、证据要求和执行图由KG返回；具体金额、明细和证据由事实接口按需返回。
+
+goal:
+  - 让Agent按专家SOP从整体异常逐层下钻，而不是由Python写死Step
+  - 用KG中的领域规则决定是否继续深挖
+  - 用事实数据决定规则条件是否成立
+  - 证据充分才允许形成“合理波动”判断
+  - 每一轮只规划一个下一原子Skill
+
+analysis_strategy:
+  - phase: 整体异常识别
+    intent: 先获取报表项本期/对比期事实，判断是否达到KG定义的整体异常规则
+    branch:
+      rule_not_triggered: 提前进入结论生成，不继续获取不必要的明细数据
+      rule_triggered: 进入贡献实体和明细下钻
+
+  - phase: 贡献项定位
+    intent: 获取公司、利润中心、业务类型等明细事实，识别是否存在KG定义的显著贡献项
+    branch:
+      rule_not_triggered: 基于已有事实形成结论，不进行不必要的证据检索
+      rule_triggered: 进入业务事件和证据验证
+
+  - phase: 原因与证据验证
+    intent: 将异常贡献项与业务事件、文件、ERP分录等证据连接，验证原因假设
+    branch:
+      evidence_complete: 进入可审计结论生成
+      evidence_incomplete: 进入人工补证协同，再生成暂定结论和待办行动
+
+  - phase: 结论与行动
+    intent: 仅基于实际执行路径中已经获得的事实、规则结果和证据形成结论
+
+inputs:
+  - intent
+  - ontology_context
+  - kg_analysis_method
+  - kg_workflow_definition
+  - kg_rules
+  - kg_skills
+  - kg_evidence_requirements
+  - runtime_state
+  - rule_results
+  - candidate_transitions
+
+planning_policy:
+  - 每一轮只选择一个next_skill_id
+  - next_skill_id必须来自candidate_transitions中conditionSatisfied=true的目标Skill
+  - 规则阈值是否触发只服从rule_results，不自行重算
+  - 事实数据缺失时优先选择能够补齐当前SOP阶段所需事实的Skill
+  - 证据要求来自KG的evidenceRequirements；缺证时必须选择补证/人工确认路径
+  - 不得跳过KG定义的强制依赖
+  - 不得虚构不存在的Skill、规则、业务事件、证据或金额
+  - rationale只描述可审计的业务依据，不输出隐藏思维链
+
+output_schema:
+  next_skill_id: string
+  next_node_id: string
+  rationale: string
+  decision_basis:
+    - string
+  confidence: number
+
+runtime_contract:
+  planner_proposes: true
+  runtime_validates: true
+  validation_rule: >
+    Runtime仅允许执行conditionSatisfied=true且由KG workflowDefinition声明的transition。
+    如果LLM选择非法路径，Runtime拒绝并回退到合法transition，同时记录guardrail事件。

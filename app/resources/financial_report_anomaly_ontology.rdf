@@ -1,0 +1,774 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:fra="https://example.com/ontology/financial-report-anomaly#"
+   xmlns:owl="http://www.w3.org/2002/07/owl#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Detail_DCF0103_2821G_2026P06">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#DetailData"/>
+    <fra:code>DTL_DCF0103_2821G_2026P06</fra:code>
+    <fra:name>2821G政府补助明细</fra:name>
+    <fra:belongsToEntity rdf:resource="https://example.com/ontology/financial-report-anomaly#Entity_2821G"/>
+    <fra:occursInPeriod rdf:resource="https://example.com/ontology/financial-report-anomaly#Period_2026P06"/>
+    <fra:usesCurrency rdf:resource="https://example.com/ontology/financial-report-anomaly#CNY"/>
+    <fra:hasDataSource rdf:resource="https://example.com/ontology/financial-report-anomaly#DataSource_DataWorkshop"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#DataSource_EFM">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#DataSource"/>
+    <fra:code>EFM</fra:code>
+    <fra:name>EFM合并报表系统</fra:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Workflow_GovSubsidyDynamic">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowDefinition"/>
+    <fra:code>WORKFLOW_GOV_SUBSIDY_DYNAMIC_ANALYSIS</fra:code>
+    <fra:name>政府补助异常波动动态执行图</fra:name>
+    <fra:hasNode rdf:resource="https://example.com/ontology/financial-report-anomaly#Node_FetchBaseFact"/>
+    <fra:hasNode rdf:resource="https://example.com/ontology/financial-report-anomaly#Node_FetchDetail"/>
+    <fra:hasNode rdf:resource="https://example.com/ontology/financial-report-anomaly#Node_RetrieveEvidence"/>
+    <fra:hasNode rdf:resource="https://example.com/ontology/financial-report-anomaly#Node_RequestManualEvidence"/>
+    <fra:hasNode rdf:resource="https://example.com/ontology/financial-report-anomaly#Node_GenerateConclusion"/>
+    <fra:hasTransition rdf:resource="https://example.com/ontology/financial-report-anomaly#T01"/>
+    <fra:hasTransition rdf:resource="https://example.com/ontology/financial-report-anomaly#T02"/>
+    <fra:hasTransition rdf:resource="https://example.com/ontology/financial-report-anomaly#T03"/>
+    <fra:hasTransition rdf:resource="https://example.com/ontology/financial-report-anomaly#T04"/>
+    <fra:hasTransition rdf:resource="https://example.com/ontology/financial-report-anomaly#T05"/>
+    <fra:hasTransition rdf:resource="https://example.com/ontology/financial-report-anomaly#T06"/>
+    <fra:hasTransition rdf:resource="https://example.com/ontology/financial-report-anomaly#T07"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#hasMajorContributor">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#Fluctuation"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#FinancialEntity"/>
+    <rdfs:label xml:lang="zh">主要贡献实体</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#WorkflowDefinition">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">动态执行图</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#previousAmount">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#Fluctuation"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:label xml:lang="zh">上期金额</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#name">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label xml:lang="zh">名称</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#confidence">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#Conclusion"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:label xml:lang="zh">结论置信度</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#DataSource_DocumentCenter">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#DataSource"/>
+    <fra:code>DOC_CENTER</fra:code>
+    <fra:name>业务文件中心</fra:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#detectedBy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#Fluctuation"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#Rule"/>
+    <rdfs:label xml:lang="zh">由规则识别</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#usesCurrency">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#FactData"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#Currency"/>
+    <rdfs:label xml:lang="zh">使用币种</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#hasDataSource">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#DataSource"/>
+    <rdfs:label xml:lang="zh">数据来源系统</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#AnalysisMethod">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">分析方法</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#JournalEntry">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://example.com/ontology/financial-report-anomaly#DetailData"/>
+    <rdfs:label xml:lang="zh">会计分录</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#appliesToReportItem">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#Rule"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#ReportItem"/>
+    <rdfs:label xml:lang="zh">规则适用于报表项</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#evidenceRef">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#Evidence"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label xml:lang="zh">证据引用</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#implementedBySkill">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#AnalysisMethod"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#Skill"/>
+    <rdfs:label xml:lang="zh">由Skill实现</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Event_NewEnergySubsidy_2026P06">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#BusinessEvent"/>
+    <fra:code>EVENT_NEW_ENERGY_SUBSIDY_2026P06</fra:code>
+    <fra:name>新能源建设项目补贴到账</fra:name>
+    <fra:description>2821G在2026P06收到新能源建设项目政府补助。</fra:description>
+    <fra:causesFluctuation rdf:resource="https://example.com/ontology/financial-report-anomaly#Fluctuation_DCF0103_0021G_2026P06"/>
+    <fra:supportedBy rdf:resource="https://example.com/ontology/financial-report-anomaly#Evidence_SubsidyApproval"/>
+    <fra:supportedBy rdf:resource="https://example.com/ontology/financial-report-anomaly#Evidence_JournalEntry"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#relatesToReportItem">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#ReportItem"/>
+    <rdfs:label xml:lang="zh">关联报表项</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#currentAmount">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#Fluctuation"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:label xml:lang="zh">本期金额</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#usesAnalysisMethod">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#AnalysisMethod"/>
+    <rdfs:label xml:lang="zh">使用分析方法</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#hasNode">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowDefinition"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowNode"/>
+    <rdfs:label xml:lang="zh">包含执行节点</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Period">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">会计期间</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#hasSOP">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#AnalysisMethod"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#ExpertSOP"/>
+    <rdfs:label xml:lang="zh">对应专家SOP</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#hasStep">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#ExpertSOP"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#AnalysisStep"/>
+    <rdfs:label xml:lang="zh">包含分析步骤</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Period_2026P06">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#Period"/>
+    <fra:code>2026P06</fra:code>
+    <fra:name>2026年P06期间</fra:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Fluctuation_DCF0103_0021G_2026P06">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#Fluctuation"/>
+    <fra:code>FLU_DCF0103_0021G_2026P06</fra:code>
+    <fra:name>0021G DCF0103 2026P06波动</fra:name>
+    <fra:currentAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">100000000</fra:currentAmount>
+    <fra:previousAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">74074074.07</fra:previousAmount>
+    <fra:changeAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">25925925.93</fra:changeAmount>
+    <fra:changeRate rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.35</fra:changeRate>
+    <fra:relatesToReportItem rdf:resource="https://example.com/ontology/financial-report-anomaly#ReportItem_DCF0103"/>
+    <fra:hasMajorContributor rdf:resource="https://example.com/ontology/financial-report-anomaly#Entity_2821G"/>
+    <fra:detectedBy rdf:resource="https://example.com/ontology/financial-report-anomaly#Rule_DCF0103_Overall20"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#consumesData">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#AnalysisTask"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#FactData"/>
+    <rdfs:label xml:lang="zh">消费数据</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#T01">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowTransition"/>
+    <fra:fromNode rdf:resource="https://example.com/ontology/financial-report-anomaly#Node_FetchBaseFact"/>
+    <fra:toNode rdf:resource="https://example.com/ontology/financial-report-anomaly#Node_FetchDetail"/>
+    <fra:conditionType>rule_triggered</fra:conditionType>
+    <fra:governedByRule rdf:resource="https://example.com/ontology/financial-report-anomaly#Rule_DCF0103_Overall20"/>
+    <fra:expectedBoolean rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</fra:expectedBoolean>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#operator">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#Rule"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label xml:lang="zh">比较操作符</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Action_NoExceptionHandling">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#ActionRecommendation"/>
+    <fra:code>ACTION_NO_EXCEPTION_HANDLING</fra:code>
+    <fra:name>无需异常处置</fra:name>
+    <fra:description>保留业务依据并持续监控后续期间波动。</fra:description>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#conditionType">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label xml:lang="zh">条件类型</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Skill_RetrieveEvidence">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#Skill"/>
+    <fra:code>SKILL_RETRIEVE_EVIDENCE</fra:code>
+    <fra:name>业务事件与证据检索Skill</fra:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#ReportItem">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">报表项</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#stepOrder">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#AnalysisStep"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <rdfs:label xml:lang="zh">步骤序号</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#DetailData">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://example.com/ontology/financial-report-anomaly#FactData"/>
+    <rdfs:label xml:lang="zh">明细数据</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#metric">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#Rule"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label xml:lang="zh">规则指标</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#BusinessEvent">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">业务事件</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Method_GovSubsidyFluctuation">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#AnalysisMethod"/>
+    <fra:code>METHOD_GOV_SUBSIDY_FLUCTUATION</fra:code>
+    <fra:name>政府补助波动合理性分析方法</fra:name>
+    <fra:description>领域方法不固化一条线性步骤，而是通过动态执行图定义允许的Skill路径和条件分支。</fra:description>
+    <fra:drillsDownBy rdf:resource="https://example.com/ontology/financial-report-anomaly#Dimension_Entity"/>
+    <fra:drillsDownBy rdf:resource="https://example.com/ontology/financial-report-anomaly#Dimension_ProfitCenter"/>
+    <fra:drillsDownBy rdf:resource="https://example.com/ontology/financial-report-anomaly#Dimension_BusinessType"/>
+    <fra:hasWorkflow rdf:resource="https://example.com/ontology/financial-report-anomaly#Workflow_GovSubsidyDynamic"/>
+    <fra:implementedBySkill rdf:resource="https://example.com/ontology/financial-report-anomaly#Skill_FetchEFM"/>
+    <fra:implementedBySkill rdf:resource="https://example.com/ontology/financial-report-anomaly#Skill_FetchDetail"/>
+    <fra:implementedBySkill rdf:resource="https://example.com/ontology/financial-report-anomaly#Skill_RetrieveEvidence"/>
+    <fra:implementedBySkill rdf:resource="https://example.com/ontology/financial-report-anomaly#Skill_RequestManualEvidence"/>
+    <fra:implementedBySkill rdf:resource="https://example.com/ontology/financial-report-anomaly#Skill_GenerateConclusion"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Skill_FetchEFM">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#Skill"/>
+    <fra:code>SKILL_FETCH_EFM</fra:code>
+    <fra:name>EFM表单取数Skill</fra:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#triggerAction">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#Rule"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label xml:lang="zh">触发动作</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Journal_2821G_GovSubsidy_001">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#JournalEntry"/>
+    <fra:code>JRN_2821G_GOV_001</fra:code>
+    <fra:name>新能源项目补助到账分录</fra:name>
+    <fra:belongsToEntity rdf:resource="https://example.com/ontology/financial-report-anomaly#Entity_2821G"/>
+    <fra:occursInPeriod rdf:resource="https://example.com/ontology/financial-report-anomaly#Period_2026P06"/>
+    <fra:hasDataSource rdf:resource="https://example.com/ontology/financial-report-anomaly#DataSource_ERPGL"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Dimension_Entity">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#Dimension"/>
+    <fra:code>DIM_ENTITY</fra:code>
+    <fra:name>公司维度</fra:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Skill_GenerateConclusion">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#Skill"/>
+    <fra:code>SKILL_GENERATE_CONCLUSION</fra:code>
+    <fra:name>可审计结论生成Skill</fra:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#governedByRule">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowTransition"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#Rule"/>
+    <rdfs:label xml:lang="zh">由规则控制</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#thresholdValue">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#ThresholdRule"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:label xml:lang="zh">阈值</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#drillsDownBy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#AnalysisMethod"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#Dimension"/>
+    <rdfs:label xml:lang="zh">按维度下钻</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#code">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label xml:lang="zh">编码</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#supportsBusinessEvent">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <owl:inverseOf rdf:resource="https://example.com/ontology/financial-report-anomaly#supportedBy"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#Evidence"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#BusinessEvent"/>
+    <rdfs:label xml:lang="zh">支持业务事件</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Dimension">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">分析维度</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Entity_0021G">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#FinancialEntity"/>
+    <fra:code>0021G</fra:code>
+    <fra:name>集团分析实体0021G</fra:name>
+    <fra:preparesReport rdf:resource="https://example.com/ontology/financial-report-anomaly#CashFlowStatement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#BalanceFact">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://example.com/ontology/financial-report-anomaly#FactData"/>
+    <rdfs:label xml:lang="zh">报表余额事实</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#expectedBoolean">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:label xml:lang="zh">期望布尔结果</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#producesConclusion">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#AnalysisTask"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#Conclusion"/>
+    <rdfs:label xml:lang="zh">产出结论</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#CashFlowStatement">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#Report"/>
+    <fra:code>CFS</fra:code>
+    <fra:name>现金流量表</fra:name>
+    <fra:containsReportItem rdf:resource="https://example.com/ontology/financial-report-anomaly#ReportItem_DCF0103"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#ReportItem_DCF0103">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#ReportItem"/>
+    <fra:code>DCF0103</fra:code>
+    <fra:name>收到的政府补助</fra:name>
+    <fra:mapsToAccount rdf:resource="https://example.com/ontology/financial-report-anomaly#Account_GovSubsidy"/>
+    <fra:sourcedFrom rdf:resource="https://example.com/ontology/financial-report-anomaly#Balance_DCF0103_0021G_2026P06"/>
+    <fra:sourcedFrom rdf:resource="https://example.com/ontology/financial-report-anomaly#Detail_DCF0103_2821G_2026P06"/>
+    <fra:sourcedFrom rdf:resource="https://example.com/ontology/financial-report-anomaly#Journal_2821G_GovSubsidy_001"/>
+    <fra:hasFluctuation rdf:resource="https://example.com/ontology/financial-report-anomaly#Fluctuation_DCF0103_0021G_2026P06"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#DataEvidence">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://example.com/ontology/financial-report-anomaly#Evidence"/>
+    <rdfs:label xml:lang="zh">数据证据</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Node_FetchBaseFact">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowNode"/>
+    <fra:name>获取整体报表事实</fra:name>
+    <fra:executesSkill rdf:resource="https://example.com/ontology/financial-report-anomaly#Skill_FetchEFM"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Evidence">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">证据</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#belongsToEntity">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#FactData"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#FinancialEntity"/>
+    <rdfs:label xml:lang="zh">归属于公司</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#FinancialReportAnomalyOntology">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:label xml:lang="zh">财报数据异常分析本体</rdfs:label>
+    <rdfs:comment xml:lang="zh">用于财报异常分析Agent，统一描述事实数据、规则、业务事件、证据、分析方法、Skill、结论和行动。</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#basedOnEvidence">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#Conclusion"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#Evidence"/>
+    <rdfs:label xml:lang="zh">结论基于证据</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#sourcedFrom">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#ReportItem"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#FactData"/>
+    <rdfs:label xml:lang="zh">来源于数据</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#description">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label xml:lang="zh">描述</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Skill_DynamicPlanner">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#PlannerSkill"/>
+    <fra:code>SKILL_FINANCIAL_ANOMALY_DYNAMIC_PLANNER</fra:code>
+    <fra:name>财报异常分析动态规划Skill</fra:name>
+    <fra:description>读取KG动态执行图、规则结果和运行时事实，在合法条件路径中选择下一Skill。</fra:description>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Evidence_JournalEntry">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#DataEvidence"/>
+    <fra:code>EVD_JOURNAL_ENTRY</fra:code>
+    <fra:name>政府补助到账会计分录</fra:name>
+    <fra:evidenceRef>ERP_GL:JRN_2821G_GOV_001</fra:evidenceRef>
+    <fra:hasDataSource rdf:resource="https://example.com/ontology/financial-report-anomaly#DataSource_ERPGL"/>
+    <fra:supportsBusinessEvent rdf:resource="https://example.com/ontology/financial-report-anomaly#Event_NewEnergySubsidy_2026P06"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#WorkflowNode">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">执行节点</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#ThresholdRule">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://example.com/ontology/financial-report-anomaly#Rule"/>
+    <rdfs:label xml:lang="zh">阈值规则</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Rule_DCF0103_Detail50">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#ThresholdRule"/>
+    <fra:code>RULE_DCF0103_DETAIL_50</fra:code>
+    <fra:name>DCF0103明细异常识别规则</fra:name>
+    <fra:metric>detailChangeRate</fra:metric>
+    <fra:operator>&gt;</fra:operator>
+    <fra:thresholdValue rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.50</fra:thresholdValue>
+    <fra:triggerAction>MARK_MAJOR_CONTRIBUTOR</fra:triggerAction>
+    <fra:appliesToReportItem rdf:resource="https://example.com/ontology/financial-report-anomaly#ReportItem_DCF0103"/>
+    <fra:appliesToEntity rdf:resource="https://example.com/ontology/financial-report-anomaly#Entity_0021G"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#T02">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowTransition"/>
+    <fra:fromNode rdf:resource="https://example.com/ontology/financial-report-anomaly#Node_FetchBaseFact"/>
+    <fra:toNode rdf:resource="https://example.com/ontology/financial-report-anomaly#Node_GenerateConclusion"/>
+    <fra:conditionType>rule_triggered</fra:conditionType>
+    <fra:governedByRule rdf:resource="https://example.com/ontology/financial-report-anomaly#Rule_DCF0103_Overall20"/>
+    <fra:expectedBoolean rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</fra:expectedBoolean>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#T03">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowTransition"/>
+    <fra:fromNode rdf:resource="https://example.com/ontology/financial-report-anomaly#Node_FetchDetail"/>
+    <fra:toNode rdf:resource="https://example.com/ontology/financial-report-anomaly#Node_RetrieveEvidence"/>
+    <fra:conditionType>rule_triggered</fra:conditionType>
+    <fra:governedByRule rdf:resource="https://example.com/ontology/financial-report-anomaly#Rule_DCF0103_Detail50"/>
+    <fra:expectedBoolean rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</fra:expectedBoolean>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#occursInPeriod">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#FactData"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#Period"/>
+    <rdfs:label xml:lang="zh">发生于期间</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#hasTransition">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowDefinition"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowTransition"/>
+    <rdfs:label xml:lang="zh">包含条件路径</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#recommendsAction">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#Conclusion"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#ActionRecommendation"/>
+    <rdfs:label xml:lang="zh">建议行动</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#causedBy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#Fluctuation"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#BusinessEvent"/>
+    <rdfs:label xml:lang="zh">由业务事件导致</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#FactData">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">事实数据</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Node_RequestManualEvidence">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowNode"/>
+    <fra:name>证据不足时请求人工补证</fra:name>
+    <fra:executesSkill rdf:resource="https://example.com/ontology/financial-report-anomaly#Skill_RequestManualEvidence"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Rule_DCF0103_Overall20">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#ThresholdRule"/>
+    <fra:code>RULE_DCF0103_OVERALL_20</fra:code>
+    <fra:name>DCF0103整体波动阈值规则</fra:name>
+    <fra:metric>changeRate</fra:metric>
+    <fra:operator>&gt;=</fra:operator>
+    <fra:thresholdValue rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.20</fra:thresholdValue>
+    <fra:triggerAction>OPEN_DETAIL_ANALYSIS</fra:triggerAction>
+    <fra:appliesToReportItem rdf:resource="https://example.com/ontology/financial-report-anomaly#ReportItem_DCF0103"/>
+    <fra:appliesToEntity rdf:resource="https://example.com/ontology/financial-report-anomaly#Entity_0021G"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#hasFluctuation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#ReportItem"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#Fluctuation"/>
+    <rdfs:label xml:lang="zh">存在波动</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Skill_FetchDetail">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#Skill"/>
+    <fra:code>SKILL_FETCH_DETAIL</fra:code>
+    <fra:name>数据工坊明细获取与计算Skill</fra:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#AnalysisTask">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">分析任务</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#DataSource">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">数据源</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#COAAccount">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">COA会计科目</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Balance_DCF0103_0021G_2026P06">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#BalanceFact"/>
+    <fra:code>BAL_DCF0103_0021G_2026P06</fra:code>
+    <fra:belongsToEntity rdf:resource="https://example.com/ontology/financial-report-anomaly#Entity_0021G"/>
+    <fra:occursInPeriod rdf:resource="https://example.com/ontology/financial-report-anomaly#Period_2026P06"/>
+    <fra:usesCurrency rdf:resource="https://example.com/ontology/financial-report-anomaly#CNY"/>
+    <fra:hasDataSource rdf:resource="https://example.com/ontology/financial-report-anomaly#DataSource_EFM"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#nextStep">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#AnalysisStep"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#AnalysisStep"/>
+    <rdfs:label xml:lang="zh">下一步骤</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#causesFluctuation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <owl:inverseOf rdf:resource="https://example.com/ontology/financial-report-anomaly#causedBy"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#BusinessEvent"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#Fluctuation"/>
+    <rdfs:label xml:lang="zh">导致波动</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#appliesToEntity">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#Rule"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#FinancialEntity"/>
+    <rdfs:label xml:lang="zh">规则适用于公司</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#WorkflowTransition">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">条件路径</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#toNode">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowTransition"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowNode"/>
+    <rdfs:label xml:lang="zh">目标节点</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#containsReportItem">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#Report"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#ReportItem"/>
+    <rdfs:label xml:lang="zh">包含报表项</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#DocumentEvidence">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://example.com/ontology/financial-report-anomaly#Evidence"/>
+    <rdfs:label xml:lang="zh">文件证据</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#status">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label xml:lang="zh">状态</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#supportedBy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#BusinessEvent"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#Evidence"/>
+    <rdfs:label xml:lang="zh">由证据支持</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#T07">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowTransition"/>
+    <fra:fromNode rdf:resource="https://example.com/ontology/financial-report-anomaly#Node_RequestManualEvidence"/>
+    <fra:toNode rdf:resource="https://example.com/ontology/financial-report-anomaly#Node_GenerateConclusion"/>
+    <fra:conditionType>always</fra:conditionType>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Node_GenerateConclusion">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowNode"/>
+    <fra:name>生成可审计结论</fra:name>
+    <fra:executesSkill rdf:resource="https://example.com/ontology/financial-report-anomaly#Skill_GenerateConclusion"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#T06">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowTransition"/>
+    <fra:fromNode rdf:resource="https://example.com/ontology/financial-report-anomaly#Node_RetrieveEvidence"/>
+    <fra:toNode rdf:resource="https://example.com/ontology/financial-report-anomaly#Node_RequestManualEvidence"/>
+    <fra:conditionType>evidence_complete</fra:conditionType>
+    <fra:expectedBoolean rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</fra:expectedBoolean>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Node_FetchDetail">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowNode"/>
+    <fra:name>下钻贡献实体与明细</fra:name>
+    <fra:executesSkill rdf:resource="https://example.com/ontology/financial-report-anomaly#Skill_FetchDetail"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#CNY">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#Currency"/>
+    <fra:code>CNY</fra:code>
+    <fra:name>人民币</fra:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#changeRate">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#Fluctuation"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:label xml:lang="zh">波动率</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#T04">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowTransition"/>
+    <fra:fromNode rdf:resource="https://example.com/ontology/financial-report-anomaly#Node_FetchDetail"/>
+    <fra:toNode rdf:resource="https://example.com/ontology/financial-report-anomaly#Node_GenerateConclusion"/>
+    <fra:conditionType>rule_triggered</fra:conditionType>
+    <fra:governedByRule rdf:resource="https://example.com/ontology/financial-report-anomaly#Rule_DCF0103_Detail50"/>
+    <fra:expectedBoolean rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</fra:expectedBoolean>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Dimension_ProfitCenter">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#Dimension"/>
+    <fra:code>DIM_PROFIT_CENTER</fra:code>
+    <fra:name>利润中心维度</fra:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Task_0021G_DCF0103_2026P06">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#AnalysisTask"/>
+    <fra:code>TASK_0021G_DCF0103_2026P06</fra:code>
+    <fra:name>0021G公司DCF0103 2026P06异常波动分析任务</fra:name>
+    <fra:usesAnalysisMethod rdf:resource="https://example.com/ontology/financial-report-anomaly#Method_GovSubsidyFluctuation"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Conclusion_DCF0103_Reasonable">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#Conclusion"/>
+    <fra:code>CONCLUSION_DCF0103_REASONABLE</fra:code>
+    <fra:name>DCF0103波动合理</fra:name>
+    <fra:description>示例：当整体/明细规则触发且业务事件证据完整时，可形成合理波动结论。</fra:description>
+    <fra:basedOnEvidence rdf:resource="https://example.com/ontology/financial-report-anomaly#Evidence_SubsidyApproval"/>
+    <fra:basedOnEvidence rdf:resource="https://example.com/ontology/financial-report-anomaly#Evidence_JournalEntry"/>
+    <fra:recommendsAction rdf:resource="https://example.com/ontology/financial-report-anomaly#Action_NoExceptionHandling"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#consumesRule">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#AnalysisTask"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#Rule"/>
+    <rdfs:label xml:lang="zh">消费规则</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#fromNode">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowTransition"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowNode"/>
+    <rdfs:label xml:lang="zh">起始节点</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#hasWorkflow">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#AnalysisMethod"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowDefinition"/>
+    <rdfs:label xml:lang="zh">具有动态执行图</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#DataSource_DataWorkshop">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#DataSource"/>
+    <fra:code>DATA_WORKSHOP</fra:code>
+    <fra:name>数据工坊</fra:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Evidence_SubsidyApproval">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#DocumentEvidence"/>
+    <fra:code>EVD_SUBSIDY_APPROVAL</fra:code>
+    <fra:name>新能源建设项目补贴批复文件</fra:name>
+    <fra:evidenceRef>DOC://subsidy/2026/2821G/approval</fra:evidenceRef>
+    <fra:hasDataSource rdf:resource="https://example.com/ontology/financial-report-anomaly#DataSource_DocumentCenter"/>
+    <fra:supportsBusinessEvent rdf:resource="https://example.com/ontology/financial-report-anomaly#Event_NewEnergySubsidy_2026P06"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Entity_2821G">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#FinancialEntity"/>
+    <fra:code>2821G</fra:code>
+    <fra:name>新能源子公司2821G</fra:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#PlannerSkill">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://example.com/ontology/financial-report-anomaly#Skill"/>
+    <rdfs:label xml:lang="zh">规划Skill</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Dimension_BusinessType">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#Dimension"/>
+    <fra:code>DIM_BUSINESS_TYPE</fra:code>
+    <fra:name>业务类型维度</fra:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#FinancialEntity">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">公司/财务实体</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#mapsToAccount">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#ReportItem"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#COAAccount"/>
+    <rdfs:label xml:lang="zh">映射到会计科目</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Account_GovSubsidy">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#COAAccount"/>
+    <fra:code>COA_GOV_SUBSIDY</fra:code>
+    <fra:name>政府补助相关会计科目</fra:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#ExpertSOP">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">专家SOP</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Rule">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">分析规则</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#T05">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowTransition"/>
+    <fra:fromNode rdf:resource="https://example.com/ontology/financial-report-anomaly#Node_RetrieveEvidence"/>
+    <fra:toNode rdf:resource="https://example.com/ontology/financial-report-anomaly#Node_GenerateConclusion"/>
+    <fra:conditionType>evidence_complete</fra:conditionType>
+    <fra:expectedBoolean rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</fra:expectedBoolean>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#DataSource_ERPGL">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#DataSource"/>
+    <fra:code>ERP_GL</fra:code>
+    <fra:name>ERP总账</fra:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Skill_RequestManualEvidence">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#Skill"/>
+    <fra:code>SKILL_REQUEST_MANUAL_EVIDENCE</fra:code>
+    <fra:name>人工补证协同Skill</fra:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#executesSkill">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#AnalysisStep"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#Skill"/>
+    <rdfs:label xml:lang="zh">执行Skill</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#changeAmount">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#Fluctuation"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:label xml:lang="zh">波动金额</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#ActionRecommendation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">行动建议</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#AnalysisStep">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">分析步骤</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#preparesReport">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://example.com/ontology/financial-report-anomaly#FinancialEntity"/>
+    <rdfs:range rdf:resource="https://example.com/ontology/financial-report-anomaly#Report"/>
+    <rdfs:label xml:lang="zh">编制报表</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Fluctuation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">波动事实</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Currency">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">币种</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Report">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">财务报表</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Skill">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">Agent Skill</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Node_RetrieveEvidence">
+    <rdf:type rdf:resource="https://example.com/ontology/financial-report-anomaly#WorkflowNode"/>
+    <fra:name>验证业务事件与证据链</fra:name>
+    <fra:executesSkill rdf:resource="https://example.com/ontology/financial-report-anomaly#Skill_RetrieveEvidence"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.com/ontology/financial-report-anomaly#Conclusion">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="zh">分析结论</rdfs:label>
+  </rdf:Description>
+</rdf:RDF>

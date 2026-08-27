@@ -1,0 +1,150 @@
+{
+  "government_subsidy_with_evidence": {
+    "executed_skills": [
+      "SKILL_FETCH_EFM",
+      "SKILL_FETCH_DETAIL",
+      "SKILL_RETRIEVE_EVIDENCE",
+      "SKILL_GENERATE_CONCLUSION"
+    ],
+    "rule_results": [
+      {
+        "rule_id": "RULE_DCF0103_OVERALL_20",
+        "name": "DCF0103整体波动阈值规则",
+        "metric": "changeRate",
+        "actual_value": 0.35,
+        "operator": ">=",
+        "threshold": 0.2,
+        "triggered": true,
+        "trigger_action": "OPEN_DETAIL_ANALYSIS"
+      },
+      {
+        "rule_id": "RULE_DCF0103_DETAIL_50",
+        "name": "DCF0103明细异常识别规则",
+        "metric": "majorContributorChangeRate",
+        "actual_value": 7.6923,
+        "operator": ">",
+        "threshold": 0.5,
+        "triggered": true,
+        "trigger_action": "RETRIEVE_BUSINESS_EVIDENCE"
+      }
+    ],
+    "conclusion": "本次DCF0103异常波动具有明确业务事件和完整证据链支撑，判断为合理波动。",
+    "action": [
+      {
+        "title": "无需异常修复",
+        "description": "当前无需修改报表数据或重新入账。"
+      },
+      {
+        "title": "证据归档",
+        "description": "归档补贴批复与到账会计分录，保留审计链路。"
+      },
+      {
+        "title": "持续监控",
+        "description": "后续期间继续监控该报表项波动。"
+      }
+    ]
+  },
+  "low_fluctuation": {
+    "executed_skills": [
+      "SKILL_FETCH_EFM",
+      "SKILL_GENERATE_CONCLUSION"
+    ],
+    "rule_results": [
+      {
+        "rule_id": "RULE_DCF0103_OVERALL_20",
+        "name": "DCF0103整体波动阈值规则",
+        "metric": "changeRate",
+        "actual_value": 0.05,
+        "operator": ">=",
+        "threshold": 0.2,
+        "triggered": false,
+        "trigger_action": "OPEN_DETAIL_ANALYSIS"
+      }
+    ],
+    "conclusion": "本期波动未达到知识图谱定义的异常分析阈值，Agent动态提前结束深度下钻，未发现需要进一步处置的显著异常。",
+    "action": [
+      {
+        "title": "持续监控",
+        "description": "按既定阈值持续监控后续期间波动。"
+      }
+    ]
+  },
+  "high_overall_low_detail": {
+    "executed_skills": [
+      "SKILL_FETCH_EFM",
+      "SKILL_FETCH_DETAIL",
+      "SKILL_GENERATE_CONCLUSION"
+    ],
+    "rule_results": [
+      {
+        "rule_id": "RULE_DCF0103_OVERALL_20",
+        "name": "DCF0103整体波动阈值规则",
+        "metric": "changeRate",
+        "actual_value": 0.35,
+        "operator": ">=",
+        "threshold": 0.2,
+        "triggered": true,
+        "trigger_action": "OPEN_DETAIL_ANALYSIS"
+      },
+      {
+        "rule_id": "RULE_DCF0103_DETAIL_50",
+        "name": "DCF0103明细异常识别规则",
+        "metric": "majorContributorChangeRate",
+        "actual_value": 0.25,
+        "operator": ">",
+        "threshold": 0.5,
+        "triggered": false,
+        "trigger_action": "RETRIEVE_BUSINESS_EVIDENCE"
+      }
+    ],
+    "conclusion": "整体波动达到分析阈值，但明细层未识别出超过阈值的主要贡献实体，当前未形成需要进一步证据追溯的集中异常。",
+    "action": [
+      {
+        "title": "保留分析记录",
+        "description": "保留整体及明细分析结果，后续期间继续观察。"
+      }
+    ]
+  },
+  "high_fluctuation_no_evidence": {
+    "executed_skills": [
+      "SKILL_FETCH_EFM",
+      "SKILL_FETCH_DETAIL",
+      "SKILL_RETRIEVE_EVIDENCE",
+      "SKILL_REQUEST_MANUAL_EVIDENCE",
+      "SKILL_GENERATE_CONCLUSION"
+    ],
+    "rule_results": [
+      {
+        "rule_id": "RULE_DCF0103_OVERALL_20",
+        "name": "DCF0103整体波动阈值规则",
+        "metric": "changeRate",
+        "actual_value": 0.35,
+        "operator": ">=",
+        "threshold": 0.2,
+        "triggered": true,
+        "trigger_action": "OPEN_DETAIL_ANALYSIS"
+      },
+      {
+        "rule_id": "RULE_DCF0103_DETAIL_50",
+        "name": "DCF0103明细异常识别规则",
+        "metric": "majorContributorChangeRate",
+        "actual_value": 7.6923,
+        "operator": ">",
+        "threshold": 0.5,
+        "triggered": true,
+        "trigger_action": "RETRIEVE_BUSINESS_EVIDENCE"
+      }
+    ],
+    "conclusion": "当前存在可解释的业务事件线索，但关键证据不足，暂不能确认该异常波动为合理，需人工补证后再确认。",
+    "action": [
+      {
+        "title": "人工补证",
+        "description": "补充缺失的政府补助/项目批复等关键材料。"
+      },
+      {
+        "title": "暂缓确认",
+        "description": "证据补齐前保持待确认状态，不自动判定为合理波动。"
+      }
+    ]
+  }
+}

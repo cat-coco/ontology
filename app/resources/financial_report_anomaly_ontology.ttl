@@ -1,0 +1,277 @@
+@prefix fra: <https://example.com/ontology/financial-report-anomaly#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+fra:FinancialReportAnomalyOntology a owl:Ontology ;
+  rdfs:label "财报数据异常分析本体"@zh ;
+  rdfs:comment "用于财报异常分析Agent，统一描述事实数据、规则、业务事件、证据、分析方法、Skill、结论和行动。"@zh ;
+  owl:versionInfo "1.0.0" .
+
+### Classes
+fra:FinancialEntity a owl:Class ; rdfs:label "公司/财务实体"@zh .
+fra:Report a owl:Class ; rdfs:label "财务报表"@zh .
+fra:ReportItem a owl:Class ; rdfs:label "报表项"@zh .
+fra:Period a owl:Class ; rdfs:label "会计期间"@zh .
+fra:Currency a owl:Class ; rdfs:label "币种"@zh .
+fra:FactData a owl:Class ; rdfs:label "事实数据"@zh .
+fra:BalanceFact a owl:Class ; rdfs:subClassOf fra:FactData ; rdfs:label "报表余额事实"@zh .
+fra:DetailData a owl:Class ; rdfs:subClassOf fra:FactData ; rdfs:label "明细数据"@zh .
+fra:JournalEntry a owl:Class ; rdfs:subClassOf fra:DetailData ; rdfs:label "会计分录"@zh .
+fra:COAAccount a owl:Class ; rdfs:label "COA会计科目"@zh .
+fra:Dimension a owl:Class ; rdfs:label "分析维度"@zh .
+fra:DataSource a owl:Class ; rdfs:label "数据源"@zh .
+fra:Fluctuation a owl:Class ; rdfs:label "波动事实"@zh .
+fra:Rule a owl:Class ; rdfs:label "分析规则"@zh .
+fra:ThresholdRule a owl:Class ; rdfs:subClassOf fra:Rule ; rdfs:label "阈值规则"@zh .
+fra:BusinessEvent a owl:Class ; rdfs:label "业务事件"@zh .
+fra:Evidence a owl:Class ; rdfs:label "证据"@zh .
+fra:DocumentEvidence a owl:Class ; rdfs:subClassOf fra:Evidence ; rdfs:label "文件证据"@zh .
+fra:DataEvidence a owl:Class ; rdfs:subClassOf fra:Evidence ; rdfs:label "数据证据"@zh .
+fra:AnalysisMethod a owl:Class ; rdfs:label "分析方法"@zh .
+fra:Skill a owl:Class ; rdfs:label "Agent Skill"@zh .
+fra:ExpertSOP a owl:Class ; rdfs:label "专家SOP"@zh .
+fra:AnalysisStep a owl:Class ; rdfs:label "分析步骤"@zh .
+fra:AnalysisTask a owl:Class ; rdfs:label "分析任务"@zh .
+fra:Conclusion a owl:Class ; rdfs:label "分析结论"@zh .
+fra:ActionRecommendation a owl:Class ; rdfs:label "行动建议"@zh .
+
+### Object properties
+fra:preparesReport a owl:ObjectProperty ; rdfs:domain fra:FinancialEntity ; rdfs:range fra:Report ; rdfs:label "编制报表"@zh .
+fra:containsReportItem a owl:ObjectProperty ; rdfs:domain fra:Report ; rdfs:range fra:ReportItem ; rdfs:label "包含报表项"@zh .
+fra:sourcedFrom a owl:ObjectProperty ; rdfs:domain fra:ReportItem ; rdfs:range fra:FactData ; rdfs:label "来源于数据"@zh .
+fra:mapsToAccount a owl:ObjectProperty ; rdfs:domain fra:ReportItem ; rdfs:range fra:COAAccount ; rdfs:label "映射到会计科目"@zh .
+fra:belongsToEntity a owl:ObjectProperty ; rdfs:domain fra:FactData ; rdfs:range fra:FinancialEntity ; rdfs:label "归属于公司"@zh .
+fra:occursInPeriod a owl:ObjectProperty ; rdfs:domain fra:FactData ; rdfs:range fra:Period ; rdfs:label "发生于期间"@zh .
+fra:usesCurrency a owl:ObjectProperty ; rdfs:domain fra:FactData ; rdfs:range fra:Currency ; rdfs:label "使用币种"@zh .
+fra:hasDataSource a owl:ObjectProperty ; rdfs:range fra:DataSource ; rdfs:label "数据来源系统"@zh .
+fra:hasFluctuation a owl:ObjectProperty ; rdfs:domain fra:ReportItem ; rdfs:range fra:Fluctuation ; rdfs:label "存在波动"@zh .
+fra:relatesToReportItem a owl:ObjectProperty ; rdfs:range fra:ReportItem ; rdfs:label "关联报表项"@zh .
+fra:hasMajorContributor a owl:ObjectProperty ; rdfs:domain fra:Fluctuation ; rdfs:range fra:FinancialEntity ; rdfs:label "主要贡献实体"@zh .
+fra:appliesToReportItem a owl:ObjectProperty ; rdfs:domain fra:Rule ; rdfs:range fra:ReportItem ; rdfs:label "规则适用于报表项"@zh .
+fra:appliesToEntity a owl:ObjectProperty ; rdfs:domain fra:Rule ; rdfs:range fra:FinancialEntity ; rdfs:label "规则适用于公司"@zh .
+fra:detectedBy a owl:ObjectProperty ; rdfs:domain fra:Fluctuation ; rdfs:range fra:Rule ; rdfs:label "由规则识别"@zh .
+fra:causedBy a owl:ObjectProperty ; rdfs:domain fra:Fluctuation ; rdfs:range fra:BusinessEvent ; rdfs:label "由业务事件导致"@zh .
+fra:causesFluctuation a owl:ObjectProperty ; owl:inverseOf fra:causedBy ; rdfs:domain fra:BusinessEvent ; rdfs:range fra:Fluctuation ; rdfs:label "导致波动"@zh .
+fra:supportedBy a owl:ObjectProperty ; rdfs:domain fra:BusinessEvent ; rdfs:range fra:Evidence ; rdfs:label "由证据支持"@zh .
+fra:supportsBusinessEvent a owl:ObjectProperty ; owl:inverseOf fra:supportedBy ; rdfs:domain fra:Evidence ; rdfs:range fra:BusinessEvent ; rdfs:label "支持业务事件"@zh .
+fra:usesAnalysisMethod a owl:ObjectProperty ; rdfs:range fra:AnalysisMethod ; rdfs:label "使用分析方法"@zh .
+fra:implementedBySkill a owl:ObjectProperty ; rdfs:domain fra:AnalysisMethod ; rdfs:range fra:Skill ; rdfs:label "由Skill实现"@zh .
+fra:hasSOP a owl:ObjectProperty ; rdfs:domain fra:AnalysisMethod ; rdfs:range fra:ExpertSOP ; rdfs:label "对应专家SOP"@zh .
+fra:hasStep a owl:ObjectProperty ; rdfs:domain fra:ExpertSOP ; rdfs:range fra:AnalysisStep ; rdfs:label "包含分析步骤"@zh .
+fra:nextStep a owl:ObjectProperty ; rdfs:domain fra:AnalysisStep ; rdfs:range fra:AnalysisStep ; rdfs:label "下一步骤"@zh .
+fra:executesSkill a owl:ObjectProperty ; rdfs:domain fra:AnalysisStep ; rdfs:range fra:Skill ; rdfs:label "执行Skill"@zh .
+fra:consumesRule a owl:ObjectProperty ; rdfs:domain fra:AnalysisTask ; rdfs:range fra:Rule ; rdfs:label "消费规则"@zh .
+fra:consumesData a owl:ObjectProperty ; rdfs:domain fra:AnalysisTask ; rdfs:range fra:FactData ; rdfs:label "消费数据"@zh .
+fra:producesConclusion a owl:ObjectProperty ; rdfs:domain fra:AnalysisTask ; rdfs:range fra:Conclusion ; rdfs:label "产出结论"@zh .
+fra:basedOnEvidence a owl:ObjectProperty ; rdfs:domain fra:Conclusion ; rdfs:range fra:Evidence ; rdfs:label "结论基于证据"@zh .
+fra:recommendsAction a owl:ObjectProperty ; rdfs:domain fra:Conclusion ; rdfs:range fra:ActionRecommendation ; rdfs:label "建议行动"@zh .
+fra:drillsDownBy a owl:ObjectProperty ; rdfs:domain fra:AnalysisMethod ; rdfs:range fra:Dimension ; rdfs:label "按维度下钻"@zh .
+
+### Datatype properties
+fra:code a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "编码"@zh .
+fra:name a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "名称"@zh .
+fra:description a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "描述"@zh .
+fra:currentAmount a owl:DatatypeProperty ; rdfs:domain fra:Fluctuation ; rdfs:range xsd:decimal ; rdfs:label "本期金额"@zh .
+fra:previousAmount a owl:DatatypeProperty ; rdfs:domain fra:Fluctuation ; rdfs:range xsd:decimal ; rdfs:label "上期金额"@zh .
+fra:changeAmount a owl:DatatypeProperty ; rdfs:domain fra:Fluctuation ; rdfs:range xsd:decimal ; rdfs:label "波动金额"@zh .
+fra:changeRate a owl:DatatypeProperty ; rdfs:domain fra:Fluctuation ; rdfs:range xsd:decimal ; rdfs:label "波动率"@zh .
+fra:thresholdValue a owl:DatatypeProperty ; rdfs:domain fra:ThresholdRule ; rdfs:range xsd:decimal ; rdfs:label "阈值"@zh .
+fra:operator a owl:DatatypeProperty ; rdfs:domain fra:Rule ; rdfs:range xsd:string ; rdfs:label "比较操作符"@zh .
+fra:metric a owl:DatatypeProperty ; rdfs:domain fra:Rule ; rdfs:range xsd:string ; rdfs:label "规则指标"@zh .
+fra:triggerAction a owl:DatatypeProperty ; rdfs:domain fra:Rule ; rdfs:range xsd:string ; rdfs:label "触发动作"@zh .
+fra:stepOrder a owl:DatatypeProperty ; rdfs:domain fra:AnalysisStep ; rdfs:range xsd:integer ; rdfs:label "步骤序号"@zh .
+fra:status a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "状态"@zh .
+fra:confidence a owl:DatatypeProperty ; rdfs:domain fra:Conclusion ; rdfs:range xsd:decimal ; rdfs:label "结论置信度"@zh .
+fra:evidenceRef a owl:DatatypeProperty ; rdfs:domain fra:Evidence ; rdfs:range xsd:string ; rdfs:label "证据引用"@zh .
+
+### Master data
+fra:Entity_0021G a fra:FinancialEntity ; fra:code "0021G" ; fra:name "集团分析实体0021G" .
+fra:Entity_2821G a fra:FinancialEntity ; fra:code "2821G" ; fra:name "新能源子公司2821G" .
+fra:CashFlowStatement a fra:Report ; fra:code "CFS" ; fra:name "现金流量表" ; fra:containsReportItem fra:ReportItem_DCF0103 .
+fra:ReportItem_DCF0103 a fra:ReportItem ; fra:code "DCF0103" ; fra:name "收到的政府补助" ; fra:mapsToAccount fra:Account_GovSubsidy .
+fra:Period_2026P06 a fra:Period ; fra:code "2026P06" ; fra:name "2026年P06期间" .
+fra:CNY a fra:Currency ; fra:code "CNY" ; fra:name "人民币" .
+fra:Account_GovSubsidy a fra:COAAccount ; fra:code "COA_GOV_SUBSIDY" ; fra:name "政府补助相关会计科目" .
+fra:Entity_0021G fra:preparesReport fra:CashFlowStatement .
+
+### Data sources and facts
+fra:DataSource_EFM a fra:DataSource ; fra:code "EFM" ; fra:name "EFM合并报表系统" .
+fra:DataSource_DataWorkshop a fra:DataSource ; fra:code "DATA_WORKSHOP" ; fra:name "数据工坊" .
+fra:DataSource_ERPGL a fra:DataSource ; fra:code "ERP_GL" ; fra:name "ERP总账" .
+fra:DataSource_DocumentCenter a fra:DataSource ; fra:code "DOC_CENTER" ; fra:name "业务文件中心" .
+
+fra:Balance_DCF0103_0021G_2026P06 a fra:BalanceFact ;
+  fra:code "BAL_DCF0103_0021G_2026P06" ;
+  fra:belongsToEntity fra:Entity_0021G ;
+  fra:occursInPeriod fra:Period_2026P06 ;
+  fra:usesCurrency fra:CNY ;
+  fra:hasDataSource fra:DataSource_EFM .
+
+fra:Detail_DCF0103_2821G_2026P06 a fra:DetailData ;
+  fra:code "DTL_DCF0103_2821G_2026P06" ;
+  fra:name "2821G政府补助明细" ;
+  fra:belongsToEntity fra:Entity_2821G ;
+  fra:occursInPeriod fra:Period_2026P06 ;
+  fra:usesCurrency fra:CNY ;
+  fra:hasDataSource fra:DataSource_DataWorkshop .
+
+fra:Journal_2821G_GovSubsidy_001 a fra:JournalEntry ;
+  fra:code "JRN_2821G_GOV_001" ;
+  fra:name "新能源项目补助到账分录" ;
+  fra:belongsToEntity fra:Entity_2821G ;
+  fra:occursInPeriod fra:Period_2026P06 ;
+  fra:hasDataSource fra:DataSource_ERPGL .
+
+fra:ReportItem_DCF0103 fra:sourcedFrom
+  fra:Balance_DCF0103_0021G_2026P06,
+  fra:Detail_DCF0103_2821G_2026P06,
+  fra:Journal_2821G_GovSubsidy_001 .
+
+### Fluctuation and rules
+fra:Fluctuation_DCF0103_0021G_2026P06 a fra:Fluctuation ;
+  fra:code "FLU_DCF0103_0021G_2026P06" ;
+  fra:name "0021G DCF0103 2026P06波动" ;
+  fra:currentAmount "100000000"^^xsd:decimal ;
+  fra:previousAmount "74074074.07"^^xsd:decimal ;
+  fra:changeAmount "25925925.93"^^xsd:decimal ;
+  fra:changeRate "0.35"^^xsd:decimal ;
+  fra:relatesToReportItem fra:ReportItem_DCF0103 ;
+  fra:hasMajorContributor fra:Entity_2821G .
+
+fra:ReportItem_DCF0103 fra:hasFluctuation fra:Fluctuation_DCF0103_0021G_2026P06 .
+
+fra:Rule_DCF0103_Overall20 a fra:ThresholdRule ;
+  fra:code "RULE_DCF0103_OVERALL_20" ;
+  fra:name "DCF0103整体波动阈值规则" ;
+  fra:metric "changeRate" ;
+  fra:operator ">=" ;
+  fra:thresholdValue "0.20"^^xsd:decimal ;
+  fra:triggerAction "OPEN_DETAIL_ANALYSIS" ;
+  fra:appliesToReportItem fra:ReportItem_DCF0103 ;
+  fra:appliesToEntity fra:Entity_0021G .
+
+fra:Rule_DCF0103_Detail50 a fra:ThresholdRule ;
+  fra:code "RULE_DCF0103_DETAIL_50" ;
+  fra:name "DCF0103明细异常识别规则" ;
+  fra:metric "detailChangeRate" ;
+  fra:operator ">" ;
+  fra:thresholdValue "0.50"^^xsd:decimal ;
+  fra:triggerAction "MARK_MAJOR_CONTRIBUTOR" ;
+  fra:appliesToReportItem fra:ReportItem_DCF0103 ;
+  fra:appliesToEntity fra:Entity_0021G .
+
+fra:Fluctuation_DCF0103_0021G_2026P06 fra:detectedBy fra:Rule_DCF0103_Overall20 .
+
+### Business event and evidence
+fra:Event_NewEnergySubsidy_2026P06 a fra:BusinessEvent ;
+  fra:code "EVENT_NEW_ENERGY_SUBSIDY_2026P06" ;
+  fra:name "新能源建设项目补贴到账" ;
+  fra:description "2821G在2026P06收到新能源建设项目政府补助。" ;
+  fra:causesFluctuation fra:Fluctuation_DCF0103_0021G_2026P06 .
+
+fra:Evidence_SubsidyApproval a fra:DocumentEvidence ;
+  fra:code "EVD_SUBSIDY_APPROVAL" ;
+  fra:name "新能源建设项目补贴批复文件" ;
+  fra:evidenceRef "DOC://subsidy/2026/2821G/approval" ;
+  fra:hasDataSource fra:DataSource_DocumentCenter ;
+  fra:supportsBusinessEvent fra:Event_NewEnergySubsidy_2026P06 .
+
+fra:Evidence_JournalEntry a fra:DataEvidence ;
+  fra:code "EVD_JOURNAL_ENTRY" ;
+  fra:name "政府补助到账会计分录" ;
+  fra:evidenceRef "ERP_GL:JRN_2821G_GOV_001" ;
+  fra:hasDataSource fra:DataSource_ERPGL ;
+  fra:supportsBusinessEvent fra:Event_NewEnergySubsidy_2026P06 .
+
+fra:Event_NewEnergySubsidy_2026P06 fra:supportedBy
+  fra:Evidence_SubsidyApproval,
+  fra:Evidence_JournalEntry .
+
+### Dynamic planning ontology extensions
+fra:WorkflowDefinition a owl:Class ; rdfs:label "动态执行图"@zh .
+fra:WorkflowNode a owl:Class ; rdfs:label "执行节点"@zh .
+fra:WorkflowTransition a owl:Class ; rdfs:label "条件路径"@zh .
+fra:PlannerSkill a owl:Class ; rdfs:subClassOf fra:Skill ; rdfs:label "规划Skill"@zh .
+
+fra:hasWorkflow a owl:ObjectProperty ; rdfs:domain fra:AnalysisMethod ; rdfs:range fra:WorkflowDefinition ; rdfs:label "具有动态执行图"@zh .
+fra:hasNode a owl:ObjectProperty ; rdfs:domain fra:WorkflowDefinition ; rdfs:range fra:WorkflowNode ; rdfs:label "包含执行节点"@zh .
+fra:hasTransition a owl:ObjectProperty ; rdfs:domain fra:WorkflowDefinition ; rdfs:range fra:WorkflowTransition ; rdfs:label "包含条件路径"@zh .
+fra:fromNode a owl:ObjectProperty ; rdfs:domain fra:WorkflowTransition ; rdfs:range fra:WorkflowNode ; rdfs:label "起始节点"@zh .
+fra:toNode a owl:ObjectProperty ; rdfs:domain fra:WorkflowTransition ; rdfs:range fra:WorkflowNode ; rdfs:label "目标节点"@zh .
+fra:governedByRule a owl:ObjectProperty ; rdfs:domain fra:WorkflowTransition ; rdfs:range fra:Rule ; rdfs:label "由规则控制"@zh .
+fra:conditionType a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "条件类型"@zh .
+fra:expectedBoolean a owl:DatatypeProperty ; rdfs:range xsd:boolean ; rdfs:label "期望布尔结果"@zh .
+
+### Analysis dimensions, method and executable skills
+fra:Dimension_Entity a fra:Dimension ; fra:code "DIM_ENTITY" ; fra:name "公司维度" .
+fra:Dimension_ProfitCenter a fra:Dimension ; fra:code "DIM_PROFIT_CENTER" ; fra:name "利润中心维度" .
+fra:Dimension_BusinessType a fra:Dimension ; fra:code "DIM_BUSINESS_TYPE" ; fra:name "业务类型维度" .
+
+fra:Method_GovSubsidyFluctuation a fra:AnalysisMethod ;
+  fra:code "METHOD_GOV_SUBSIDY_FLUCTUATION" ;
+  fra:name "政府补助波动合理性分析方法" ;
+  fra:description "领域方法不固化一条线性步骤，而是通过动态执行图定义允许的Skill路径和条件分支。" ;
+  fra:drillsDownBy fra:Dimension_Entity, fra:Dimension_ProfitCenter, fra:Dimension_BusinessType ;
+  fra:hasWorkflow fra:Workflow_GovSubsidyDynamic ;
+  fra:implementedBySkill fra:Skill_FetchEFM, fra:Skill_FetchDetail, fra:Skill_RetrieveEvidence,
+                         fra:Skill_RequestManualEvidence, fra:Skill_GenerateConclusion .
+
+fra:Skill_DynamicPlanner a fra:PlannerSkill ;
+  fra:code "SKILL_FINANCIAL_ANOMALY_DYNAMIC_PLANNER" ;
+  fra:name "财报异常分析动态规划Skill" ;
+  fra:description "读取KG动态执行图、规则结果和运行时事实，在合法条件路径中选择下一Skill。" .
+
+fra:Skill_FetchEFM a fra:Skill ; fra:code "SKILL_FETCH_EFM" ; fra:name "EFM表单取数Skill" .
+fra:Skill_FetchDetail a fra:Skill ; fra:code "SKILL_FETCH_DETAIL" ; fra:name "数据工坊明细获取与计算Skill" .
+fra:Skill_RetrieveEvidence a fra:Skill ; fra:code "SKILL_RETRIEVE_EVIDENCE" ; fra:name "业务事件与证据检索Skill" .
+fra:Skill_RequestManualEvidence a fra:Skill ; fra:code "SKILL_REQUEST_MANUAL_EVIDENCE" ; fra:name "人工补证协同Skill" .
+fra:Skill_GenerateConclusion a fra:Skill ; fra:code "SKILL_GENERATE_CONCLUSION" ; fra:name "可审计结论生成Skill" .
+
+### Dynamic workflow: data/rules determine which branch is valid
+fra:Workflow_GovSubsidyDynamic a fra:WorkflowDefinition ;
+  fra:code "WORKFLOW_GOV_SUBSIDY_DYNAMIC_ANALYSIS" ;
+  fra:name "政府补助异常波动动态执行图" ;
+  fra:hasNode fra:Node_FetchBaseFact, fra:Node_FetchDetail, fra:Node_RetrieveEvidence,
+              fra:Node_RequestManualEvidence, fra:Node_GenerateConclusion ;
+  fra:hasTransition fra:T01, fra:T02, fra:T03, fra:T04, fra:T05, fra:T06, fra:T07 .
+
+fra:Node_FetchBaseFact a fra:WorkflowNode ; fra:name "获取整体报表事实" ; fra:executesSkill fra:Skill_FetchEFM .
+fra:Node_FetchDetail a fra:WorkflowNode ; fra:name "下钻贡献实体与明细" ; fra:executesSkill fra:Skill_FetchDetail .
+fra:Node_RetrieveEvidence a fra:WorkflowNode ; fra:name "验证业务事件与证据链" ; fra:executesSkill fra:Skill_RetrieveEvidence .
+fra:Node_RequestManualEvidence a fra:WorkflowNode ; fra:name "证据不足时请求人工补证" ; fra:executesSkill fra:Skill_RequestManualEvidence .
+fra:Node_GenerateConclusion a fra:WorkflowNode ; fra:name "生成可审计结论" ; fra:executesSkill fra:Skill_GenerateConclusion .
+
+fra:T01 a fra:WorkflowTransition ; fra:fromNode fra:Node_FetchBaseFact ; fra:toNode fra:Node_FetchDetail ;
+  fra:conditionType "rule_triggered" ; fra:governedByRule fra:Rule_DCF0103_Overall20 ; fra:expectedBoolean true .
+fra:T02 a fra:WorkflowTransition ; fra:fromNode fra:Node_FetchBaseFact ; fra:toNode fra:Node_GenerateConclusion ;
+  fra:conditionType "rule_triggered" ; fra:governedByRule fra:Rule_DCF0103_Overall20 ; fra:expectedBoolean false .
+fra:T03 a fra:WorkflowTransition ; fra:fromNode fra:Node_FetchDetail ; fra:toNode fra:Node_RetrieveEvidence ;
+  fra:conditionType "rule_triggered" ; fra:governedByRule fra:Rule_DCF0103_Detail50 ; fra:expectedBoolean true .
+fra:T04 a fra:WorkflowTransition ; fra:fromNode fra:Node_FetchDetail ; fra:toNode fra:Node_GenerateConclusion ;
+  fra:conditionType "rule_triggered" ; fra:governedByRule fra:Rule_DCF0103_Detail50 ; fra:expectedBoolean false .
+fra:T05 a fra:WorkflowTransition ; fra:fromNode fra:Node_RetrieveEvidence ; fra:toNode fra:Node_GenerateConclusion ;
+  fra:conditionType "evidence_complete" ; fra:expectedBoolean true .
+fra:T06 a fra:WorkflowTransition ; fra:fromNode fra:Node_RetrieveEvidence ; fra:toNode fra:Node_RequestManualEvidence ;
+  fra:conditionType "evidence_complete" ; fra:expectedBoolean false .
+fra:T07 a fra:WorkflowTransition ; fra:fromNode fra:Node_RequestManualEvidence ; fra:toNode fra:Node_GenerateConclusion ;
+  fra:conditionType "always" .
+
+### Example task / conclusion instances
+fra:Task_0021G_DCF0103_2026P06 a fra:AnalysisTask ;
+  fra:code "TASK_0021G_DCF0103_2026P06" ;
+  fra:name "0021G公司DCF0103 2026P06异常波动分析任务" ;
+  fra:usesAnalysisMethod fra:Method_GovSubsidyFluctuation .
+
+fra:Conclusion_DCF0103_Reasonable a fra:Conclusion ;
+  fra:code "CONCLUSION_DCF0103_REASONABLE" ;
+  fra:name "DCF0103波动合理" ;
+  fra:description "示例：当整体/明细规则触发且业务事件证据完整时，可形成合理波动结论。" ;
+  fra:basedOnEvidence fra:Evidence_SubsidyApproval, fra:Evidence_JournalEntry ;
+  fra:recommendsAction fra:Action_NoExceptionHandling .
+
+fra:Action_NoExceptionHandling a fra:ActionRecommendation ;
+  fra:code "ACTION_NO_EXCEPTION_HANDLING" ;
+  fra:name "无需异常处置" ;
+  fra:description "保留业务依据并持续监控后续期间波动。" .

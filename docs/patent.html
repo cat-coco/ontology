@@ -1,0 +1,1076 @@
+<title>财报异常分析本体专利</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#eef1ee;
+    --surface:#ffffff;
+    --surface-2:#e2e8e1;
+    --line:#c9d4c7;
+    --ink:#16211c;
+    --ink-soft:#47564d;
+    --ink-faint:#7c8c81;
+    --seal:#a3372c;
+    --seal-soft:#f1ded9;
+    --graph:#2f6f5e;
+    --graph-strong:#1d4f42;
+    --graph-soft:#dee9e4;
+    --mono-bg:#e9efe9;
+    --shadow: 0 1px 2px rgba(22,33,28,.06), 0 8px 24px rgba(22,33,28,.05);
+    --font-display:'Noto Serif SC', 'Songti SC', serif;
+    --font-body:'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    --font-mono:'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#111713;
+      --surface:#161d18;
+      --surface-2:#1d261f;
+      --line:#324038;
+      --ink:#e7ede8;
+      --ink-soft:#b6c4bb;
+      --ink-faint:#7f9285;
+      --seal:#dd8878;
+      --seal-soft:#3a2620;
+      --graph:#5cb79c;
+      --graph-strong:#8fd9c1;
+      --graph-soft:#1c2e27;
+      --mono-bg:#1a2320;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 30px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#111713;
+    --surface:#161d18;
+    --surface-2:#1d261f;
+    --line:#324038;
+    --ink:#e7ede8;
+    --ink-soft:#b6c4bb;
+    --ink-faint:#7f9285;
+    --seal:#dd8878;
+    --seal-soft:#3a2620;
+    --graph:#5cb79c;
+    --graph-strong:#8fd9c1;
+    --graph-soft:#1c2e27;
+    --mono-bg:#1a2320;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 30px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  ::selection{ background:var(--graph-soft); color:var(--graph-strong); }
+
+  a{ color:var(--graph-strong); }
+  code, .mono{ font-family:var(--font-mono); }
+
+  .page{
+    max-width:1180px;
+    margin:0 auto;
+    padding:2.5rem 1.5rem 6rem;
+  }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:4px;
+    box-shadow:var(--shadow);
+    padding:2.75rem clamp(1.25rem,4vw,3.5rem) 2.5rem;
+    position:relative;
+    overflow:hidden;
+  }
+  .cover::before{
+    content:"";
+    position:absolute; inset:10px;
+    border:1px solid var(--line);
+    pointer-events:none;
+  }
+  .cover-kicker{
+    font-family:var(--font-mono);
+    font-size:.72rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:.5rem;
+  }
+  .cover h1{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(1.6rem,3.4vw,2.5rem);
+    line-height:1.35;
+    text-wrap:balance;
+    margin:1.1rem 0 .35rem;
+    color:var(--ink);
+  }
+  .cover .subtitle{
+    font-family:var(--font-display);
+    font-size:1.05rem;
+    color:var(--ink-soft);
+    margin:0 0 1.6rem;
+  }
+  .bib{
+    display:grid;
+    grid-template-columns:9.5rem 1fr;
+    border-top:1px solid var(--line);
+    font-size:.92rem;
+  }
+  .bib dt{
+    padding:.6rem .75rem .6rem 0;
+    color:var(--ink-faint);
+    border-bottom:1px solid var(--line);
+    font-weight:500;
+  }
+  .bib dd{
+    margin:0;
+    padding:.6rem 0;
+    border-bottom:1px solid var(--line);
+    color:var(--ink);
+  }
+  .placeholder{ color:var(--ink-faint); font-style:italic; }
+  .seal-tag{
+    display:inline-flex; align-items:center; gap:.4em;
+    font-family:var(--font-mono);
+    font-size:.72rem;
+    letter-spacing:.08em;
+    color:var(--seal);
+    border:1px solid var(--seal);
+    border-radius:999px;
+    padding:.22em .8em;
+    background:var(--seal-soft);
+  }
+  .abstract{
+    margin-top:1.6rem;
+    padding:1.1rem 1.3rem;
+    background:var(--surface-2);
+    border-left:3px solid var(--graph);
+    border-radius:2px;
+    font-size:.95rem;
+    color:var(--ink-soft);
+  }
+  .abstract b{ color:var(--ink); }
+  .notice{
+    margin-top:1.1rem;
+    font-size:.82rem;
+    color:var(--ink-faint);
+    line-height:1.6;
+  }
+
+  /* ---------- Layout: sidebar + article ---------- */
+  .layout{
+    display:grid;
+    grid-template-columns:15.5rem minmax(0,1fr);
+    gap:2.5rem;
+    margin-top:2.25rem;
+    align-items:start;
+  }
+  @media (max-width:900px){
+    .layout{ grid-template-columns:1fr; }
+    .toc{ position:static !important; order:2; }
+  }
+  .toc{
+    position:sticky; top:1.5rem;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:1.1rem 1.1rem 1.2rem;
+    font-size:.86rem;
+  }
+  .toc h2{
+    font-family:var(--font-mono);
+    font-size:.72rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin:0 0 .7rem;
+  }
+  .toc ol{ list-style:none; margin:0; padding:0; counter-reset:toc; }
+  .toc li{ counter-increment:toc; margin-bottom:.15rem; }
+  .toc a{
+    display:flex; gap:.5rem;
+    text-decoration:none;
+    color:var(--ink-soft);
+    padding:.32rem .4rem;
+    border-radius:3px;
+  }
+  .toc a::before{
+    content: counter(toc, decimal-leading-zero);
+    font-family:var(--font-mono);
+    color:var(--graph);
+    flex:none;
+  }
+  .toc a:hover{ background:var(--surface-2); color:var(--ink); }
+
+  article{ min-width:0; }
+  section.chunk{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:4px;
+    box-shadow:var(--shadow);
+    padding:2rem clamp(1.1rem,3vw,2.4rem);
+    margin-bottom:1.75rem;
+    scroll-margin-top:1.5rem;
+  }
+  section.chunk > .eyebrow{
+    font-family:var(--font-mono);
+    font-size:.74rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--graph);
+    margin-bottom:.5rem;
+  }
+  section.chunk h2{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:1.5rem;
+    text-wrap:balance;
+    margin:0 0 1.2rem;
+    color:var(--ink);
+    border-bottom:1px solid var(--line);
+    padding-bottom:.8rem;
+  }
+  section.chunk h3{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:1.15rem;
+    margin:1.9rem 0 .8rem;
+    color:var(--ink);
+  }
+  section.chunk h3 .tag{
+    display:inline-block;
+    font-family:var(--font-mono);
+    font-size:.7rem;
+    color:var(--surface);
+    background:var(--graph);
+    border-radius:3px;
+    padding:.15em .55em;
+    margin-right:.5em;
+    vertical-align:middle;
+  }
+
+  p{ margin:0 0 1rem; max-width:44em; }
+  .para{ position:relative; padding-left:3.4rem; }
+  .para .parano{
+    position:absolute; left:0; top:.15em;
+    font-family:var(--font-mono);
+    font-size:.74rem;
+    color:var(--ink-faint);
+    white-space:nowrap;
+  }
+  @media (max-width:640px){
+    .para{ padding-left:0; }
+    .para .parano{ position:static; display:block; margin-bottom:.25rem; }
+  }
+
+  ul.clean, ol.clean{ margin:0 0 1.1rem; padding-left:1.3rem; max-width:44em; }
+  ul.clean li, ol.clean li{ margin-bottom:.45rem; }
+
+  .callout{
+    border:1px solid var(--line);
+    background:var(--surface-2);
+    border-radius:3px;
+    padding:1rem 1.2rem;
+    margin:1.1rem 0 1.4rem;
+    font-size:.93rem;
+  }
+  .callout.seal{ border-color:var(--seal); background:var(--seal-soft); }
+  .callout.seal .callout-label{ color:var(--seal); }
+  .callout-label{
+    font-family:var(--font-mono);
+    font-size:.72rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--graph);
+    display:block; margin-bottom:.4rem;
+  }
+
+  figure{ margin:1.6rem 0 1.8rem; }
+  .fig-frame{
+    border:1px solid var(--line);
+    border-radius:3px;
+    background:var(--surface);
+    padding:.9rem;
+    overflow-x:auto;
+  }
+  .fig-frame svg{ display:block; width:100%; height:auto; min-width:560px; }
+  .fig-frame text{ font-family:var(--font-body); fill:currentColor; }
+  .fig-frame .mono-text{ font-family:var(--font-mono); }
+  .fig-frame .accent{ color:var(--seal); }
+  .fig-frame .accent-fill{ fill:var(--seal); }
+  .fig-frame .graph-fill{ fill:var(--graph-soft); }
+  .fig-frame .graph-stroke{ stroke:var(--graph); }
+  figcaption{
+    font-size:.85rem;
+    color:var(--ink-soft);
+    margin-top:.6rem;
+    padding-left:.2rem;
+  }
+  figcaption b{ color:var(--ink); font-family:var(--font-mono); font-weight:500; }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:.88rem;
+    margin:1rem 0 1.5rem;
+  }
+  caption{
+    caption-side:top;
+    text-align:left;
+    font-size:.85rem;
+    color:var(--ink-faint);
+    margin-bottom:.5rem;
+    font-family:var(--font-mono);
+  }
+  th, td{
+    border:1px solid var(--line);
+    padding:.55rem .7rem;
+    text-align:left;
+    vertical-align:top;
+  }
+  th{
+    background:var(--surface-2);
+    font-weight:600;
+    color:var(--ink);
+  }
+  td .mono{ font-size:.85em; }
+  .tbl-wrap{ overflow-x:auto; }
+
+  .kv-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:1rem;
+    margin:1rem 0 1.5rem;
+  }
+  .kv-card{
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:.9rem 1rem;
+    background:var(--surface-2);
+  }
+  .kv-card h4{
+    margin:0 0 .4rem;
+    font-size:.92rem;
+    font-family:var(--font-display);
+    font-weight:600;
+  }
+  .kv-card p{ margin:0; font-size:.85rem; color:var(--ink-soft); }
+
+  .pill-row{ display:flex; flex-wrap:wrap; gap:.4rem; margin:.6rem 0 1.2rem; }
+  .pill{
+    font-family:var(--font-mono);
+    font-size:.76rem;
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:.2rem .7rem;
+    color:var(--ink-soft);
+    background:var(--surface-2);
+  }
+
+  footer.doc-foot{
+    text-align:center;
+    font-size:.78rem;
+    color:var(--ink-faint);
+    margin-top:2rem;
+  }
+
+  hr.rule{
+    border:none; border-top:1px solid var(--line);
+    margin:1.6rem 0;
+  }
+</style>
+
+<div class="page">
+
+  <!-- ============ COVER / 封面 ============ -->
+  <div class="cover">
+    <div class="cover-kicker">
+      <span>技术交底稿 · INVENTION DISCLOSURE</span>
+      <span>交底日期 2026-08-28</span>
+    </div>
+    <h1>一种基于本体论的财报数据异常分析Agent构建方法及装置</h1>
+    <p class="subtitle">A Method and Apparatus for Constructing an Ontology-Based Financial Report Data Anomaly Analysis Agent</p>
+
+    <dl class="bib">
+      <dt>技术领域</dt>
+      <dd>人工智能；本体工程与知识图谱；智能体（Agent）系统架构；计算机辅助财务审计与风控</dd>
+      <dt>申请类型</dt>
+      <dd>发明专利（建议）</dd>
+      <dt>申请人</dt>
+      <dd class="placeholder">〔请据实填写申请人名称 / 统一社会信用代码〕</dd>
+      <dt>发明人</dt>
+      <dd class="placeholder">〔请据实填写发明人姓名及排序〕</dd>
+      <dt>技术来源</dt>
+      <dd>对代码仓库 <span class="mono">cat-coco/ontology</span>（财报异常分析 Knowledge + Data Driven Agent 工程实现）的源码与架构复核</dd>
+      <tt></tt>
+    </dl>
+
+    <div class="abstract">
+      <b>摘要：</b>本发明公开一种基于本体论的财报数据异常分析Agent构建方法及装置。其一，提出面向财报异常分析的<b>五层知识建模本体论方法</b>：将领域对象、事实与波动、规则与事理（含证据）、方法与可执行工作流、结论与行动划分为五个语义层，并以本体对象属性作为跨层因果与追溯边，使规则、证据要求与动态执行图均可作为本体/知识图谱实例外置维护，无需改动Agent运行时代码即可扩展报表项与分析场景。其二，提出一种<b>推理链可审计可追溯方法</b>：运行时以trace_id贯通的审计台账持久化每一轮的规则结果、Planner原始建议与Guardrail仲裁后动作（双轨记录）、结构化推理事件与证据链，并在结论生成后按确定的归并与去重规则，将大模型输出与运行时台账数据进行核验式合并，形成不依赖模型输出完整性的可复算、可回放审计结果。二者结合，解决了现有纯Prompt/黑箱Agent路径不可控、结论不可追溯，以及传统规则引擎/审计系统规则与流程强耦合、难以扩展的问题。
+    </div>
+    <p class="notice">本文档为面向专利代理人的技术交底稿（说明书初稿），非正式提交文本；其中的权利要求要点、附图与检索情况用于辅助代理人撰写正式说明书与权利要求书，并需按最终实审要求调整措辞与保护范围。文中涉及的类名、属性名、Skill ID、事件名等标识符均取自实际工程实现，作为"充分公开"的示例性说明。</p>
+  </div>
+
+  <div class="layout">
+    <nav class="toc" aria-label="目录">
+      <h2>目录 Contents</h2>
+      <ol>
+        <li><a href="#sec-bg1">Idea产生的背景</a></li>
+        <li><a href="#sec-bg2">现有技术及其缺陷</a></li>
+        <li><a href="#sec-arch">发明内容 · 总体方案</a></li>
+        <li><a href="#sec-inno1">创新点一 · 五层本体建模</a></li>
+        <li><a href="#sec-inno2">创新点二 · 可审计推理链</a></li>
+        <li><a href="#sec-device">装置结构与模块划分</a></li>
+        <li><a href="#sec-evidence">技术点取证方法</a></li>
+        <li><a href="#sec-incopat">incopat 专利检索情况</a></li>
+        <li><a href="#sec-analysis">附：专利文献分析</a></li>
+        <li><a href="#sec-effect">有益效果与保护建议</a></li>
+      </ol>
+    </nav>
+
+    <article>
+
+      <!-- ============ 1. 背景（一）Idea产生的背景 ============ -->
+      <section class="chunk" id="sec-bg1">
+        <div class="eyebrow">说明书 · 背景技术（一）</div>
+        <h2>Idea产生的背景</h2>
+
+        <div class="para"><span class="parano">【0001】</span>
+        财报数据异常波动分析（如"收到的政府补助""营业外收入"等报表项本期/上期大幅波动的合理性核查）是企业财务共享中心、审计部门与集团财务分析岗位的高频、强专业性工作。传统做法依赖财务人员基于经验，人工在EFM/合并报表系统、数据工坊明细表、ERP总账与业务文件之间反复核对，效率低、口径不一致，且核查过程与结论理由通常仅停留在人的记忆或非结构化的Excel批注中，难以沉淀为可复用、可稽核的资产。</div>
+
+        <div class="para"><span class="parano">【0002】</span>
+        随着大语言模型（LLM）与Agent技术的成熟，行业开始尝试用"自然语言查询 + 模型自主决策"的方式替代人工核查，期望模型像资深财务分析师一样自动完成"取数—下钻—定位原因—核验证据—形成结论"的链条。但纯Prompt驱动的Agent在真实财务场景中很快暴露出两个核心矛盾：一是模型的判断路径不可控、不可解释，同一输入在不同轮次可能给出不同的分析路径甚至臆造证据；二是财务分析涉及金额、比率等强确定性判断（例如"波动率是否达到20%阈值"），这类判断一旦交由模型自由生成，就丧失了审计所要求的可复算性。</div>
+
+        <div class="para"><span class="parano">【0003】</span>
+        本发明所依托的工程实践（以"0021G公司2026P06期间DCF0103收到的政府补助异常波动分析"为代表性场景）表明：把"能怎样分析"（语义、规则、证据要求、可执行路径）显式建模为本体/知识图谱、把"当前发生了什么"交给按需获取的事实接口、把"哪些路径此刻成立"交给确定性规则引擎、只把"多个合法候选中选哪一个"这一步交给LLM Planner，并在运行时增加不可绕过的Guardrail与审计台账，可以在保留LLM自然语言理解与弹性规划能力的同时，把强确定性判断、路径合法性与最终结论的可追溯性收回到工程可控的范围内。这一"知识+数据双驱动、本体统一语义、运行时强审计"的思路，是本发明的直接产生背景。</div>
+
+        <div class="para"><span class="parano">【0004】</span>
+        进一步地，实践中发现：如果本体仅用于描述静态的"公司—报表—报表项"关系（如常见财务主数据本体/知识图谱），规则、证据要求、分析方法与可执行工作流仍然分散固化在应用代码中，那么每新增一个报表项、一条规则或一种证据类型，都需要修改并重新发布Agent运行时代码，本体本身并未真正承担"驱动执行"的角色。这促使发明人提出把规则、方法、Skill、动态工作流节点与条件边一并纳入统一本体的分层建模方法，使其与静态主数据一样，成为知识图谱网关可动态下发、Agent运行时只读消费的对象。</div>
+      </section>
+
+      <!-- ============ 2. 背景（二）现有技术及其缺陷 ============ -->
+      <section class="chunk" id="sec-bg2">
+        <div class="eyebrow">说明书 · 背景技术（二）</div>
+        <h2>现有技术及其缺陷</h2>
+
+        <div class="para"><span class="parano">【0005】</span>
+        现有与本发明相关的技术路线大致可归纳为三类，均存在明确技术缺陷。</div>
+
+        <h3><span class="tag">缺陷一</span>基于规则引擎/固定流程的传统审计辅助系统</h3>
+        <div class="para"><span class="parano">【0006】</span>
+        以规则库+固定核对流程为代表的传统财务/审计辅助系统（例如面向异常数据检索与统计核查的辅助审计系统、以及支持自然语言自定义规则但仍按固定步骤执行的规则化审计方法）将"何时触发下钻""何时需要证据""结论如何生成"编码为线性的、少分支的处理步骤。其缺陷在于：规则与执行步骤强耦合于程序代码，规则之间、规则与证据要求之间缺乏统一的语义描述层；新增一种波动场景或证据类型通常需要改代码、发版本；系统只能"执行"，无法向审计人员解释"为什么本次没有走深度下钻路径"这类关于路径可达性本身的问题，因为路径从未被显式建模为可查询的知识对象。</div>
+
+        <h3><span class="tag">缺陷二</span>纯LLM/Prompt驱动的分析型Agent</h3>
+        <div class="para"><span class="parano">【0007】</span>
+        近年出现的"大模型+工具调用"型财务/审计Agent（包括部分以链式提示要求模型遵循"指标异常检测—科目定位—原因假设—证据链分析"步骤的方案）本质上把整条分析路径、阈值判断乃至证据充分性判断都交给模型的自由生成过程决定。其缺陷在于：（a）模型可能选择知识图谱或业务上并不允许的路径，或跳过必需的证据核验步骤；（b）模型的私有链式思考（Chain-of-Thought）本身不透明、不可稳定复现，即使要求模型"输出推理过程"，该过程也只是模型自陈的文本，与实际是否满足确定性规则、证据是否真正命中并无强绑定关系，存在"合理化幻觉"（模型编造看似合理的证据描述）风险；（c）一旦模型在某一响应中遗漏字段（如未返回证据列表），审计所需的证据链条即出现断裂，且系统通常没有独立机制去补全或核验。</div>
+
+        <h3><span class="tag">缺陷三</span>知识图谱与Agent结合方案中知识图谱的建模深度不足</h3>
+        <div class="para"><span class="parano">【0008】</span>
+        另有一类方案将知识图谱引入大模型Agent，用于为模型提供结构化世界知识以辅助决策（例如企业辅助决策系统、大模型协同知识图谱的Agent实现方法）。这类方案的知识图谱通常聚焦于实体—关系型的静态领域知识（人、组织、产品、指标定义等），用于检索增强或知识问答，缺陷在于：知识图谱一般不显式建模"分析方法的可执行工作流节点与条件边""规则触发后对路径的门控作用""证据完整性判定标准"这类与Agent运行时紧密耦合的过程性知识；因此这类方案中，Agent的执行路径合法性校验（Guardrail）仍需在代码中单独硬编码，知识图谱与运行时之间是"检索"关系而非"驱动/授权"关系，无法做到"新增分析场景只需增补知识图谱实例、无需改运行时代码"。</div>
+
+        <h3><span class="tag">缺陷四</span>现有审计留痕/存证方案对"模型决策"的审计粒度不足</h3>
+        <div class="para"><span class="parano">【0009】</span>
+        面向数据安全或财务舞弊的审计留痕方案（例如基于操作日志的安全审计方法、基于区块链/Merkle树的数据完整性存证方法）擅长记录"谁在何时做了何种确定性操作"，但并非为"大模型在多个合法候选中作出的自由裁量决策"这一场景设计，因而缺少针对以下问题的系统方法：模型的原始建议与系统最终执行的动作是否一致；不一致时系统是否记录了拒绝理由；最终对外的结论文本中，哪些陈述有运行时事实/规则/证据支撑、哪些仅是模型自述。这使得引入LLM之后的Agent系统，其"审计能力"相较引入LLM之前的确定性系统出现明显倒退。</div>
+
+        <div class="callout">
+          <span class="callout-label">缺陷小结</span>
+          现有技术要么"确定性强、灵活性差"（规则引擎/固定流程），要么"灵活性强、确定性与可审计性差"（纯Prompt Agent），要么"引入知识图谱但只建模静态知识、未覆盖规则-证据-工作流的过程性知识"，要么"审计留痕面向传统操作日志、未覆盖模型自由裁量决策的双轨记录"。本发明的两个核心创新点分别针对性地解决前述缺陷。
+        </div>
+      </section>
+
+      <!-- ============ 3. 发明内容 · 总体方案 ============ -->
+      <section class="chunk" id="sec-arch">
+        <div class="eyebrow">说明书 · 发明内容（一）</div>
+        <h2>本Idea技术方案 · 总体架构</h2>
+
+        <div class="para"><span class="parano">【0010】</span>
+        本发明提供的财报数据异常分析Agent构建方法，按"知识—数据—规则—规划—执行—审计"划分职责边界：本体（Ontology）与知识图谱网关（KG Gateway）定义"能怎样分析"，事实数据网关（Fact Gateway）按需返回"当前发生了什么"，确定性规则引擎（Rule Engine）判定"哪些路径此刻成立"，LLM Planner Skill在知识图谱授权的候选集合内选择"下一步执行哪个Skill"，运行时护栏（Runtime Guardrail）保证"只能执行知识图谱当前允许的合法路径"，运行时审计台账（Runtime State）以trace_id为主键持久化并对外暴露每一轮的事实、规则结果、决策记录、推理依据与证据链。</div>
+
+        <figure>
+          <div class="fig-frame">
+            <svg viewBox="0 0 1040 700" role="img" aria-label="总体架构图：本体与知识图谱驱动候选路径计算，LLM Planner在候选中选择，Guardrail校验后交由Skill执行获取事实，规则引擎重新计算门控并进入下一轮，运行时审计台账并行记录各阶段数据，终止时汇入最终可审计结论">
+              <defs>
+                <marker id="fa1" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="currentColor"/></marker>
+                <marker id="fa1d" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="currentColor" opacity=".6"/></marker>
+              </defs>
+              <!-- spine boxes -->
+              <g font-size="13">
+                <rect x="80" y="20" width="420" height="72" rx="3" fill="none" stroke="currentColor"/>
+                <text x="290" y="46" text-anchor="middle">本体 OntologyService（五层TTL/OWL）</text>
+                <text x="290" y="66" text-anchor="middle" class="mono-text" font-size="11" opacity=".75">+ KG Gateway：规则 / Skill / Workflow / 证据要求</text>
+                <text x="290" y="84" text-anchor="middle" font-size="11" opacity=".75">图2所示五层语义在此静态解析、动态下发</text>
+
+                <line x1="290" y1="92" x2="290" y2="132" stroke="currentColor" marker-end="url(#fa1)"/>
+
+                <rect x="80" y="134" width="420" height="58" rx="3" fill="none" stroke="currentColor"/>
+                <text x="290" y="158" text-anchor="middle">候选路径计算</text>
+                <text x="290" y="176" text-anchor="middle" font-size="11" opacity=".75">KG Transition × 规则/证据门控 → conditionSatisfied</text>
+
+                <line x1="290" y1="192" x2="290" y2="228" stroke="currentColor" marker-end="url(#fa1)"/>
+
+                <rect x="80" y="230" width="420" height="58" rx="3" fill="none" stroke="currentColor"/>
+                <text x="290" y="254" text-anchor="middle">LLM Planner Skill</text>
+                <text x="290" y="272" text-anchor="middle" font-size="11" opacity=".75">在合法候选中提出 next_node_id / next_skill_id</text>
+
+                <line x1="290" y1="288" x2="290" y2="324" stroke="currentColor" marker-end="url(#fa1)"/>
+
+                <rect x="80" y="326" width="420" height="58" rx="3" fill="none" stroke="currentColor"/>
+                <text x="290" y="350" text-anchor="middle">Runtime Guardrail（图4）</text>
+                <text x="290" y="368" text-anchor="middle" font-size="11" opacity=".75">校验合法性；不满足则回退并记录 guardrail_fallback</text>
+
+                <line x1="290" y1="384" x2="290" y2="420" stroke="currentColor" marker-end="url(#fa1)"/>
+
+                <rect x="80" y="422" width="420" height="58" rx="3" fill="none" stroke="currentColor"/>
+                <text x="290" y="446" text-anchor="middle">Skill Registry → Fact/Evidence Gateway</text>
+                <text x="290" y="464" text-anchor="middle" font-size="11" opacity=".75">执行被授权的Skill，按需取数（EFM/明细/ERP/文件）</text>
+
+                <line x1="290" y1="480" x2="290" y2="516" stroke="currentColor" marker-end="url(#fa1)"/>
+
+                <rect x="80" y="518" width="420" height="58" rx="3" fill="none" stroke="currentColor"/>
+                <text x="290" y="542" text-anchor="middle">Rule Engine</text>
+                <text x="290" y="560" text-anchor="middle" font-size="11" opacity=".75">重算 actual_value / threshold / triggered 与证据完整性</text>
+
+                <!-- loop back -->
+                <path d="M 80 547 C 20 547, 20 163, 80 163" fill="none" stroke="currentColor" marker-end="url(#fa1)"/>
+                <text x="16" y="360" text-anchor="middle" font-size="11" transform="rotate(-90 16 360)">进入下一轮候选路径计算</text>
+
+                <!-- terminal branch -->
+                <path d="M 500 451 C 600 451, 600 610, 660 610" fill="none" stroke="currentColor" stroke-dasharray="4 3" marker-end="url(#fa1d)"/>
+                <text x="606" y="502" font-size="11" opacity=".8">若为结论生成Skill</text>
+                <text x="606" y="518" font-size="11" opacity=".8">（终止条件，不再进入下一轮）</text>
+
+                <!-- ledger -->
+                <rect x="660" y="134" width="300" height="446" rx="3" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                <text x="810" y="160" text-anchor="middle" font-weight="600">Runtime State 审计台账</text>
+                <text x="810" y="180" text-anchor="middle" font-size="11" class="mono-text" opacity=".8">trace_id 贯穿全部记录</text>
+                <g font-size="11.5" class="mono-text">
+                  <text x="690" y="212">facts</text>
+                  <text x="690" y="238">rule_results</text>
+                  <text x="690" y="264">executed_skills / execution_history</text>
+                  <text x="690" y="290">planner_history</text>
+                  <text x="690" y="316">audit_reasoning（去重）</text>
+                  <text x="690" y="342">evidence_chain（去重合并）</text>
+                </g>
+                <line x1="810" y1="360" x2="810" y2="392" stroke="currentColor" stroke-dasharray="2 3"/>
+                <text x="810" y="420" text-anchor="middle" font-size="11">↕ 与 图3 归并逻辑对应</text>
+
+                <line x1="500" y1="259" x2="655" y2="230" stroke="currentColor" stroke-dasharray="3 3" opacity=".6" marker-end="url(#fa1d)"/>
+                <line x1="500" y1="355" x2="655" y2="290" stroke="currentColor" stroke-dasharray="3 3" opacity=".6" marker-end="url(#fa1d)"/>
+                <line x1="500" y1="451" x2="655" y2="320" stroke="currentColor" stroke-dasharray="3 3" opacity=".6" marker-end="url(#fa1d)"/>
+                <line x1="500" y1="547" x2="655" y2="350" stroke="currentColor" stroke-dasharray="3 3" opacity=".6" marker-end="url(#fa1d)"/>
+
+                <!-- final -->
+                <rect x="660" y="600" width="300" height="70" rx="3" fill="none" stroke="var(--seal)" class="accent" stroke-width="1.4"/>
+                <text x="810" y="628" text-anchor="middle" class="accent" font-weight="600">可审计最终结论</text>
+                <text x="810" y="648" text-anchor="middle" font-size="11" class="accent" opacity=".85">final_report + audit_meta（图3）</text>
+                <line x1="810" y1="580" x2="810" y2="596" stroke="currentColor" marker-end="url(#fa1)"/>
+              </g>
+            </svg>
+          </div>
+          <figcaption><b>图1</b>　总体架构与动态执行闭环：本体/知识图谱驱动候选路径计算，Planner在候选内选择，Guardrail校验后交由Skill执行获取事实，规则引擎重算门控信号并驱动下一轮；运行时审计台账在虚线所示的各阶段并行写入，终止节点汇入可审计最终结论。</figcaption>
+        </figure>
+
+        <div class="para"><span class="parano">【0011】</span>
+        与现有技术的关键区别在于：编排器（Orchestrator）自身不固化"取整体数—下钻明细—查证据—出结论"这一具体业务顺序，该顺序完全由本体/知识图谱中的<span class="mono">WorkflowDefinition</span>（节点与条件边）决定；编排器只实现一个通用的"计算候选—规划—校验—执行—重算门控"循环。这使得新增报表项、规则或证据类型时，只需在本体/知识图谱中增补实例（新增<span class="mono">fra:Rule</span>、<span class="mono">fra:WorkflowNode</span>、<span class="mono">fra:WorkflowTransition</span>等实例及必要的Skill注册），无需修改运行时循环代码。</div>
+      </section>
+
+      <!-- ============ 4. 创新点一 ============ -->
+      <section class="chunk" id="sec-inno1">
+        <div class="eyebrow">说明书 · 发明内容（二）· 核心创新点一</div>
+        <h2>财报数据异常分析五层知识建模本体论方法</h2>
+
+        <div class="para"><span class="parano">【0012】</span>
+        本发明提出的本体论方法，将财报异常分析领域的全部语义对象划分为五个层级：<b>L1 领域对象层</b>、<b>L2 事实与波动层</b>、<b>L3 规则与事理层</b>、<b>L4 方法与可执行工作流层</b>、<b>L5 结论与行动层</b>；并规定层与层之间必须通过本体对象属性（Object Property）显式连接，使"从原始主数据到最终结论与行动建议"的因果链条可在本体/知识图谱层面被完整查询与回放，而不是隐含在应用代码的调用关系中。</div>
+
+        <figure>
+          <div class="fig-frame">
+            <svg viewBox="0 0 920 830" role="img" aria-label="五层本体分层模型：领域对象层、事实与波动层、规则与事理层、方法与执行图层、结论与行动层，层间以本体对象属性连接，右侧标注各层由哪个运行时组件读取">
+              <defs>
+                <marker id="fa2" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="currentColor"/></marker>
+              </defs>
+              <g font-size="12.5">
+
+                <!-- L1 -->
+                <rect x="40" y="20" width="560" height="110" rx="3" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                <text x="60" y="42" font-weight="700" font-size="14">L1 · 领域对象层</text>
+                <text x="60" y="66" class="mono-text" font-size="11.5">FinancialEntity · Report · ReportItem · Period</text>
+                <text x="60" y="86" class="mono-text" font-size="11.5">Currency · COAAccount · DataSource · Dimension</text>
+                <text x="60" y="110" font-size="11" opacity=".75">定义"分析对象是谁"——公司、报表、报表项、期间、科目、维度</text>
+                <text x="640" y="70" font-size="11.5">→ 由 OntologyService 基于本地 TTL 静态解析</text>
+
+                <line x1="320" y1="130" x2="320" y2="164" stroke="currentColor" marker-end="url(#fa2)"/>
+                <text x="336" y="152" font-size="11" class="mono-text">sourcedFrom / hasDataSource / occursInPeriod</text>
+
+                <!-- L2 -->
+                <rect x="40" y="166" width="560" height="110" rx="3" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                <text x="60" y="188" font-weight="700" font-size="14">L2 · 事实与波动层</text>
+                <text x="60" y="212" class="mono-text" font-size="11.5">FactData → BalanceFact / DetailData / JournalEntry</text>
+                <text x="60" y="232" class="mono-text" font-size="11.5">Fluctuation（currentAmount / previousAmount / changeRate）</text>
+                <text x="60" y="256" font-size="11" opacity=".75">定义"发生了什么"——实时事实与由事实计算出的波动指标</text>
+                <text x="640" y="216" font-size="11.5">→ 由 Fact Data Gateway 按需取数写入</text>
+                <text x="640" y="234" font-size="11.5">→ 供 Rule Engine 读取 changeRate 等指标</text>
+
+                <line x1="320" y1="276" x2="320" y2="310" stroke="currentColor" marker-end="url(#fa2)"/>
+                <text x="336" y="298" font-size="11" class="mono-text">detectedBy / hasMajorContributor</text>
+
+                <!-- L3 -->
+                <rect x="40" y="312" width="560" height="130" rx="3" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                <text x="60" y="334" font-weight="700" font-size="14">L3 · 规则与事理层</text>
+                <text x="60" y="358" class="mono-text" font-size="11.5">ThresholdRule（metric / operator / thresholdValue / triggerAction）</text>
+                <text x="60" y="378" class="mono-text" font-size="11.5">BusinessEvent —causedBy/causesFluctuation→ Fluctuation</text>
+                <text x="60" y="398" class="mono-text" font-size="11.5">Evidence → DocumentEvidence / DataEvidence —supportedBy→ BusinessEvent</text>
+                <text x="60" y="420" font-size="11" opacity=".75">定义"为什么触发、原因是什么、有无证据支持"——事理与证据的统一容器</text>
+                <text x="640" y="366" font-size="11.5">→ 由 KG Gateway 动态下发规则与证据要求</text>
+                <text x="640" y="384" font-size="11.5">→ Rule Engine 据此做确定性阈值/证据完整性判定</text>
+                <text x="640" y="402" font-size="11.5">→ 不进入LLM自由裁量范围（创新点二基础）</text>
+
+                <line x1="320" y1="442" x2="320" y2="476" stroke="currentColor" marker-end="url(#fa2)"/>
+                <text x="336" y="464" font-size="11" class="mono-text">hasWorkflow / implementedBySkill / governedByRule</text>
+
+                <!-- L4 -->
+                <rect x="40" y="478" width="560" height="150" rx="3" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                <text x="60" y="500" font-weight="700" font-size="14">L4 · 方法与可执行工作流层</text>
+                <text x="60" y="524" class="mono-text" font-size="11.5">AnalysisMethod —hasSOP→ ExpertSOP —hasStep→ AnalysisStep</text>
+                <text x="60" y="544" class="mono-text" font-size="11.5">AnalysisMethod —hasWorkflow→ WorkflowDefinition</text>
+                <text x="60" y="564" class="mono-text" font-size="11.5">WorkflowDefinition —hasNode→ WorkflowNode —executesSkill→ Skill/PlannerSkill</text>
+                <text x="60" y="584" class="mono-text" font-size="11.5">WorkflowDefinition —hasTransition→ WorkflowTransition —governedByRule→ Rule</text>
+                <text x="60" y="608" font-size="11" opacity=".75">定义"允许怎样分析"——方法、专家SOP与可被运行时遍历的条件执行图</text>
+                <text x="640" y="530" font-size="11.5">→ 由 KG Gateway 以 nodes/transitions 结构下发</text>
+                <text x="640" y="548" font-size="11.5">→ Planner 在此层候选内选择</text>
+                <text x="640" y="566" font-size="11.5">→ Guardrail 据此层校验路径合法性</text>
+
+                <line x1="320" y1="628" x2="320" y2="662" stroke="currentColor" marker-end="url(#fa2)"/>
+                <text x="336" y="650" font-size="11" class="mono-text">consumesRule / consumesData / producesConclusion</text>
+
+                <!-- L5 -->
+                <rect x="40" y="664" width="560" height="110" rx="3" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                <text x="60" y="686" font-weight="700" font-size="14">L5 · 结论与行动层</text>
+                <text x="60" y="710" class="mono-text" font-size="11.5">AnalysisTask —producesConclusion→ Conclusion</text>
+                <text x="60" y="730" class="mono-text" font-size="11.5">Conclusion —basedOnEvidence→ Evidence（回链L3）；—recommendsAction→ ActionRecommendation</text>
+                <text x="60" y="752" font-size="11" opacity=".75">定义"应得出什么结论、采取什么行动"，并显式回链至L3证据实现闭环</text>
+                <text x="640" y="700" font-size="11.5">→ 由结论生成Skill产出</text>
+                <text x="640" y="718" font-size="11.5">→ basedOnEvidence 与创新点二的证据链归并对应</text>
+
+                <path d="M 320 774 C 320 800, 700 800, 700 664" fill="none" stroke="currentColor" stroke-dasharray="4 3" opacity=".7" marker-end="url(#fa2)"/>
+                <text x="510" y="812" text-anchor="middle" font-size="11" opacity=".8">basedOnEvidence 回链 L3，形成可追溯闭环</text>
+              </g>
+            </svg>
+          </div>
+          <figcaption><b>图2</b>　五层本体分层模型：五个语义层自上而下依次对应"对象是谁—发生了什么—为什么/有无证据—怎样分析—得出什么结论与行动"；层间连线为本体中实际定义的对象属性，右侧标注各层在运行时被哪个组件读取或产出，体现"知识层与执行层解耦、以本体属性作为可追溯边"的技术效果。</figcaption>
+        </figure>
+
+        <h3>关键技术特征</h3>
+        <ul class="clean">
+          <li><b>层内可扩展、层间强约束：</b>每一层内的类（Class）可自由新增实例（如新增报表项、新增规则、新增证据类型），但跨层连接必须使用既定的对象属性（如<span class="mono">detectedBy</span>、<span class="mono">governedByRule</span>、<span class="mono">basedOnEvidence</span>），从而保证不同报表项、不同分析场景的本体实例在结构上保持一致，可被同一套Agent运行时无差别消费。</li>
+          <li><b>L3/L4 是本体承担"驱动执行"角色的关键：</b>与仅建模静态实体关系的现有知识图谱方案不同，本发明把规则的触发动作（<span class="mono">triggerAction</span>）、证据要求、分析方法的可执行工作流节点与条件边全部纳入本体实例，知识图谱网关（KG Gateway）因此可以直接向Agent运行时下发"候选路径 + 门控条件"，而不仅是提供检索式背景知识。</li>
+          <li><b>L5 回链 L3 形成闭环：</b><span class="mono">Conclusion —basedOnEvidence→ Evidence</span> 使"结论"在本体层面即被要求指向具体证据实例，为创新点二中"结论必须有运行时证据支撑"的可审计约束提供了本体层面的语义依据。</li>
+          <li><b>知识图谱网关作为本体的动态视图：</b>本体（TTL/OWL）作为静态语义主档，知识图谱网关在此基础上按当前分析请求（公司、报表项、期间）实时组装并下发L3～L4层的规则、Skill、WorkflowDefinition与证据要求，使同一本体可服务多个具体分析任务而无需为每个任务复制本体文件。</li>
+        </ul>
+
+        <div class="callout">
+          <span class="callout-label">技术效果</span>
+          相较于将规则、流程与知识图谱割裂维护的现有方案，五层本体使"新增一个分析场景"退化为"新增本体/知识图谱实例"，Agent运行时代码保持不变；同时因为L3～L4显式建模了条件执行图，Guardrail可以直接基于本体查询结果判断路径合法性，而不需要在代码中重复维护一份与知识图谱脱节的合法路径表。
+        </div>
+      </section>
+
+      <!-- ============ 5. 创新点二 ============ -->
+      <section class="chunk" id="sec-inno2">
+        <div class="eyebrow">说明书 · 发明内容（三）· 核心创新点二</div>
+        <h2>财报数据异常分析推理链可审计可追溯方法</h2>
+
+        <div class="para"><span class="parano">【0013】</span>
+        本发明提出一种以运行时审计台账（Runtime State）为核心的推理链可审计可追溯方法，其特征在于：不直接暴露或依赖大模型的私有链式思考作为审计依据，而是将每一轮决策拆分为若干结构化、可独立核验的记录单元，按统一的trace_id进行归集，并在最终结论生成后执行确定性的"归并—去重—来源标注"处理，使最终对外结果不因大模型输出不完整或不一致而丢失可追溯性。</div>
+
+        <figure>
+          <div class="fig-frame">
+            <svg viewBox="0 0 980 470" role="img" aria-label="推理链可审计闭环：五类运行时审计记录（决策记录、规则结果、推理事件、证据台账、结构化事实）分别按各自的去重合并规则汇入结论归并环节，输出带审计元数据的最终结果">
+              <defs>
+                <marker id="fa3" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="currentColor"/></marker>
+              </defs>
+              <text x="490" y="24" text-anchor="middle" font-size="12" class="mono-text" opacity=".8">trace_id 贯穿本次分析的结构化事件流与最终响应</text>
+              <line x1="40" y1="34" x2="940" y2="34" stroke="currentColor" stroke-dasharray="2 3" opacity=".5"/>
+
+              <g font-size="12">
+                <rect x="30" y="52" width="330" height="60" rx="3" fill="none" stroke="currentColor"/>
+                <text x="46" y="74">① Planner决策记录</text>
+                <text x="46" y="92" font-size="11" class="mono-text" opacity=".8">raw_decision + decision + guardrail_fallback + rationale</text>
+
+                <rect x="30" y="128" width="330" height="60" rx="3" fill="none" stroke="currentColor"/>
+                <text x="46" y="150">② 规则结果 rule_results</text>
+                <text x="46" y="168" font-size="11" class="mono-text" opacity=".8">actual_value / operator / threshold / triggered</text>
+
+                <rect x="30" y="204" width="330" height="60" rx="3" fill="none" stroke="currentColor"/>
+                <text x="46" y="226">③ 推理事件 audit_reasoning</text>
+                <text x="46" y="244" font-size="11" class="mono-text" opacity=".8">{stage, source, statement}；按 stage+statement 去重</text>
+
+                <rect x="30" y="280" width="330" height="60" rx="3" fill="none" stroke="currentColor"/>
+                <text x="46" y="302">④ 证据台账 evidence_chain</text>
+                <text x="46" y="320" font-size="11" class="mono-text" opacity=".8">按 evidenceId/reference/name 去重合并</text>
+
+                <rect x="30" y="356" width="330" height="60" rx="3" fill="none" stroke="currentColor"/>
+                <text x="46" y="378">⑤ 结构化事实 facts</text>
+                <text x="46" y="396" font-size="11" class="mono-text" opacity=".8">reportItem / contributors / businessEvents / evidence</text>
+
+                <line x1="360" y1="82"  x2="410" y2="185" stroke="currentColor" marker-end="url(#fa3)"/>
+                <line x1="360" y1="158" x2="410" y2="205" stroke="currentColor" marker-end="url(#fa3)"/>
+                <line x1="360" y1="234" x2="410" y2="230" stroke="currentColor" marker-end="url(#fa3)"/>
+                <line x1="360" y1="310" x2="410" y2="255" stroke="currentColor" marker-end="url(#fa3)"/>
+                <line x1="360" y1="386" x2="410" y2="275" stroke="currentColor" marker-end="url(#fa3)"/>
+
+                <rect x="415" y="160" width="230" height="130" rx="4" fill="none" stroke="var(--seal)" class="accent" stroke-width="1.6"/>
+                <text x="530" y="196" text-anchor="middle" class="accent" font-weight="700">结论归并</text>
+                <text x="530" y="216" text-anchor="middle" class="accent mono-text" font-size="11">_enrich_final_report()</text>
+                <text x="530" y="240" text-anchor="middle" class="accent" font-size="11">合并 台账数据 ∪ LLM输出</text>
+                <text x="530" y="258" text-anchor="middle" class="accent" font-size="11">按 key 去重、不覆盖已核验记录</text>
+                <text x="530" y="276" text-anchor="middle" class="accent" font-size="11">缺失字段以台账数据兜底重建</text>
+
+                <line x1="645" y1="225" x2="700" y2="225" stroke="currentColor" marker-end="url(#fa3)"/>
+
+                <rect x="705" y="160" width="245" height="130" rx="3" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                <text x="827" y="188" text-anchor="middle" font-weight="600">可审计最终结果</text>
+                <text x="720" y="212" font-size="11" class="mono-text">final_report.reasoning</text>
+                <text x="720" y="230" font-size="11" class="mono-text">final_report.evidence_chain</text>
+                <text x="720" y="252" font-size="11" class="mono-text">audit_meta.reasoning_source</text>
+                <text x="720" y="270" font-size="11" class="mono-text">audit_meta.reasoning_count / evidence_count</text>
+              </g>
+            </svg>
+          </div>
+          <figcaption><b>图3</b>　推理链可审计闭环：五类审计记录各自按确定规则去重后，进入结论归并环节与大模型输出核验式合并，形成携带来源标注与数量统计（<span class="mono">audit_meta</span>）的最终可审计结果，避免大模型漏字段导致审计信息丢失。</figcaption>
+        </figure>
+
+        <figure>
+          <div class="fig-frame">
+            <svg viewBox="0 0 900 460" role="img" aria-label="Guardrail双轨仲裁：LLM原始建议先经过合法性判定，合法则按原样执行并标记未回退，不合法则回退到知识图谱合法候选并标记回退及理由，两条分支都进入统一的记录环节">
+              <defs>
+                <marker id="fa4" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="currentColor"/></marker>
+              </defs>
+              <g font-size="12.5">
+                <rect x="270" y="16" width="360" height="64" rx="3" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                <text x="450" y="40" text-anchor="middle">LLM Planner 输出 raw_decision</text>
+                <text x="450" y="60" text-anchor="middle" font-size="11" class="mono-text" opacity=".8">{next_node_id, next_skill_id, rationale, confidence}</text>
+
+                <line x1="450" y1="80" x2="450" y2="122" stroke="currentColor" marker-end="url(#fa4)"/>
+
+                <polygon points="450,124 660,190 450,256 240,190" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                <text x="450" y="182" text-anchor="middle" font-size="11.5">next_node_id ∈ 本轮合法候选</text>
+                <text x="450" y="200" text-anchor="middle" font-size="11.5">且 next_skill_id = 节点绑定的 skillId ？</text>
+
+                <line x1="300" y1="220" x2="160" y2="300" stroke="currentColor" marker-end="url(#fa4)"/>
+                <text x="200" y="258" font-size="12" font-weight="600">是</text>
+                <line x1="600" y1="220" x2="740" y2="300" stroke="currentColor" marker-end="url(#fa4)"/>
+                <text x="700" y="258" font-size="12" font-weight="600">否</text>
+
+                <rect x="20" y="304" width="300" height="72" rx="3" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                <text x="170" y="328" text-anchor="middle">按建议执行</text>
+                <text x="170" y="348" text-anchor="middle" font-size="11" class="mono-text" opacity=".85">decision = raw_decision</text>
+                <text x="170" y="366" text-anchor="middle" font-size="11" class="mono-text" opacity=".85">guardrail_fallback = false</text>
+
+                <rect x="580" y="304" width="300" height="72" rx="3" fill="none" stroke="var(--seal)" class="accent" stroke-width="1.4"/>
+                <text x="730" y="328" text-anchor="middle" class="accent">回退到KG合法候选</text>
+                <text x="730" y="348" text-anchor="middle" font-size="11" class="mono-text accent" opacity=".9">guardrail_fallback = true</text>
+                <text x="730" y="366" text-anchor="middle" font-size="11" class="accent" opacity=".9">rationale 记录拒绝原因</text>
+
+                <line x1="170" y1="376" x2="360" y2="412" stroke="currentColor" marker-end="url(#fa4)"/>
+                <line x1="730" y1="376" x2="540" y2="412" stroke="currentColor" marker-end="url(#fa4)"/>
+
+                <rect x="200" y="414" width="500" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <text x="450" y="439" text-anchor="middle" font-size="11.5">两条分支均计入 planner_decisions 与结构化事件流：同时保留 raw_decision 与 decision</text>
+              </g>
+            </svg>
+          </div>
+          <figcaption><b>图4</b>　Guardrail双轨仲裁：无论Planner的原始建议是否被采纳，系统都保留"原始建议"与"实际执行动作"两条记录及回退标记与理由，使事后审计既能复核最终执行是否合法，也能复核大模型原始倾向与系统纠偏过程。</figcaption>
+        </figure>
+
+        <h3>关键技术特征</h3>
+        <ul class="clean">
+          <li><b>结构化非CoT推理事件：</b>系统不将大模型的私有链式思考作为审计依据，而是由确定性代码（Rule Engine、Skill Registry）在每一步产出带<span class="mono">{stage, source, statement}</span>结构的推理事件（例如"事理·规则""事实·明细""事理·证据"），并按<span class="mono">stage+statement</span>去重后追加进审计台账，保证推理依据始终可对应到具体规则计算或具体数据接口返回。</li>
+          <li><b>决策双轨仲裁记录：</b>Guardrail对Planner的每一次建议都保留"建议本身"与"最终裁定"两份记录，并显式标注是否发生回退（<span class="mono">guardrail_fallback</span>）及回退理由，使系统在拒绝大模型不合法建议的同时不丢弃该建议本身，为审计与模型行为分析提供依据。</li>
+          <li><b>证据链确定性去重合并：</b>证据以<span class="mono">evidenceId</span>/<span class="mono">reference</span>/<span class="mono">name</span>作为身份键，在运行时事实证据、结论生成模型输出之间去重合并，避免同一证据因多次接口返回或模型重复提及而在最终结论中重复列示，也避免模型遗漏证据导致证据链缺失。</li>
+          <li><b>结论核验式归并而非覆盖式采信：</b>最终结论生成后，系统以运行时台账数据为"事实基线"，与大模型输出的结论文本进行合并：模型返回为空或格式不规范时以台账数据兜底重建（如根据<span class="mono">facts.reportItem</span>与<span class="mono">contributors</span>重建关键指标），模型有返回时进行去重合并而非直接替换，并在<span class="mono">audit_meta</span>中记录归并后的推理条数、证据条数及各自来源，使审计人员可判断结论的哪些部分来自可复算的运行时台账、哪些部分来自模型自由生成。</li>
+          <li><b>确定性规则的可复算性：</b>规则结果统一携带<span class="mono">actual_value</span>、<span class="mono">operator</span>、<span class="mono">threshold</span>、<span class="mono">triggered</span>四元组，使任意第三方可在不依赖大模型的情况下，仅凭同批次事实数据独立重算并核验规则判定结果，从根本上避免"阈值判断被模型静默篡改"的风险。</li>
+        </ul>
+
+        <div class="callout">
+          <span class="callout-label">技术效果</span>
+          创新点二使"审计能力"不因引入大模型而倒退：结论中的强确定性部分（规则判定）可独立复算，推理依据与证据链的产生方式与去重规则是确定性的，大模型仅承担"在多个已核验合法的候选中做规划/在已核验事实基础上组织结论文本"的有限职责，且其原始建议与系统实际执行动作被同时留痕，满足财务/审计场景对"可追溯到具体规则、具体数据、具体决策节点"的合规要求。
+        </div>
+      </section>
+
+      <!-- ============ 6. 装置结构 ============ -->
+      <section class="chunk" id="sec-device">
+        <div class="eyebrow">说明书 · 发明内容（四）</div>
+        <h2>装置结构与模块划分</h2>
+        <div class="para"><span class="parano">【0014】</span>
+        与上述方法对应，本发明还提供一种财报数据异常分析Agent构建装置，包括如下功能模块，各模块可对应部署为独立服务或进程内组件：</div>
+
+        <div class="tbl-wrap">
+        <table>
+          <caption>表1　装置模块与对应职责</caption>
+          <thead><tr><th>模块</th><th>核心职责</th><th>对应创新点</th></tr></thead>
+          <tbody>
+            <tr><td>本体语义解析模块<br><span class="mono">OntologyService</span></td><td>解析五层本体（TTL/OWL），提供报表项语义上下文与核心语义关系查询</td><td>创新点一</td></tr>
+            <tr><td>知识图谱网关模块<br><span class="mono">KnowledgeGraphGateway</span></td><td>按分析请求动态组装并下发规则、Skill、WorkflowDefinition、证据要求、Planner Skill元数据</td><td>创新点一</td></tr>
+            <tr><td>事实数据网关模块<br><span class="mono">FactDataGateway</span></td><td>仅在对应Skill被选中时，按需返回整体报表事实、明细贡献项或业务证据</td><td>创新点一 / 二</td></tr>
+            <tr><td>确定性规则引擎模块<br><span class="mono">RuleEngine</span></td><td>计算阈值规则触发结果与证据完整性，产出可复算的四元组结果</td><td>创新点二</td></tr>
+            <tr><td>候选路径计算模块</td><td>依据当前节点、知识图谱执行图与规则/证据门控信号，枚举并标注本轮合法候选</td><td>创新点一</td></tr>
+            <tr><td>LLM规划模块<br><span class="mono">DynamicPlannerSkill</span></td><td>加载知识图谱声明的Planner Skill策略，在合法候选中提出下一节点/Skill</td><td>创新点二</td></tr>
+            <tr><td>运行时护栏模块<br>（Guardrail仲裁逻辑）</td><td>校验规划模块输出是否满足知识图谱与规则约束，不满足则回退并记录双轨证据</td><td>创新点二</td></tr>
+            <tr><td>Skill执行注册模块<br><span class="mono">SkillRegistry</span></td><td>将知识图谱中的Skill ID映射为可执行处理器，产出事实更新与结构化推理事件</td><td>创新点一 / 二</td></tr>
+            <tr><td>审计聚合模块<br>（Orchestrator归并逻辑）</td><td>维护运行时审计台账，执行去重、合并与最终结论核验式归并，输出<span class="mono">audit_meta</span></td><td>创新点二</td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <div class="para"><span class="parano">【0015】</span>
+        上述模块之间通过预定义的响应结构（<span class="mono">analysisMethod / rules / skills / workflowDefinition.nodes / workflowDefinition.transitions[].condition / evidenceRequirements / plannerSkill</span>）解耦，任一模块（知识图谱来源、事实数据来源、大模型提供方）均可在保持该响应结构不变的前提下被替换为生产级实现（如Neo4j/Jena、企业级数据平台、其他兼容Chat Completions协议的大模型），而不影响候选路径计算、规则引擎与审计聚合模块的正确性，体现本发明在装置层面的可移植性。</div>
+      </section>
+
+      <!-- ============ 7. 取证方法 ============ -->
+      <section class="chunk" id="sec-evidence">
+        <div class="eyebrow">说明书 · 发明内容（五）</div>
+        <h2>针对各技术点的取证方法</h2>
+        <div class="para"><span class="parano">【0016】</span>
+        为便于在权利维护（侵权比对）与内部研发留痕（先用权/在先实施证明）两类场景中固定证据，下表针对本发明两个核心创新点所涉及的可外部观测特征，给出对应的取证要点与建议载体。</div>
+
+        <div class="tbl-wrap">
+        <table>
+          <caption>表2　技术点—可观测特征—取证方式对照</caption>
+          <thead><tr><th>技术点</th><th>可外部观测的特征</th><th>建议取证方式 / 载体</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>五层本体分层结构（创新点一）</td>
+              <td>目标系统的本体/知识图谱Schema或接口返回中，是否存在可归类为"对象—事实/波动—规则/证据—方法/工作流—结论/行动"的五组语义集合，且层间通过命名的关系字段连接</td>
+              <td>导出或抓取目标系统本体文件（TTL/OWL/JSON-LD）与知识图谱查询接口返回结构；即使字段命名不同，仍可按语义角色（是否表达"规则触发动作""证据要求""工作流节点/条件边""结论回链证据"）进行等价性比对；辅以公证保全的接口访问记录固定时间点。</td>
+            </tr>
+            <tr>
+              <td>知识图谱驱动的动态执行图与条件路由（创新点一）</td>
+              <td>相同查询在不同输入数据下走出不同的实际执行路径，且路径切换点与规则阈值/证据完整性判定吻合</td>
+              <td>构造多组边界测试数据（如波动率恰好等于/略高于/略低于阈值），多次调用目标系统API或前端交互，记录并比对返回的执行路径、节点序列与规则判定结果；抓取其接口返回中的<span class="mono">nodes/transitions/condition</span>等价字段。</td>
+            </tr>
+            <tr>
+              <td>确定性规则引擎与可复算性（创新点二）</td>
+              <td>系统返回结果中，规则判定携带实际值、阈值、操作符、触发结果四要素，且同一批事实数据下重复调用结果一致</td>
+              <td>相同事实输入下多次调用（或引导模型重试）观察规则判定字段是否保持不变；独立按四要素重新计算判定结果并与系统输出比对，形成第三方复算记录。</td>
+            </tr>
+            <tr>
+              <td>Guardrail双轨仲裁记录（创新点二）</td>
+              <td>流式接口（如SSE/WebSocket）或响应日志中同时出现"模型原始建议"与"系统最终执行动作"两个字段，并伴随回退标记与理由文本</td>
+              <td>抓取并保全目标系统流式响应原始文本（如<span class="mono">Content-Type: text/event-stream</span>报文）；通过提示注入/边界用例诱导模型给出不合法建议，观察系统是否记录拒绝与回退过程；对关键接口调用做时间戳固定与哈希摘要，必要时申请第三方存证或公证。</td>
+            </tr>
+            <tr>
+              <td>结构化非CoT推理事件与去重归档（创新点二）</td>
+              <td>推理依据以带阶段（stage）与来源（source）标注的结构化条目形式对外返回或存储，且重复调用不产生重复条目</td>
+              <td>比对多轮调用返回的推理条目集合，验证其结构字段（阶段/来源/陈述）与去重行为；检查条目内容是否可逐条对应到某次规则计算或某次数据接口返回，而非泛化文本。</td>
+            </tr>
+            <tr>
+              <td>证据链确定性去重合并（创新点二）</td>
+              <td>最终证据列表中不因多次数据源返回或模型复述而重复，且模型遗漏证据时列表仍保持完整</td>
+              <td>人为构造模型输出证据不完整的场景（如降低模型可靠性、更换Provider），比较最终证据链是否仍包含运行时已获取的证据；核查证据条目是否携带可回溯的引用标识（如文档编号、分录编号）。</td>
+            </tr>
+            <tr>
+              <td>结论核验式归并与审计元数据（创新点二）</td>
+              <td>最终结论对象中存在类似<span class="mono">audit_meta</span>的统计字段，标注推理/证据条数及其来源（运行时台账 vs. 模型输出）</td>
+              <td>解析目标系统最终响应JSON结构，核查是否存在来源统计字段；结合上一行的"遗漏证据"实验，验证该统计字段是否随实际归并结果同步变化。</td>
+            </tr>
+            <tr>
+              <td>端到端可追溯标识（trace_id贯通）</td>
+              <td>一次分析请求从起始到结论的全部结构化事件与最终响应共享同一追踪标识</td>
+              <td>核对流式事件流中每条事件与最终响应中的追踪字段是否一致；作为将某次具体分析结果与其完整决策链条绑定的取证锚点。</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
+        <div class="callout seal">
+          <span class="callout-label">举证建议</span>
+          建议对关键取证过程采用"时间戳 + 原始报文哈希 + 操作录屏"三件套固定证据，并在条件允许时通过公证处或可信时间戳服务对接口原始返回（尤其是流式SSE原始文本与最终JSON响应）进行保全，避免仅凭事后转述或截图导致证据链效力不足；涉及源码比对的，应通过合法渠道（反编译、公开接口文档、已获授权的代码评审）获取，避免采用非法侵入手段取证。
+        </div>
+      </section>
+
+      <!-- ============ 8. incopat ============ -->
+      <section class="chunk" id="sec-incopat">
+        <div class="eyebrow">说明书 · 检索情况说明</div>
+        <h2>公开incopat网站的专利检索情况</h2>
+
+        <div class="callout seal">
+          <span class="callout-label">环境限制说明</span>
+          本次交底稿撰写所在的执行环境无法登录incopat（智慧芽/合享汇智）专业检索平台——该平台要求企业/机构付费账号登录及验证码交互，超出当前自动化环境可访问范围。因此下文分两部分呈现：（一）为专利代理人正式登录incopat执行检索准备的<b>检索策略与检索式</b>；（二）本环境内通过公开可访问渠道（Google Patents 等）执行的<b>替代性公开检索</b>结果，仅作新颖性初步参考，<b>不能替代</b>代理人在incopat、CNIPA专利检索及分析系统等专业平台上的正式检索与代理人核查意见。
+        </div>
+
+        <h3>建议在incopat执行的检索策略</h3>
+        <div class="para"><span class="parano">【0017】</span>
+        建议按"分类号 + 关键词"组合方式在incopat中分别针对创新点一（本体分层建模）与创新点二（可审计推理链）执行检索，并对高相关结果做同族/引证扩展。</div>
+
+        <div class="tbl-wrap">
+        <table>
+          <caption>表3　建议的incopat检索式（供代理人执行）</caption>
+          <thead><tr><th>检索目标</th><th>建议IPC/CPC分类号</th><th>建议关键词检索式（中文，示例）</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>财务/审计领域智能分析（限定行业）</td>
+              <td>G06Q 40/12；G06Q 10/10</td>
+              <td>(财务 OR 财报 OR 审计) AND (异常 OR 波动) AND (分析 OR 核查)</td>
+            </tr>
+            <tr>
+              <td>本体/知识图谱建模方法</td>
+              <td>G06F 16/36；G06N 5/02</td>
+              <td>(本体 OR 知识图谱) AND (分层 OR 层级) AND (建模 OR 语义)</td>
+            </tr>
+            <tr>
+              <td>大模型智能体+知识图谱驱动执行</td>
+              <td>G06N 5/02；G06N 3/00；G06N 20/00</td>
+              <td>(大模型 OR 大语言模型 OR LLM) AND 智能体 AND (知识图谱 OR 本体) AND (工作流 OR 执行图 OR 路径)</td>
+            </tr>
+            <tr>
+              <td>推理链/决策可审计可追溯</td>
+              <td>G06N 5/04；G06F 21/64</td>
+              <td>(推理链 OR 决策过程) AND (可审计 OR 可追溯 OR 留痕) AND (大模型 OR 智能体)</td>
+            </tr>
+            <tr>
+              <td>Guardrail/路径合法性校验</td>
+              <td>G06N 5/02；G06F 21/62</td>
+              <td>(护栏 OR Guardrail OR 校验) AND (智能体 OR Agent) AND (路径 OR 转移 OR 执行图) AND 回退</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
+        <ul class="clean">
+          <li>建议检索范围：中国专利（含实用新型）、PCT申请及美国、欧洲同族，时间跨度近10年，重点关注近3年（大模型相关技术密集申请期）。</li>
+          <li>建议对命中结果按"是否同时覆盖分层本体+动态工作流""是否覆盖模型原始建议与系统执行动作双轨留痕"两个维度做人工复核分级，形成正式的新颖性/创造性检索报告。</li>
+          <li>建议在incopat中追加申请人维度检索（如主要云厂商、审计软件厂商、四大会计师事务所关联专利主体），排查产业界是否已有类似"知识图谱驱动Agent执行图 + 双轨审计"的组合方案。</li>
+        </ul>
+
+        <h3>本环境内已执行的公开替代检索（供交叉参考）</h3>
+        <div class="para"><span class="parano">【0018】</span>
+        在无法访问incopat的条件下，本环境通过公开网络检索（含Google Patents公开页面）进行了替代性检索，命中的代表性专利文献将在下一节"附：专利文献分析"中列出并逐一比对。该检索为公开、免费渠道所得，检索式覆盖面与查全率均弱于incopat等专业平台，仅用于初步排查是否存在明显在先公开的相同方案，其结果不构成正式的新颖性/创造性结论。</div>
+      </section>
+
+      <!-- ============ 9. 专利文献分析 ============ -->
+      <section class="chunk" id="sec-analysis">
+        <div class="eyebrow">附录</div>
+        <h2>附：专利文献分析</h2>
+        <div class="para"><span class="parano">【0019】</span>
+        以下专利文献均通过公开渠道（Google Patents公开页面）检索获得，逐一与本发明的两个核心创新点进行比对，说明区别技术特征。</div>
+
+        <div class="tbl-wrap">
+        <table>
+          <caption>表4　代表性公开专利文献比对</caption>
+          <thead><tr><th>公开号</th><th>名称（概要）</th><th>技术要点</th><th>与本发明的区别</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="mono">CN102496073A</td>
+              <td>财务舞弊审计辅助系统及辅助审计方法</td>
+              <td>检索数据异常相关信息，对可疑数据做统计分析，为审计专业判断提供支持</td>
+              <td>未建模本体分层语义，规则与流程固化于系统内部；不涉及大模型规划、Guardrail双轨仲裁或推理链去重归并机制。</td>
+            </tr>
+            <tr>
+              <td class="mono">CN104217276A</td>
+              <td>基于规则的自动化审计方法及系统</td>
+              <td>支持以自然语言自定义审计规则，自动从业务数据中发现异常，提升审计效率</td>
+              <td>规则由人工以自然语言定义后固化执行，不存在本体/知识图谱下发的动态可执行工作流，也未涉及模型原始建议与系统执行动作的双轨留痕。</td>
+            </tr>
+            <tr>
+              <td class="mono">CN118628263A</td>
+              <td>财务审计方法、装置、设备、介质及产品（大模型辅助审计分析）</td>
+              <td>引入大语言模型参与财务审计分析</td>
+              <td>侧重大模型分析能力本身，未见五层本体分层建模方法，亦未见"结论核验式归并+audit_meta来源统计"的确定性审计闭环设计。</td>
+            </tr>
+            <tr>
+              <td class="mono">CN117114521A</td>
+              <td>基于大模型和知识图谱的企业辅助决策系统</td>
+              <td>包含大模型训练模块、知识图谱构建模块与业务知识库，用于企业人员工作赋能</td>
+              <td>知识图谱用于知识检索增强，未建模规则触发动作、证据要求与条件执行图；不涉及运行时Guardrail对模型路径选择的合法性强校验。</td>
+            </tr>
+            <tr>
+              <td class="mono">CN119377360B</td>
+              <td>基于大语言模型协同知识图谱的AI Agent智能体及其实现方法</td>
+              <td>大语言模型与知识图谱协同，提升Agent决策的可靠性</td>
+              <td>未见"知识图谱下发的候选路径—确定性规则门控—Planner在候选内选择—Guardrail强制回退"这一闭环设计，也未见双轨决策记录与证据链去重归并的具体方法。</td>
+            </tr>
+            <tr>
+              <td class="mono">CN109657947A</td>
+              <td>一种面向企业行业分类的异常检测方法</td>
+              <td>面向企业行业分类场景的异常检测</td>
+              <td>属于统计/机器学习异常检测范畴，不涉及本体建模、知识图谱驱动的动态工作流或大模型Planner/Guardrail机制。</td>
+            </tr>
+            <tr>
+              <td class="mono">CN115001814B</td>
+              <td>基于机器学习的安全审计方法及系统</td>
+              <td>基于操作日志（操作人、IP、时间戳等）的数据库安全审计与问题溯源</td>
+              <td>面向系统操作层面的确定性日志审计，不涉及大模型自由裁量决策的双轨留痕，也未涉及财报异常分析领域本体。</td>
+            </tr>
+            <tr>
+              <td class="mono">CN106936818A</td>
+              <td>基于区块链技术的数据审计方法</td>
+              <td>基于Merkle树等区块链技术验证分布式节点间数据完整性</td>
+              <td>解决的是数据完整性存证问题，与"模型决策路径合法性校验"及"推理链结构化归并"技术问题不同，可作为本发明审计台账持久化层的可选底层存储技术，而非替代方案。</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
+        <div class="para"><span class="parano">【0020】</span>
+        综合比对可见，公开渠道检索到的现有专利文献分别落在"传统规则化审计系统""大模型辅助财务分析""大模型协同知识图谱Agent""操作日志/区块链审计存证"四个方向，尚未检索到同时具备"财报异常分析领域五层本体分层建模（对象—事实/波动—规则/事理与证据—方法/可执行工作流—结论/行动）"与"运行时Planner原始建议和Guardrail仲裁结果双轨留痕、结构化推理与证据链确定性去重归并"两项组合特征的现有技术方案，初步判断本发明具备新颖性与创造性基础；正式结论仍需以incopat及CNIPA专利检索及分析系统的专业检索报告为准。</div>
+      </section>
+
+      <!-- ============ 10. 有益效果 ============ -->
+      <section class="chunk" id="sec-effect">
+        <div class="eyebrow">说明书 · 有益效果</div>
+        <h2>有益效果与保护范围建议</h2>
+        <div class="kv-grid">
+          <div class="kv-card">
+            <h4>扩展性</h4>
+            <p>新增报表项、规则或证据类型仅需增补本体/知识图谱实例，Agent运行时代码无需改动即可支持新分析场景。</p>
+          </div>
+          <div class="kv-card">
+            <h4>确定性与可控性</h4>
+            <p>强确定性判断（阈值触发、证据完整性）由规则引擎独立计算，不受大模型输出波动影响，且可第三方复算。</p>
+          </div>
+          <div class="kv-card">
+            <h4>路径合法性强约束</h4>
+            <p>Guardrail确保任何时候实际执行的路径都是知识图谱当前授权的合法候选，杜绝模型"越权"执行。</p>
+          </div>
+          <div class="kv-card">
+            <h4>审计完整性</h4>
+            <p>推理依据与证据链的产生、去重、归并规则均为确定性代码逻辑，最终结论不因模型漏字段而丢失可追溯性。</p>
+          </div>
+          <div class="kv-card">
+            <h4>决策可回放</h4>
+            <p>模型原始建议与系统实际执行动作双轨留痕，支持事后复盘模型行为与系统纠偏过程，便于持续评估与治理。</p>
+          </div>
+          <div class="kv-card">
+            <h4>可移植性</h4>
+            <p>知识图谱来源、事实数据来源与大模型Provider均可在保持既定响应结构前提下独立替换为生产级实现。</p>
+          </div>
+        </div>
+
+        <div class="para"><span class="parano">【0021】</span>
+        建议独立权利要求围绕"五层本体分层建模方法（方法权利要求）"与"基于运行时审计台账的推理链归并方法（方法权利要求）"分别撰写，并以"实现上述方法的装置/系统"撰写对应的装置权利要求；从属权利要求可分别限定：层间对象属性的具体语义类型、规则四元组结构、Guardrail双轨记录的具体字段、证据去重键的具体构成、结论归并时的兜底重建规则等，以获得较为完整的保护梯度。最终权利要求措辞、独立/从属关系及保护范围划定，建议由专利代理人结合正式检索报告确定。</div>
+
+        <hr class="rule">
+        <p class="pill-row">
+          <span class="pill">trace_id</span>
+          <span class="pill">五层本体 L1–L5</span>
+          <span class="pill">WorkflowDefinition</span>
+          <span class="pill">Rule Engine</span>
+          <span class="pill">Runtime Guardrail</span>
+          <span class="pill">audit_reasoning</span>
+          <span class="pill">evidence_chain</span>
+          <span class="pill">audit_meta</span>
+        </p>
+      </section>
+
+      <footer class="doc-foot">
+        技术交底稿 · 依据代码仓库 cat-coco/ontology 源码复核撰写 · 2026-08-28<br>
+        本文档不构成正式法律意见，最终以专利代理人完成的说明书、权利要求书及正式检索报告为准。
+      </footer>
+
+    </article>
+  </div>
+</div>

@@ -520,7 +520,7 @@
                 <line x1="290" y1="288" x2="290" y2="324" stroke="currentColor" marker-end="url(#fa1)"/>
 
                 <rect x="80" y="326" width="420" height="58" rx="3" fill="none" stroke="currentColor"/>
-                <text x="290" y="350" text-anchor="middle">Runtime Guardrail（图4）</text>
+                <text x="290" y="350" text-anchor="middle">Runtime Guardrail（图6）</text>
                 <text x="290" y="368" text-anchor="middle" font-size="11" opacity=".75">校验合法性；不满足则回退并记录 guardrail_fallback</text>
 
                 <line x1="290" y1="384" x2="290" y2="420" stroke="currentColor" marker-end="url(#fa1)"/>
@@ -557,7 +557,7 @@
                   <text x="690" y="342">evidence_chain（去重合并）</text>
                 </g>
                 <line x1="810" y1="360" x2="810" y2="392" stroke="currentColor" stroke-dasharray="2 3"/>
-                <text x="810" y="420" text-anchor="middle" font-size="11">↕ 与 图3 归并逻辑对应</text>
+                <text x="810" y="420" text-anchor="middle" font-size="11">↕ 与 图5 归并逻辑对应</text>
 
                 <line x1="500" y1="259" x2="655" y2="230" stroke="currentColor" stroke-dasharray="3 3" opacity=".6" marker-end="url(#fa1d)"/>
                 <line x1="500" y1="355" x2="655" y2="290" stroke="currentColor" stroke-dasharray="3 3" opacity=".6" marker-end="url(#fa1d)"/>
@@ -567,7 +567,7 @@
                 <!-- final -->
                 <rect x="660" y="600" width="300" height="70" rx="3" fill="none" stroke="var(--seal)" class="accent" stroke-width="1.4"/>
                 <text x="810" y="628" text-anchor="middle" class="accent" font-weight="600">可审计最终结论</text>
-                <text x="810" y="648" text-anchor="middle" font-size="11" class="accent" opacity=".85">final_report + audit_meta（图3）</text>
+                <text x="810" y="648" text-anchor="middle" font-size="11" class="accent" opacity=".85">final_report + audit_meta（图5）</text>
                 <line x1="810" y1="580" x2="810" y2="596" stroke="currentColor" marker-end="url(#fa1)"/>
               </g>
             </svg>
@@ -664,12 +664,274 @@
           <figcaption><b>图2</b>　五层本体分层模型：五个语义层自上而下依次对应"对象是谁—发生了什么—为什么/有无证据—怎样分析—得出什么结论与行动"；层间连线为本体中实际定义的对象属性，右侧标注各层在运行时被哪个组件读取或产出，体现"知识层与执行层解耦、以本体属性作为可追溯边"的技术效果。</figcaption>
         </figure>
 
+        <h3>本体Schema：核心类、子类层级与对象属性</h3>
+        <div class="para"><span class="parano">【0012a】</span>
+        对<span class="mono">financial_report_anomaly_ontology.ttl</span>逐条复核可见，该本体并非仅按五层做粗粒度分组，还在多处显式声明了<span class="mono">rdfs:subClassOf</span>子类层级：<span class="mono">BalanceFact</span>与<span class="mono">DetailData</span>均为<span class="mono">FactData</span>的子类，<span class="mono">JournalEntry</span>进一步是<span class="mono">DetailData</span>的子类；<span class="mono">ThresholdRule</span>是<span class="mono">Rule</span>的子类；<span class="mono">DocumentEvidence</span>、<span class="mono">DataEvidence</span>均为<span class="mono">Evidence</span>的子类；<span class="mono">PlannerSkill</span>是<span class="mono">Skill</span>的子类。同时本体以<span class="mono">owl:ObjectProperty</span>显式声明了约30个跨类关系的<span class="mono">rdfs:domain</span>/<span class="mono">rdfs:range</span>。图3给出该本体在Schema层面的类—子类—对象属性总览，逐一对应TTL文件中的类与属性声明，是"五层本体"在语法结构层面的可验证依据（可与本体文件逐行核对）。</div>
+
+        <figure>
+          <div class="fig-frame">
+            <svg viewBox="0 0 1250 940" role="img" aria-label="本体Schema图：核心类按五层分布，空心三角箭头表示rdfs:subClassOf子类关系，实心箭头表示带标签的对象属性关系，右下角为图例">
+              <defs>
+                <marker id="fa5p" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="currentColor"/></marker>
+                <marker id="fa5h" markerWidth="11" markerHeight="9" refX="9" refY="4.5" orient="auto"><polygon points="0,0 10,4.5 0,9" fill="none" stroke="currentColor"/></marker>
+                <marker id="fa5a" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><polygon class="accent-fill" points="0,0 8,4 0,8"/></marker>
+              </defs>
+              <g font-size="11.5">
+                <!-- L1 -->
+                <rect x="40" y="30" width="190" height="48" rx="3" fill="none" stroke="currentColor"/>
+                <text x="135" y="49" text-anchor="middle" font-weight="600">FinancialEntity</text>
+                <text x="135" y="66" text-anchor="middle" font-size="10.5" opacity=".7">L1</text>
+                <rect x="300" y="30" width="170" height="48" rx="3" fill="none" stroke="currentColor"/>
+                <text x="385" y="49" text-anchor="middle" font-weight="600">Report</text>
+                <text x="385" y="66" text-anchor="middle" font-size="10.5" opacity=".7">L1</text>
+                <rect x="540" y="30" width="200" height="48" rx="3" fill="none" stroke="currentColor"/>
+                <text x="640" y="49" text-anchor="middle" font-weight="600">ReportItem</text>
+                <text x="640" y="66" text-anchor="middle" font-size="10.5" opacity=".7">L1</text>
+                <rect x="800" y="30" width="410" height="48" rx="3" fill="none" stroke="currentColor" stroke-dasharray="3 3" opacity=".8"/>
+                <text x="1005" y="49" text-anchor="middle" opacity=".85">COAAccount · Period · Currency · DataSource · Dimension</text>
+                <text x="1005" y="66" text-anchor="middle" font-size="10" opacity=".65">经 mapsToAccount/occursInPeriod/usesCurrency/hasDataSource 关联，详见表5</text>
+
+                <line x1="230" y1="54" x2="296" y2="54" stroke="currentColor" marker-end="url(#fa5p)"/>
+                <text x="263" y="46" text-anchor="middle" font-size="10.5" class="mono-text">preparesReport</text>
+                <line x1="470" y1="54" x2="536" y2="54" stroke="currentColor" marker-end="url(#fa5p)"/>
+                <text x="503" y="46" text-anchor="middle" font-size="10.5" class="mono-text">containsReportItem</text>
+
+                <!-- L2 -->
+                <rect x="545" y="150" width="190" height="44" rx="3" fill="none" stroke="currentColor"/>
+                <text x="640" y="176" text-anchor="middle" font-weight="600">FactData</text>
+                <rect x="350" y="224" width="170" height="44" rx="3" fill="none" stroke="currentColor"/>
+                <text x="435" y="250" text-anchor="middle">BalanceFact</text>
+                <rect x="545" y="224" width="190" height="44" rx="3" fill="none" stroke="currentColor"/>
+                <text x="640" y="250" text-anchor="middle">DetailData</text>
+                <rect x="545" y="286" width="190" height="44" rx="3" fill="none" stroke="currentColor"/>
+                <text x="640" y="312" text-anchor="middle">JournalEntry</text>
+                <rect x="800" y="200" width="200" height="60" rx="3" fill="none" stroke="currentColor" stroke-width="1.3"/>
+                <text x="900" y="222" text-anchor="middle" font-weight="600">Fluctuation</text>
+                <text x="900" y="240" text-anchor="middle" font-size="10" class="mono-text" opacity=".8">currentAmount / previousAmount</text>
+                <text x="900" y="253" text-anchor="middle" font-size="10" class="mono-text" opacity=".8">changeAmount / changeRate</text>
+                <text x="775" y="184" font-size="10.5" opacity=".7">L2</text>
+
+                <line x1="640" y1="78" x2="640" y2="146" stroke="currentColor" marker-end="url(#fa5p)"/>
+                <text x="654" y="118" font-size="10.5" class="mono-text">sourcedFrom</text>
+                <line x1="740" y1="78" x2="850" y2="196" stroke="currentColor" marker-end="url(#fa5p)"/>
+                <text x="770" y="130" font-size="10.5" class="mono-text">hasFluctuation</text>
+                <line x1="450" y1="224" x2="565" y2="196" stroke="currentColor" marker-end="url(#fa5h)"/>
+                <line x1="640" y1="224" x2="640" y2="198" stroke="currentColor" marker-end="url(#fa5h)"/>
+                <line x1="640" y1="286" x2="640" y2="272" stroke="currentColor" marker-end="url(#fa5h)"/>
+
+                <!-- L3 -->
+                <rect x="800" y="380" width="200" height="44" rx="3" fill="none" stroke="currentColor"/>
+                <text x="900" y="406" text-anchor="middle" font-weight="600">Rule</text>
+                <rect x="800" y="444" width="200" height="44" rx="3" fill="none" stroke="currentColor"/>
+                <text x="900" y="470" text-anchor="middle">ThresholdRule</text>
+                <rect x="340" y="380" width="210" height="44" rx="3" fill="none" stroke="currentColor"/>
+                <text x="445" y="406" text-anchor="middle" font-weight="600">BusinessEvent</text>
+                <rect x="280" y="444" width="190" height="44" rx="3" fill="none" stroke="currentColor"/>
+                <text x="375" y="470" text-anchor="middle" font-weight="600">Evidence</text>
+                <rect x="120" y="508" width="190" height="44" rx="3" fill="none" stroke="currentColor"/>
+                <text x="215" y="534" text-anchor="middle">DocumentEvidence</text>
+                <rect x="330" y="508" width="190" height="44" rx="3" fill="none" stroke="currentColor"/>
+                <text x="425" y="534" text-anchor="middle">DataEvidence</text>
+                <text x="260" y="364" font-size="10.5" opacity=".7">L3</text>
+
+                <line x1="900" y1="260" x2="900" y2="376" stroke="currentColor" marker-end="url(#fa5p)"/>
+                <text x="914" y="320" font-size="10.5" class="mono-text">detectedBy</text>
+                <line x1="500" y1="380" x2="820" y2="266" stroke="currentColor" marker-end="url(#fa5p)"/>
+                <text x="650" y="300" font-size="10.5" class="mono-text">causesFluctuation</text>
+                <line x1="900" y1="444" x2="900" y2="428" stroke="currentColor" marker-end="url(#fa5h)"/>
+                <line x1="445" y1="424" x2="400" y2="440" stroke="currentColor" marker-end="url(#fa5p)"/>
+                <text x="470" y="440" font-size="10.5" class="mono-text">supportedBy</text>
+                <line x1="215" y1="508" x2="330" y2="484" stroke="currentColor" marker-end="url(#fa5h)"/>
+                <line x1="425" y1="508" x2="405" y2="492" stroke="currentColor" marker-end="url(#fa5h)"/>
+
+                <!-- L4 -->
+                <rect x="470" y="610" width="210" height="44" rx="3" fill="none" stroke="currentColor"/>
+                <text x="575" y="636" text-anchor="middle" font-weight="600">AnalysisMethod</text>
+                <rect x="780" y="610" width="160" height="44" rx="3" fill="none" stroke="currentColor"/>
+                <text x="860" y="636" text-anchor="middle" font-weight="600">Skill</text>
+                <rect x="780" y="674" width="160" height="44" rx="3" fill="none" stroke="currentColor"/>
+                <text x="860" y="700" text-anchor="middle">PlannerSkill</text>
+                <rect x="1000" y="610" width="200" height="44" rx="3" fill="none" stroke="currentColor"/>
+                <text x="1100" y="636" text-anchor="middle" font-weight="600">WorkflowDefinition</text>
+                <rect x="1000" y="674" width="200" height="44" rx="3" fill="none" stroke="currentColor"/>
+                <text x="1100" y="700" text-anchor="middle">WorkflowNode</text>
+                <rect x="1000" y="738" width="200" height="44" rx="3" fill="none" stroke="currentColor"/>
+                <text x="1100" y="764" text-anchor="middle">WorkflowTransition</text>
+                <text x="500" y="594" font-size="10.5" opacity=".7">L4</text>
+
+                <line x1="680" y1="632" x2="776" y2="632" stroke="currentColor" marker-end="url(#fa5p)"/>
+                <text x="728" y="624" text-anchor="middle" font-size="10.5" class="mono-text">implementedBySkill</text>
+                <path d="M 620 610 L 620 592 L 1100 592 L 1100 606" fill="none" stroke="currentColor" marker-end="url(#fa5p)"/>
+                <text x="860" y="586" text-anchor="middle" font-size="10.5" class="mono-text">hasWorkflow</text>
+                <line x1="860" y1="674" x2="860" y2="658" stroke="currentColor" marker-end="url(#fa5h)"/>
+                <line x1="1100" y1="654" x2="1100" y2="670" stroke="currentColor" marker-end="url(#fa5p)"/>
+                <text x="1114" y="666" font-size="10.5" class="mono-text">hasNode</text>
+                <path d="M 1195 654 C 1235 690, 1235 720, 1195 758" fill="none" stroke="currentColor" marker-end="url(#fa5p)"/>
+                <text x="1200" y="706" font-size="10.5" class="mono-text">hasTransition</text>
+                <line x1="1000" y1="696" x2="940" y2="650" stroke="currentColor" marker-end="url(#fa5p)"/>
+                <text x="955" y="686" font-size="10.5" class="mono-text">executesSkill</text>
+                <path d="M 1000 770 C 700 800, 700 480, 950 428" fill="none" stroke="currentColor" stroke-dasharray="4 3" marker-end="url(#fa5p)"/>
+                <text x="720" y="560" font-size="10.5" class="mono-text">governedByRule</text>
+
+                <!-- L5 -->
+                <rect x="380" y="840" width="200" height="48" rx="3" fill="none" stroke="currentColor"/>
+                <text x="480" y="862" text-anchor="middle" font-weight="600">AnalysisTask</text>
+                <text x="480" y="878" text-anchor="middle" font-size="10.5" opacity=".7">L5</text>
+                <rect x="650" y="840" width="170" height="48" rx="3" fill="none" stroke="currentColor"/>
+                <text x="735" y="862" text-anchor="middle" font-weight="600">Conclusion</text>
+                <rect x="890" y="840" width="220" height="48" rx="3" fill="none" stroke="currentColor"/>
+                <text x="1000" y="862" text-anchor="middle" font-weight="600">ActionRecommendation</text>
+
+                <line x1="500" y1="840" x2="565" y2="658" stroke="currentColor" marker-end="url(#fa5p)"/>
+                <text x="500" y="760" font-size="10.5" class="mono-text">usesAnalysisMethod</text>
+                <line x1="580" y1="864" x2="646" y2="864" stroke="currentColor" marker-end="url(#fa5p)"/>
+                <text x="613" y="856" text-anchor="middle" font-size="10.5" class="mono-text">producesConclusion</text>
+                <line x1="820" y1="864" x2="886" y2="864" stroke="currentColor" marker-end="url(#fa5p)"/>
+                <text x="853" y="856" text-anchor="middle" font-size="10.5" class="mono-text">recommendsAction</text>
+                <path d="M 650 848 C 480 760, 420 600, 380 490" fill="none" stroke="currentColor" stroke-width="1.6" marker-end="url(#fa5a)" class="accent"/>
+                <text x="430" y="700" font-size="11" class="mono-text accent" font-weight="600">basedOnEvidence（回链L3，闭环）</text>
+
+                <!-- legend -->
+                <g transform="translate(40,900)" font-size="10.5" opacity=".85">
+                  <line x1="0" y1="0" x2="34" y2="0" stroke="currentColor" marker-end="url(#fa5p)"/>
+                  <text x="42" y="4">对象属性（箭头旁为属性名，对应owl:ObjectProperty）</text>
+                  <line x1="430" y1="0" x2="464" y2="0" stroke="currentColor" marker-end="url(#fa5h)"/>
+                  <text x="472" y="4">子类关系 rdfs:subClassOf（是一种）</text>
+                  <line x1="760" y1="0" x2="794" y2="0" stroke="currentColor" stroke-width="1.6" class="accent" marker-end="url(#fa5a)"/>
+                  <text x="802" y="4" class="accent">结论回链证据，形成审计闭环</text>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <figcaption><b>图3</b>　本体Schema：核心类、子类层级与对象属性总览。图中类框按图2的五层分布，空心箭头表示<span class="mono">rdfs:subClassOf</span>子类层级（如FactData⊐BalanceFact/DetailData⊐JournalEntry），实心箭头为带标签的对象属性；<span class="mono">basedOnEvidence</span>从L5结论回链至L3证据，是本体在Schema层面即约束"结论必须指向证据"的直接体现。</figcaption>
+        </figure>
+
+        <div class="tbl-wrap">
+        <table>
+          <caption>表5　本体核心数据类型属性（Datatype Property）示例</caption>
+          <thead><tr><th>所属类</th><th>关键属性</th><th>取值示例（取自TTL实例）</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">Fluctuation</td><td class="mono">currentAmount / previousAmount / changeAmount / changeRate</td><td class="mono">100000000 / 74074074.07 / 25925925.93 / 0.35</td></tr>
+            <tr><td class="mono">ThresholdRule</td><td class="mono">metric / operator / thresholdValue / triggerAction</td><td class="mono">changeRate / ">=" / 0.20 / "OPEN_DETAIL_ANALYSIS"</td></tr>
+            <tr><td class="mono">Evidence</td><td class="mono">evidenceRef</td><td class="mono">"DOC://subsidy/2026/2821G/approval"</td></tr>
+            <tr><td class="mono">Conclusion</td><td class="mono">confidence</td><td>结论置信度（0～1）</td></tr>
+            <tr><td class="mono">AnalysisStep / WorkflowTransition</td><td class="mono">stepOrder / conditionType / expectedBoolean</td><td class="mono">"rule_triggered" / true｜false</td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <h3>本体实例化：以0021G/DCF0103政府补助场景为例</h3>
+        <div class="para"><span class="parano">【0012b】</span>
+        同一TTL文件中还给出一套与README所述四个可复现场景对应的示例实例数据（Master Data / Fact / Fluctuation / Rule / BusinessEvent / Evidence / Conclusion实例）。图4以该示例实例为原型，绘出从"公司—报表—报表项"到"波动事实—规则—业务事件—证据—结论—行动"的一条完整实例化路径；图中编码（如<span class="mono">DCF0103</span>、<span class="mono">RULE_DCF0103_OVERALL_20</span>、<span class="mono">EVD_SUBSIDY_APPROVAL</span>）均直接取自本体文件，可与知识图谱查询接口的实际返回逐字段核对，构成本发明"充分公开、可实施"的具体依据。</div>
+
+        <figure>
+          <div class="fig-frame">
+            <svg viewBox="0 0 1200 700" role="img" aria-label="DCF0103场景本体实例图：展示公司、报表、报表项、事实、波动、规则、业务事件、证据、结论与行动实例之间取自本体文件的真实关系">
+              <defs>
+                <marker id="fa6" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="currentColor"/></marker>
+              </defs>
+              <g font-size="11.5">
+                <rect x="30" y="30" width="190" height="48" rx="3" fill="none" stroke="currentColor"/>
+                <text x="125" y="49" text-anchor="middle" font-weight="600">Entity_0021G</text>
+                <text x="125" y="66" text-anchor="middle" font-size="10" class="mono-text" opacity=".75">code="0021G"</text>
+
+                <rect x="260" y="30" width="200" height="48" rx="3" fill="none" stroke="currentColor"/>
+                <text x="360" y="49" text-anchor="middle" font-weight="600">CashFlowStatement</text>
+                <text x="360" y="66" text-anchor="middle" font-size="10" class="mono-text" opacity=".75">code="CFS"</text>
+
+                <rect x="500" y="30" width="230" height="48" rx="3" fill="none" stroke="currentColor"/>
+                <text x="615" y="49" text-anchor="middle" font-weight="600">ReportItem_DCF0103</text>
+                <text x="615" y="66" text-anchor="middle" font-size="10" class="mono-text" opacity=".75">code="DCF0103" 收到的政府补助</text>
+
+                <rect x="940" y="30" width="220" height="48" rx="3" fill="none" stroke="currentColor" stroke-dasharray="3 3"/>
+                <text x="1050" y="49" text-anchor="middle" font-weight="600">Entity_2821G</text>
+                <text x="1050" y="66" text-anchor="middle" font-size="10" class="mono-text" opacity=".75">code="2821G" 主要贡献实体</text>
+
+                <line x1="220" y1="54" x2="256" y2="54" stroke="currentColor" marker-end="url(#fa6)"/>
+                <text x="238" y="46" text-anchor="middle" font-size="10" class="mono-text">preparesReport</text>
+                <line x1="460" y1="54" x2="496" y2="54" stroke="currentColor" marker-end="url(#fa6)"/>
+                <text x="478" y="46" text-anchor="middle" font-size="10" class="mono-text">containsReportItem</text>
+
+                <rect x="470" y="150" width="280" height="100" rx="3" fill="none" stroke="currentColor"/>
+                <text x="610" y="172" text-anchor="middle" font-weight="600" font-size="11">sourcedFrom（三类事实实例）</text>
+                <text x="610" y="192" text-anchor="middle" font-size="9.5" class="mono-text" opacity=".8">Balance_DCF0103_0021G_2026P06 (BalanceFact)</text>
+                <text x="610" y="209" text-anchor="middle" font-size="9.5" class="mono-text" opacity=".8">Detail_DCF0103_2821G_2026P06 (DetailData)</text>
+                <text x="610" y="226" text-anchor="middle" font-size="9.5" class="mono-text" opacity=".8">Journal_2821G_GovSubsidy_001 (JournalEntry)</text>
+
+                <rect x="830" y="140" width="290" height="120" rx="3" fill="none" stroke="currentColor" stroke-width="1.3"/>
+                <text x="975" y="162" text-anchor="middle" font-weight="600">Fluctuation_DCF0103_0021G_2026P06</text>
+                <text x="975" y="182" text-anchor="middle" font-size="10" class="mono-text" opacity=".8">currentAmount=100,000,000</text>
+                <text x="975" y="199" text-anchor="middle" font-size="10" class="mono-text" opacity=".8">previousAmount=74,074,074.07</text>
+                <text x="975" y="216" text-anchor="middle" font-size="10" class="mono-text" opacity=".8">changeRate=0.35</text>
+                <text x="975" y="235" text-anchor="middle" font-size="10" opacity=".75">hasMajorContributor → Entity_2821G</text>
+
+                <line x1="615" y1="78" x2="610" y2="146" stroke="currentColor" marker-end="url(#fa6)"/>
+                <text x="624" y="118" font-size="10" class="mono-text">sourcedFrom</text>
+                <line x1="700" y1="78" x2="900" y2="136" stroke="currentColor" marker-end="url(#fa6)"/>
+                <text x="750" y="102" font-size="10" class="mono-text">hasFluctuation</text>
+                <path d="M 1100 140 C 1090 100, 1075 85, 1055 78" fill="none" stroke="currentColor" marker-end="url(#fa6)"/>
+                <text x="1120" y="115" font-size="10" class="mono-text">hasMajorContributor</text>
+
+                <rect x="830" y="330" width="290" height="60" rx="3" fill="none" stroke="currentColor"/>
+                <text x="975" y="352" text-anchor="middle" font-weight="600">Rule_DCF0103_Overall20</text>
+                <text x="975" y="370" text-anchor="middle" font-size="10" class="mono-text" opacity=".8">changeRate >= 0.20 → OPEN_DETAIL_ANALYSIS</text>
+
+                <rect x="830" y="410" width="290" height="70" rx="3" fill="none" stroke="currentColor" stroke-dasharray="3 3"/>
+                <text x="975" y="430" text-anchor="middle" font-weight="600">Rule_DCF0103_Detail50</text>
+                <text x="975" y="448" text-anchor="middle" font-size="9.5" opacity=".8">majorContributorChangeRate > 0.50</text>
+                <text x="975" y="463" text-anchor="middle" font-size="9" opacity=".7">未静态detectedBy关联，triggered由运行时Rule Engine计算</text>
+
+                <line x1="975" y1="260" x2="975" y2="326" stroke="currentColor" marker-end="url(#fa6)"/>
+                <text x="989" y="298" font-size="10" class="mono-text">detectedBy</text>
+
+                <rect x="280" y="330" width="300" height="50" rx="3" fill="none" stroke="currentColor"/>
+                <text x="430" y="352" text-anchor="middle" font-weight="600">Event_NewEnergySubsidy_2026P06</text>
+                <text x="430" y="368" text-anchor="middle" font-size="9.5" opacity=".75">新能源建设项目补贴到账</text>
+
+                <path d="M 580 340 C 700 300, 780 260, 826 210" fill="none" stroke="currentColor" marker-end="url(#fa6)"/>
+                <text x="640" y="290" font-size="10" class="mono-text">causesFluctuation</text>
+
+                <rect x="90" y="500" width="270" height="50" rx="3" fill="none" stroke="currentColor"/>
+                <text x="225" y="522" text-anchor="middle" font-weight="600" font-size="11">Evidence_SubsidyApproval</text>
+                <text x="225" y="538" text-anchor="middle" font-size="9.5" class="mono-text" opacity=".75">DocumentEvidence · 补贴批复文件</text>
+
+                <rect x="390" y="500" width="270" height="50" rx="3" fill="none" stroke="currentColor"/>
+                <text x="525" y="522" text-anchor="middle" font-weight="600" font-size="11">Evidence_JournalEntry</text>
+                <text x="525" y="538" text-anchor="middle" font-size="9.5" class="mono-text" opacity=".75">DataEvidence · ERP到账分录</text>
+
+                <line x1="360" y1="380" x2="240" y2="496" stroke="currentColor" marker-end="url(#fa6)"/>
+                <text x="270" y="450" font-size="10" class="mono-text">supportedBy</text>
+                <line x1="430" y1="380" x2="490" y2="496" stroke="currentColor" marker-end="url(#fa6)"/>
+                <text x="470" y="450" font-size="10" class="mono-text">supportedBy</text>
+
+                <rect x="90" y="600" width="300" height="52" rx="3" fill="none" stroke="currentColor"/>
+                <text x="240" y="622" text-anchor="middle" font-weight="600" font-size="11">Conclusion_DCF0103_Reasonable</text>
+                <text x="240" y="640" text-anchor="middle" font-size="9.5" opacity=".75">DCF0103波动合理</text>
+
+                <rect x="440" y="600" width="280" height="52" rx="3" fill="none" stroke="currentColor"/>
+                <text x="580" y="622" text-anchor="middle" font-weight="600" font-size="11">Action_NoExceptionHandling</text>
+                <text x="580" y="640" text-anchor="middle" font-size="9.5" opacity=".75">无需异常处置，持续监控</text>
+
+                <line x1="225" y1="550" x2="235" y2="596" stroke="currentColor" marker-end="url(#fa6)"/>
+                <text x="248" y="580" font-size="10" class="mono-text">basedOnEvidence</text>
+                <line x1="500" y1="550" x2="400" y2="596" stroke="currentColor" marker-end="url(#fa6)"/>
+                <text x="470" y="580" font-size="10" class="mono-text">basedOnEvidence</text>
+                <line x1="390" y1="622" x2="436" y2="622" stroke="currentColor" marker-end="url(#fa6)"/>
+                <text x="413" y="614" text-anchor="middle" font-size="10" class="mono-text">recommendsAction</text>
+              </g>
+            </svg>
+          </div>
+          <figcaption><b>图4</b>　DCF0103场景本体实例图谱：图中各实例编码均取自本体文件，展示了图3所示Schema在一个真实分析场景中的完整实例化路径。<span class="mono">Rule_DCF0103_Detail50</span>以虚线标出，是因为其触发结果不作为静态三元组固化在本体中，而是由运行时规则引擎结合数据工坊返回的贡献项波动率动态计算得出——这一"静态语义入本体、动态判定入运行时"的分工，是本体与运行时职责边界的直接体现，也是图5可审计推理链得以成立的前提。</figcaption>
+        </figure>
+
         <h3>关键技术特征</h3>
         <ul class="clean">
           <li><b>层内可扩展、层间强约束：</b>每一层内的类（Class）可自由新增实例（如新增报表项、新增规则、新增证据类型），但跨层连接必须使用既定的对象属性（如<span class="mono">detectedBy</span>、<span class="mono">governedByRule</span>、<span class="mono">basedOnEvidence</span>），从而保证不同报表项、不同分析场景的本体实例在结构上保持一致，可被同一套Agent运行时无差别消费。</li>
           <li><b>L3/L4 是本体承担"驱动执行"角色的关键：</b>与仅建模静态实体关系的现有知识图谱方案不同，本发明把规则的触发动作（<span class="mono">triggerAction</span>）、证据要求、分析方法的可执行工作流节点与条件边全部纳入本体实例，知识图谱网关（KG Gateway）因此可以直接向Agent运行时下发"候选路径 + 门控条件"，而不仅是提供检索式背景知识。</li>
           <li><b>L5 回链 L3 形成闭环：</b><span class="mono">Conclusion —basedOnEvidence→ Evidence</span> 使"结论"在本体层面即被要求指向具体证据实例，为创新点二中"结论必须有运行时证据支撑"的可审计约束提供了本体层面的语义依据。</li>
           <li><b>知识图谱网关作为本体的动态视图：</b>本体（TTL/OWL）作为静态语义主档，知识图谱网关在此基础上按当前分析请求（公司、报表项、期间）实时组装并下发L3～L4层的规则、Skill、WorkflowDefinition与证据要求，使同一本体可服务多个具体分析任务而无需为每个任务复制本体文件。</li>
+          <li><b>子类层级细化消费粒度：</b>五层内部通过<span class="mono">rdfs:subClassOf</span>进一步细分（<span class="mono">FactData</span>⊐<span class="mono">BalanceFact</span>/<span class="mono">DetailData</span>⊐<span class="mono">JournalEntry</span>三级；<span class="mono">Evidence</span>⊐<span class="mono">DocumentEvidence</span>/<span class="mono">DataEvidence</span>），使规则引擎、证据完整性判定与Skill可按类型层级筛选消费对象（如证据要求区分"文件证据"与"数据证据"两类必需类型），而无需在代码中硬编码类型分支。</li>
+          <li><b>本体在实例层面同样区分"静态语义"与"动态判定"：</b>如图4所示，本体对整体波动规则给出静态<span class="mono">detectedBy</span>示例关联，但明细规则是否触发并不作为静态三元组固化，而是留给运行时规则引擎结合实时数据计算，体现本体只承担"能怎样分析"的语义约束、不越界固化"此刻是否成立"的判定结果。</li>
         </ul>
 
         <div class="callout">
@@ -685,6 +947,21 @@
 
         <div class="para"><span class="parano">【0013】</span>
         本发明提出一种以运行时审计台账（Runtime State）为核心的推理链可审计可追溯方法，其特征在于：不直接暴露或依赖大模型的私有链式思考作为审计依据，而是将每一轮决策拆分为若干结构化、可独立核验的记录单元，按统一的trace_id进行归集，并在最终结论生成后执行确定性的"归并—去重—来源标注"处理，使最终对外结果不因大模型输出不完整或不一致而丢失可追溯性。</div>
+
+        <div class="kv-grid">
+          <div class="kv-card">
+            <h4>结构化——语义可查询</h4>
+            <p>推理依据与证据以带stage/source标注的对象形式存在，可查询"某结论由哪些规则、事实、Skill支持"，而非只能按时间顺序看普通调用日志。</p>
+          </div>
+          <div class="kv-card">
+            <h4>可验证——确定性与生成式分离</h4>
+            <p>规则判定由Rule Engine独立生成，携带actual/threshold/operator/triggered四元组；LLM不参与、也不能覆盖这一判定结果。</p>
+          </div>
+          <div class="kv-card">
+            <h4>可回放——状态可复原</h4>
+            <p>facts、rule_results、planner_history、evidence_chain按trace_id共同持久化，事后可基于同一份记录重构当次候选路径与执行序列。</p>
+          </div>
+        </div>
 
         <figure>
           <div class="fig-frame">
@@ -740,7 +1017,7 @@
               </g>
             </svg>
           </div>
-          <figcaption><b>图3</b>　推理链可审计闭环：五类审计记录各自按确定规则去重后，进入结论归并环节与大模型输出核验式合并，形成携带来源标注与数量统计（<span class="mono">audit_meta</span>）的最终可审计结果，避免大模型漏字段导致审计信息丢失。</figcaption>
+          <figcaption><b>图5</b>　推理链可审计闭环：五类审计记录各自按确定规则去重后，进入结论归并环节与大模型输出核验式合并，形成携带来源标注与数量统计（<span class="mono">audit_meta</span>）的最终可审计结果，避免大模型漏字段导致审计信息丢失。</figcaption>
         </figure>
 
         <figure>
@@ -783,7 +1060,7 @@
               </g>
             </svg>
           </div>
-          <figcaption><b>图4</b>　Guardrail双轨仲裁：无论Planner的原始建议是否被采纳，系统都保留"原始建议"与"实际执行动作"两条记录及回退标记与理由，使事后审计既能复核最终执行是否合法，也能复核大模型原始倾向与系统纠偏过程。</figcaption>
+          <figcaption><b>图6</b>　Guardrail双轨仲裁：无论Planner的原始建议是否被采纳，系统都保留"原始建议"与"实际执行动作"两条记录及回退标记与理由，使事后审计既能复核最终执行是否合法，也能复核大模型原始倾向与系统纠偏过程。</figcaption>
         </figure>
 
         <h3>关键技术特征</h3>
@@ -793,7 +1070,12 @@
           <li><b>证据链确定性去重合并：</b>证据以<span class="mono">evidenceId</span>/<span class="mono">reference</span>/<span class="mono">name</span>作为身份键，在运行时事实证据、结论生成模型输出之间去重合并，避免同一证据因多次接口返回或模型重复提及而在最终结论中重复列示，也避免模型遗漏证据导致证据链缺失。</li>
           <li><b>结论核验式归并而非覆盖式采信：</b>最终结论生成后，系统以运行时台账数据为"事实基线"，与大模型输出的结论文本进行合并：模型返回为空或格式不规范时以台账数据兜底重建（如根据<span class="mono">facts.reportItem</span>与<span class="mono">contributors</span>重建关键指标），模型有返回时进行去重合并而非直接替换，并在<span class="mono">audit_meta</span>中记录归并后的推理条数、证据条数及各自来源，使审计人员可判断结论的哪些部分来自可复算的运行时台账、哪些部分来自模型自由生成。</li>
           <li><b>确定性规则的可复算性：</b>规则结果统一携带<span class="mono">actual_value</span>、<span class="mono">operator</span>、<span class="mono">threshold</span>、<span class="mono">triggered</span>四元组，使任意第三方可在不依赖大模型的情况下，仅凭同批次事实数据独立重算并核验规则判定结果，从根本上避免"阈值判断被模型静默篡改"的风险。</li>
+          <li><b>模型元数据留痕：</b>每一轮Planner调用与结论生成均记录当次使用的模型Provider与模型标识（如<span class="mono">llm_provider</span>、<span class="mono">bailian_model</span>），使审计人员可定位到具体生成某次决策/结论的模型实例；在进一步实施例中，该记录可扩展为额外保存提示模板版本号及输入输出内容摘要哈希，以在模型版本升级后仍能准确复现或比对历史结论的生成条件。</li>
         </ul>
+
+        <h3>进一步实施例：审计记录防篡改哈希链（可选增强）</h3>
+        <div class="para"><span class="parano">【0013a】</span>
+        在保持前述归并与去重方法不变的前提下，运行时审计台账的持久化层可选地叠加防篡改校验：对每一条待落盘的审计记录（决策记录/规则结果/推理事件/证据条目之一）计算<span class="mono">record.hash = HASH(prev.hash ‖ canonical_json(record))</span>，并以<span class="mono">next</span>指针将其与前一条记录相连，形成单向哈希链；任意历史记录被篡改都会导致其后所有记录哈希校验失败，从而在跨系统审计、外部仲裁等对"记录自生成后未被篡改"有更高要求的场景中提供额外保障。该增强属于审计台账持久化/校验层的可插拔能力，既可落地于普通关系型数据库，也可落地于区块链或其他不可篡改存储，不改变创新点二中候选路径计算、规则求值与结论归并的核心方法步骤，建议作为独立的从属权利要求单独主张（见"从属权利要求G"）。</div>
 
         <div class="callout">
           <span class="callout-label">技术效果</span>
@@ -885,6 +1167,14 @@
           </tbody>
         </table>
         </div>
+
+        <h3>面向未来的预埋取证点建议</h3>
+        <ul class="clean">
+          <li>接口与日志中持续保留<span class="mono">trace_id</span>、<span class="mono">rule_id</span>、<span class="mono">skill_id</span>、<span class="mono">evidence_id</span>、<span class="mono">llm_provider</span>/模型版本等字段，避免后续升级中被精简掉，为取证保留最小必要粒度。</li>
+          <li>前端持续可视化"候选路径 → Planner → Guardrail → Skill执行"的逐轮过程（而非仅展示最终结论），增强系统对外的黑盒可观察性，降低第三方取证门槛。</li>
+          <li>支持按<span class="mono">trace_id</span>导出完整JSON/PDF审计包，一次性包含事实快照、规则结果、决策记录、证据链与<span class="mono">audit_meta</span>，便于形成单一、可比对的取证载体。</li>
+          <li>保留可重复触发的边界测试场景（如四个Mock场景对应的四条不同执行路径），便于日后以相同输入复现并验证系统行为的一致性。</li>
+        </ul>
 
         <div class="callout seal">
           <span class="callout-label">举证建议</span>
@@ -1011,12 +1301,35 @@
               <td>基于Merkle树等区块链技术验证分布式节点间数据完整性</td>
               <td>解决的是数据完整性存证问题，与"模型决策路径合法性校验"及"推理链结构化归并"技术问题不同，可作为本发明审计台账持久化层的可选底层存储技术，而非替代方案。</td>
             </tr>
+            <tr>
+              <td class="mono">US20100205076A1<br><span class="mono" style="font-size:.85em;opacity:.7">（= US9031873B2 已授权文本，Validis/Future Route Ltd）</span></td>
+              <td>Methods and apparatus for analysing and/or pre-processing financial accounting data</td>
+              <td>将财务会计数据映射至会计本体（accounting ontology），基于规则识别异常/趋势偏差</td>
+              <td>该文献确证"会计本体+规则异常检测"组合已有较早公开，故本发明不宜将"用本体做财务异常分析"本身作为独立创新点；但其本体不区分五层语义、不建模可执行工作流节点/条件边，也未涉及LLM Planner/Guardrail与双轨决策留痕，本发明创新点一、二均在该文献未覆盖的范围。</td>
+            </tr>
+            <tr>
+              <td class="mono">US20190244122A1</td>
+              <td>Explainable artificial intelligence</td>
+              <td>基于数据驱动本体与推理规则构建可解释AI的推理过程及置信度框架</td>
+              <td>涉及本体驱动的可解释推理，与创新点二的"结构化推理事件"目标相近，但面向通用可解释AI，未结合财报异常分析领域的五层本体、确定性规则四元组、Guardrail双轨仲裁与证据链去重合并等具体方法。</td>
+            </tr>
           </tbody>
         </table>
         </div>
 
+        <div class="callout seal">
+          <span class="callout-label">对另一份AI生成初稿所列文献的核实情况</span>
+          在撰写本节前，我们收到并比对了另一份由AI（ChatGPT）生成的同主题技术交底稿，其"附：专利文献分析"部分列出了包括<span class="mono">US20100205076A1</span>、<span class="mono">US20190244122A1</span>在内共10篇文献。经在本环境可用的公开检索渠道（Google Patents关键词检索）逐一核实：<span class="mono">US20100205076A1</span>与<span class="mono">US20190244122A1</span>可确认为真实存在且内容与其描述基本相符，已相应纳入上表；但<span class="mono">CN120543121A</span>、<span class="mono">CN115115439A</span>、<span class="mono">CN121071710A</span>、<span class="mono">CN121903782A</span>、<span class="mono">CN119762259B</span>、<span class="mono">CN120894164B</span>、<span class="mono">WO2024255989A1</span>共7项在公开检索渠道中均未查到匹配记录（检索无命中，亦无法通过Google Patents直接访问该编号页面）。这类"编号格式合理但无法核实存在性"的引用是大模型生成专利检索内容时的已知失效模式（幻觉编号），<b>在未经incopat/CNIPA官方检索或专利代理人独立核实前，不建议采信或引用这7项文献</b>，本文档亦不将其纳入正式的文献比对表。
+        </div>
+
         <div class="para"><span class="parano">【0020】</span>
-        综合比对可见，公开渠道检索到的现有专利文献分别落在"传统规则化审计系统""大模型辅助财务分析""大模型协同知识图谱Agent""操作日志/区块链审计存证"四个方向，尚未检索到同时具备"财报异常分析领域五层本体分层建模（对象—事实/波动—规则/事理与证据—方法/可执行工作流—结论/行动）"与"运行时Planner原始建议和Guardrail仲裁结果双轨留痕、结构化推理与证据链确定性去重归并"两项组合特征的现有技术方案，初步判断本发明具备新颖性与创造性基础；正式结论仍需以incopat及CNIPA专利检索及分析系统的专业检索报告为准。</div>
+        综合比对可见，公开渠道检索到的现有专利文献分别落在"会计本体+规则异常检测""传统规则化审计系统""大模型辅助财务分析""大模型协同知识图谱Agent""通用可解释AI推理溯源""操作日志/区块链审计存证"六个方向，尚未检索到同时具备"财报异常分析领域五层本体分层建模（对象—事实/波动—规则/事理与证据—方法/可执行工作流—结论/行动，含子类层级与跨层对象属性）"与"运行时Planner原始建议和Guardrail仲裁结果双轨留痕、结构化推理与证据链确定性去重归并"两项组合特征的现有技术方案，初步判断本发明具备新颖性与创造性基础；正式结论仍需以incopat及CNIPA专利检索及分析系统的专业检索报告为准。</div>
+
+        <div class="callout">
+          <span class="callout-label">创造性论证策略建议</span>
+          <p style="margin:.3rem 0 0"><b>不宜单独主张的特征</b>（已有公开文献覆盖，单独主张创造性风险较高）：①"使用本体/知识图谱对财务数据做异常规则判断"（<span class="mono">US20100205076A1</span>已公开会计本体+规则异常识别）；②"知识图谱辅助大模型Agent决策"（<span class="mono">CN117114521A</span>、<span class="mono">CN119377360B</span>）；③"基于本体的可解释AI推理路径"（<span class="mono">US20190244122A1</span>）；④"规则化自动审计"与"操作日志/区块链审计存证"（<span class="mono">CN104217276A</span>、<span class="mono">CN106936818A</span>）。</p>
+          <p style="margin:.6rem 0 0"><b>应重点强调的组合特征</b>：⑴财报异常分析领域的五层本体——不止静态实体关系，还把规则触发动作、证据要求、可执行工作流节点与条件边、专家SOP步骤一并纳入本体并显式区分子类层级；⑵知识图谱下发的候选路径经确定性规则/证据门控筛选后，LLM Planner仅在该候选集合内规划，Runtime Guardrail对其结果二次校验；⑶Guardrail对"模型原始建议"与"系统实际执行动作"双轨留痕并标注回退原因；⑷结论生成后以运行时台账为基线对大模型输出做核验式去重归并，产出<span class="mono">audit_meta</span>来源统计。建议围绕⑴～⑷的组合关系构建独立权利要求，而非将其中任一单点特征单独作为保护核心。</p>
+        </div>
       </section>
 
       <!-- ============ 10. 有益效果 ============ -->
@@ -1051,7 +1364,44 @@
         </div>
 
         <div class="para"><span class="parano">【0021】</span>
-        建议独立权利要求围绕"五层本体分层建模方法（方法权利要求）"与"基于运行时审计台账的推理链归并方法（方法权利要求）"分别撰写，并以"实现上述方法的装置/系统"撰写对应的装置权利要求；从属权利要求可分别限定：层间对象属性的具体语义类型、规则四元组结构、Guardrail双轨记录的具体字段、证据去重键的具体构成、结论归并时的兜底重建规则等，以获得较为完整的保护梯度。最终权利要求措辞、独立/从属关系及保护范围划定，建议由专利代理人结合正式检索报告确定。</div>
+        为便于专利代理人后续收敛为正式权利要求书，下面给出建议的独立/从属权利要求要点，均对应本文前述具体技术特征；最终措辞、独立/从属关系及保护范围划定仍需由专利代理人结合正式检索报告确定。</div>
+
+        <div class="callout">
+          <span class="callout-label">独立方法权利要求（建议）</span>
+          构建财报数据异常分析五层本体（领域对象层、事实与波动层、规则与事理层、方法与可执行工作流层、结论与行动层），层间以对象属性连接；按分析请求从本体/知识图谱获取适用规则、Skill、可执行工作流节点与条件边、证据要求；按需获取实时事实数据；由确定性规则引擎计算规则触发结果与证据完整性；在知识图谱当前授权的合法候选路径内，由LLM Planner提出下一节点/Skill；由运行时护栏校验该提议是否满足知识图谱与规则约束，不满足则回退至合法候选并记录原始建议、实际执行动作与回退原因；执行被授权Skill并更新事实；将规则结果、决策记录、结构化推理事件与证据以确定的去重规则归入以trace_id关联的运行时审计台账；生成结论时以该台账数据与模型输出进行核验式归并，输出携带来源统计的可审计结果。
+        </div>
+        <div class="callout">
+          <span class="callout-label">独立装置权利要求（建议）</span>
+          包括本体语义解析模块、知识图谱网关模块、事实数据网关模块、确定性规则引擎模块、候选路径计算模块、LLM规划模块、运行时护栏模块、Skill执行注册模块与审计聚合模块，各模块职责对应表1。
+        </div>
+        <div class="callout">
+          <span class="callout-label">从属权利要求 A · 五层本体与跨层对象属性</span>
+          其特征在于，所述五层本体中，L3层通过<span class="mono">detectedBy</span>关联L2层波动实例与规则实例，L4层通过<span class="mono">governedByRule</span>将工作流条件边与L3层规则关联，L5层通过<span class="mono">basedOnEvidence</span>将结论回链至L3层证据，形成从领域对象到结论行动的可追溯语义闭环（对应图2、图3）。
+        </div>
+        <div class="callout">
+          <span class="callout-label">从属权利要求 B · 子类层级与证据/事实类型细分</span>
+          其特征在于，所述本体以<span class="mono">rdfs:subClassOf</span>对事实数据与证据分别细分子类（事实数据细分为报表余额事实、明细数据、会计分录；证据细分为文件证据与数据证据），证据完整性判定按子类类型分别核验是否命中必需证据类型（对应图3、表2中证据完整性判定说明）。
+        </div>
+        <div class="callout">
+          <span class="callout-label">从属权利要求 C · 动态执行图与规则/证据双重门控</span>
+          其特征在于，候选路径的条件类型至少包括"规则触发型"与"证据完整型"两种，前者依据确定性规则的触发结果判定路径是否可达，后者依据必需证据类型的匹配情况判定路径是否可达，二者均由知识图谱以显式条件边声明、由运行时逐轮重新计算（对应图1、表所示transitions条件）。
+        </div>
+        <div class="callout">
+          <span class="callout-label">从属权利要求 D · Guardrail双轨仲裁记录</span>
+          其特征在于，对大模型每一次候选选择，均同时保留其原始建议与经运行时护栏校验后的实际执行动作两条记录，并显式标注是否发生回退及回退理由（对应图6）。
+        </div>
+        <div class="callout">
+          <span class="callout-label">从属权利要求 E · 结构化推理与证据链去重归并</span>
+          其特征在于，推理依据以携带阶段与来源标注的结构化条目形式产生并按阶段与陈述内容去重，证据以身份标识、引用编号或名称之一作为去重键进行合并，结论生成后按该台账数据与模型输出进行合并而非覆盖，缺失字段以台账数据重建（对应图5）。
+        </div>
+        <div class="callout">
+          <span class="callout-label">从属权利要求 F · 结论审计元数据</span>
+          其特征在于，最终结果携带统计归并后推理条目数量、证据条目数量及其来源类别的元数据字段，用于标示结论中各部分是否来自可复算的确定性记录。
+        </div>
+        <div class="callout">
+          <span class="callout-label">从属权利要求 G · 审计记录防篡改哈希链（可选）</span>
+          其特征在于，每条审计记录携带基于其规范化序列化结果与前一条记录哈希值计算得到的当前哈希值，用于校验审计记录自生成后是否被篡改（对应【0013a】进一步实施例）。
+        </div>
 
         <hr class="rule">
         <p class="pill-row">
